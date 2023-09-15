@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CardActions, Typography } from "@mui/material";
 import { Laboratory } from "../mock/laboratories";
 
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
@@ -14,18 +14,30 @@ type Props = {
 export const LaboratoryCards = ({ laboratories }: Props) => {
   return (
     <Box>
-      {laboratories.map((laboratory, i) => (
-        <Card key={i}>
+      {laboratories
+      .filter((item) => {
+        return item.status==='1';
+      })
+      
+      .map((laboratory, i) => (
+        <Card key={i} sx={{ minWidth: 275, m: 5}}>
           <CardContent>
-            <Typography variant="h5" component="h2">
+            <Typography variant="h5" component="div">
               {laboratory.name}
             </Typography>
-            <Typography variant="body2" component="p">
+            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+              {laboratory.university.name} {laboratory.major.name}
+           </Typography>
+            <Typography variant="body2">
               {laboratory.comment}
             </Typography>
           </CardContent>
+          <CardActions>
+            <Button size="small">詳細を見る</Button>
+          </CardActions>
         </Card>
       ))}
     </Box>
+
   );
 };
