@@ -15,7 +15,7 @@ type Student struct {
 	Grade         int       `json:"grade"`
 	Comment       string    `json:"coment"`
 	Interest      string    `json:"interest"`
-	Birthday      time.Time `json:"birthday"` //型はstringが適切かどうか
+	Birthday      time.Time `json:"birthday"`
 	Gpa           float64   `json:"gpa"`
 	Image_url     string    `json:"image_url"`
 	Status        bool      `json:"status"`
