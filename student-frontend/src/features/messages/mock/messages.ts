@@ -1,7 +1,7 @@
 // TODO メッセージ一覧ページ用mockデータ : Messageの型を定義し,exportする
 
 export type Message = {
-    student_laboratory: StudentLaboratory;
+    studentLaboratory: StudentLaboratory;
     laboratory: Laboratory;
     university: University;
   };
@@ -22,7 +22,7 @@ export type Message = {
   
   export const MockMessages: Message[] = [
     {
-      student_laboratory: {
+      studentLaboratory: {
         status: 'LIKE_FROM_BOTH'
       },
       laboratory: {
@@ -33,7 +33,7 @@ export type Message = {
       }
     },
     {
-      student_laboratory: {
+      studentLaboratory: {
         status: 'LIKE_FROM_BOTH'
       },
       laboratory: {
