@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 import { NextPage } from "next";
 
 const Page: NextPage = () => {
-  return <Box>student</Box>;
-};
+  return <Box>student</Box>
+}
 
 export default Page;
