@@ -10,7 +10,7 @@ const Page: NextPage = () => {
     <Stack>
       <LaboratoryCards laboratories={MockLaboratories} />
     </Stack>
-  );
-};
+  )
+}
 
 export default Page;
