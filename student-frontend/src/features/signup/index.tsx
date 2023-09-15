@@ -1,1 +1,1 @@
-// TODO : signupページ（リクエストなし）: SignUpコンポーネントをexportする
+// TODO signupページ（リクエストなし）: SignUpコンポーネントをexportする
