@@ -26,10 +26,10 @@ export const MessageCards = ({ messages }: Props) => {
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
           <CardContent>
             <Typography variant="h5" component="div">
-              {message.laboratory.name}
+              {message.university.name}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {message.university.name}
+              {message.laboratory.name}
            </Typography>
         
           </CardContent>
