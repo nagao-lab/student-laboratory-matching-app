@@ -11,4 +11,5 @@ func main() {
 	defer fmt.Println("Successfully Migrated")
 	defer db.CloseDB(dbConn)
 	dbConn.AutoMigrate(&model.Prefecture{})
+	dbConn.AutoMigrate(&model.Student{})
 }
