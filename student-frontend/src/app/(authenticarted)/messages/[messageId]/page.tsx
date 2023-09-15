@@ -1,1 +1,1 @@
-// TODO メッセージ詳細ページ（mock） : MessageDetailコンポーントをレンダリングする
+// TODO メッセージ詳細ページ（mock） : MessageContentコンポーントをレンダリングする
