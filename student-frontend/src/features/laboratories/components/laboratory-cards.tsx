@@ -11,6 +11,20 @@ type Props = {
 // TODO 研究室一覧ページ : Boxの中で,map関数を利用してMuiのCardを挿入する
 // TODO 研究室一覧ページ : Cardの間にスペースを入れる
 
+const showStatus = (status: string) => {
+  switch(status){
+    case "LIKE_FROM_BOTH":
+      return "♥";
+    case "LIKE_FROM_STUDENT":
+      return "♡";
+    case "LIKE_FROM_LABORATORY":
+      return "♡";
+    case "BLANK":
+      return "×";
+
+    }
+};
+
 export const LaboratoryCards = ({ laboratories }: Props) => {
   return (
     <Box>
@@ -28,13 +42,18 @@ export const LaboratoryCards = ({ laboratories }: Props) => {
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {laboratory.university.name} {laboratory.major.name}
            </Typography>
-            <Typography variant="body2">
+           <Typography variant="body2">
               {laboratory.comment}
             </Typography>
           </CardContent>
           <CardActions>
             <Button size="small">詳細を見る</Button>
           </CardActions>
+          <CardContent>
+            <Typography variant="body1">
+              マッチング：{showStatus(laboratory.studentLaboratory.status)}
+            </Typography>
+          </CardContent>
         </Card>
       ))}
     </Box>
