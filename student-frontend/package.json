@@ -15,7 +15,6 @@
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
-    "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.5.5",
@@ -23,12 +22,17 @@
     "eslint-plugin-react": "^7.33.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-sort-exports": "^0.8.0",
-    "eslint-plugin-unused-imports": "^3.0.0",
     "get-graphql-schema": "^2.1.2",
     "next": "13.4.19",
-    "prettier": "^3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.2.2"
+    "react-hook-form": "^7.46.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "typescript": "^5.2.2"
   }
 }

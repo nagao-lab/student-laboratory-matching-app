@@ -1,0 +1,34 @@
+{
+  "editor.codeActionsOnSave": [
+    "source.addMissingImports",
+    "source.fixAll.eslint"
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.insertSpaces": true,
+  "editor.renderControlCharacters": true,
+  "editor.renderWhitespace": "all",
+  "editor.tabSize": 2,
+  "eslint.workingDirectories": ["./student-frontend"],
+  "explorer.compactFolders": false,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "github.copilot.enable": {
+    "*": true,
+    "css": true,
+    "dockerfile": true,
+    "html": true,
+    "javascript": true,
+    "javascriptreact": true,
+    "json": true,
+    "markdown": true,
+    "plaintext": false,
+    "ruby": true,
+    "shellscript": true,
+    "typescript": true,
+    "typescriptreact": true,
+    "yaml": true
+  }
+}
