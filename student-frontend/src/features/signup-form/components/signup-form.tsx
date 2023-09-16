@@ -1,1 +1,1 @@
-// TODO signupページ（リクエストなし）: SignUpコンポーネントを作成
+// TODO signupページ（リクエストなし）: SignUpFormコンポーネントを作成
