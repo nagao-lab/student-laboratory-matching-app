@@ -2,7 +2,7 @@
 'use client';
 
 import { Box, Button, Card, CardContent, CardActions, Typography } from "@mui/material";
-import { ChangeStatusToIcon } from "../../../../src/components/change-status-to-icon";
+import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
 import { Laboratory } from "../mock/laboratories";
 
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
@@ -42,7 +42,7 @@ export const LaboratoryCards = ({ laboratories }: Props) => {
             </Button>
           </CardActions>
           <CardContent>
-            <ChangeStatusToIcon laboratory={laboratory}/>
+            <ChangeStatusToIconButton status={laboratory.status}/>
           </CardContent>
 
           
