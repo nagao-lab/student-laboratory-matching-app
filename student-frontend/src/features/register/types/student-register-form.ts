@@ -1,3 +1,5 @@
+// TODO フォームのデータ型を整える
+
 export type RegisterFormValues = {
   name: string;
   email: string;
