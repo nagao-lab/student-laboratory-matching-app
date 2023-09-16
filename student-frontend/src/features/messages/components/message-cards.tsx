@@ -1,8 +1,8 @@
 // TODO メッセージ一覧ページ : MessageCardsコンポーネントを作成
 
+"use client";
 
-
-import { Box, Button, Card, CardContent, CardActions, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardActionArea, Typography } from "@mui/material";
 import { Message } from "../mock/messages";
 
 // TODO メッセージ一覧ページ : MessageCardsコンポーネント用のPropsを定義
@@ -18,13 +18,11 @@ export const MessageCards = ({ messages }: Props) => {
   return (
     <Box>
       {messages
-      .filter((item) => {
-        return item.studentLaboratory.status === 'LIKE_FROM_BOTH';
-      })
       
       .map((message, i) => (
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
-          <CardContent>
+          <CardActionArea>
+          <CardContent onClick={()=>{console.log(message.university.name,'の', message.laboratory.name, 'が押下された')}}>
             <Typography variant="h5" component="div">
               {message.university.name}
             </Typography>
@@ -33,9 +31,8 @@ export const MessageCards = ({ messages }: Props) => {
            </Typography>
         
           </CardContent>
-          <CardActions>
-            <Button size="small">やりとりを見る</Button>
-          </CardActions>
+          </CardActionArea>
+          
         </Card>
       ))}
     </Box>
