@@ -58,7 +58,7 @@ export const MockMessageContent: Message[] = [
                 name: '研究室2'
             }
         },
-        from: 1,
+        from: 0,
         content: '学生2のメッセージ',
         createdAt: '2023/01/02'
     }
