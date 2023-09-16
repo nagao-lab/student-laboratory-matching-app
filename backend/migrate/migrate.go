@@ -24,198 +24,193 @@ func main() {
 	dbConn.AutoMigrate(&model.Student_Major{})
 	dbConn.AutoMigrate(&model.University{})
 
-	new_ac_st := Create_model_student(*dbConn, "suzuki", "suzuki@i.com", 0, 3, "fire", "water", time.Now(), 3.4, "i/url", 1, "passN", 2)
-	error_check := Signup_Student(dbConn, new_ac_st, "Tokyo Daigaku", "Tokyo", "info")
-	if error_check != nil {
-		fmt.Printf("%v\n", error_check)
+	new_ac_st := CreateModelStudent(*dbConn, "suzuki", "suzuki@i.com", 0, 3, "fire", "water", time.Now(), 3.4, "i/url", 1, "passN", 2)
+	err := SignupStudent(dbConn, new_ac_st, "Tokyo Daigaku", "Tokyo", "info")
+	if err != nil {
+		fmt.Printf("%v\n", err)
 	} else {
 		fmt.Println("Success:signin")
 	}
 
-	_, error_check = Login_Student(dbConn, "suzuki@i.com", "passN")
-	if error_check != nil {
-		fmt.Printf("%v\n", error_check)
+	_, err = LoginStudent(dbConn, "suzuki@i.com", "passN")
+	if err != nil {
+		fmt.Printf("%v\n", err)
 	}
 
 }
 
-func Signup_laboratory(db *gorm.DB, account model.Laboratory, university_name string, major_name string) error {
-	var check model.Laboratory
+func SignupLaboratory(db *gorm.DB, account_laboratory model.Laboratory, university_name string, major_name string) error {
+	var laboratory model.Laboratory
 
-	result := db.Where("Email = ?", account.Email).First(&check)
-	if result.Error == nil {
-		return fmt.Errorf("error[signup]: already exist")
-	}
-
-	error_check := Create_account_laboratory(db, account, university_name)
-	if error_check != nil {
-		return error_check
-	}
-
-	error_check = Create_laboratory_major(db, account, major_name)
-	if error_check != nil {
-		return error_check
-	}
-	fmt.Println("signup: Success!!")
-	return nil
-
-}
-
-func Signup_Student(db *gorm.DB, account model.Student, university_name string, prefecture_name string, major_name string) error {
-	var check model.Student
-
-	result := db.Where("Email = ?", account.Email).First(&check)
-	if result.Error == nil {
+	exist_check := db.Where("Email = ?", account_laboratory.Email).Find(&laboratory)
+	if exist_check.RowsAffected != 0 {
 		return fmt.Errorf("error[signup]:account already exist")
 	}
-	error_check := Create_account_student(db, account, university_name, prefecture_name)
-	if error_check != nil {
-		return error_check
+
+	err := CreateAccountLaboratory(db, account_laboratory, university_name)
+	if err != nil {
+		return err
 	}
-	error_check = Create_student_major(db, account, major_name)
-	if error_check != nil {
-		return error_check
+
+	err = CreateLaboratoryMajor(db, account_laboratory, major_name)
+	if err != nil {
+		return err
 	}
-	fmt.Println("Success signup!!")
+	fmt.Println("signup:Success!")
 	return nil
 }
 
-func Login_Laboratory(db *gorm.DB, email_in string, pass_in string) (model.Laboratory, error) {
-	var check model.Laboratory
+func SignupStudent(db *gorm.DB, account_student model.Student, university_name string, prefecture_name string, major_name string) error {
+	var student model.Student
 
-	result := db.Where("Email = ?", email_in).First(&check)
-	if result.Error != nil {
-		return check, fmt.Errorf("error[login]:account does not exist")
-	} else if check.Password != pass_in {
-		return check, fmt.Errorf("error[login]:password does not match")
-	} else {
-		fmt.Println("login:Success!!")
-		return check, nil
+	exist_check := db.Where("Email = ?", account_student.Email).Find(&student)
+	if exist_check.RowsAffected != 0 {
+		return fmt.Errorf("error[signup]:account already exist")
 	}
+	err := CreateAccountStudent(db, account_student, university_name, prefecture_name)
+	if err != nil {
+		return err
+	}
+	err = CreateStudentMajor(db, account_student, major_name)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("signup:Success!")
+	return nil
 }
 
-func Login_Student(db *gorm.DB, email_in string, pass_in string) (model.Student, error) {
-	var check model.Student
+func LoginLaboratory(db *gorm.DB, email_in string, pass_in string) (model.Laboratory, error) {
+	var laboratory model.Laboratory
 
-	result := db.Where("Email = ?", email_in).First(&check)
-	if result.Error != nil {
-		return check, fmt.Errorf("error[login]:account does not exist")
-	} else if check.Password != pass_in {
-		return check, fmt.Errorf("error[login]:password does not match")
-	} else {
-		fmt.Println("login:Success!!")
-		return check, nil
+	err := db.Where("Email = ?", email_in).First(&laboratory).Error
+	if err != nil {
+		return laboratory, fmt.Errorf("error[login]:account does not exist")
 	}
+	if laboratory.Password != pass_in {
+		return laboratory, fmt.Errorf("error[login]:password does not match")
+	}
+	fmt.Println("login:Success!")
+	return laboratory, nil
+}
+
+func LoginStudent(db *gorm.DB, email_in string, pass_in string) (model.Student, error) {
+	var student model.Student
+
+	err := db.Where("Email = ?", email_in).First(&student).Error
+	if err != nil {
+		return student, fmt.Errorf("error[login]:account does not exist")
+	}
+	if student.Password != pass_in {
+		return student, fmt.Errorf("error[login]:password does not match")
+	}
+	fmt.Println("login:Success!!")
+	return student, nil
 }
 
 // studentとmajorの紐づけ
-func Create_student_major(db *gorm.DB, st model.Student, major_name string) error {
-	var check model.Major
-	result := db.Where("Name = ?", major_name).First(&check)
-	if result.Error != nil {
+func CreateStudentMajor(db *gorm.DB, student model.Student, major_name string) error {
+	var major model.Major
+	err := db.Where("Name = ?", major_name).First(&major).Error
+	if err != nil {
 		return fmt.Errorf("error[student_major]:major does not exist")
-	} else {
-		new_ac := model.Student_Major{
-			Student_id: st.ID,
-			Major_id:   check.ID,
-		}
-		db.Create(&new_ac)
-		return nil
 	}
+	new_major := model.Student_Major{
+		StudentID: student.ID,
+		MajorID:   major.ID,
+	}
+	db.Create(&new_major)
+	return nil
 }
 
 // labolatoryとmajorの紐づけ
-func Create_laboratory_major(db *gorm.DB, st model.Laboratory, major_name string) error {
-	var check model.Major
-	result := db.Where("Name = ?", major_name).First(&check)
-	if result.Error != nil {
+func CreateLaboratoryMajor(db *gorm.DB, laboratory model.Laboratory, major_name string) error {
+	var major model.Major
+	err := db.Where("Name = ?", major_name).First(&major).Error
+	if err != nil {
 		return fmt.Errorf("error[student_major]:major does not exist")
-	} else {
-		new_ac := model.Laboratory_Major{
-			Laboratory_id: st.ID,
-			Major_id:      check.ID,
-		}
-		db.Create(&new_ac)
-		return nil
 	}
+	new_major := model.Laboratory_Major{
+		LaboratoryID: laboratory.ID,
+		MajorID:      major.ID,
+	}
+	db.Create(&new_major)
+	return nil
+
 }
 
 // studentにprefecture_idを代入
-func Insert_prefectureID_to_student(db *gorm.DB, st *model.Student, prefecture_name string) error {
-	var check model.Prefecture
-	result := db.Where("Name = ?", prefecture_name).First(&check)
-	if result.Error != nil {
+func InsertPrefectureIDToStudent(db *gorm.DB, student *model.Student, prefecture_name string) error {
+	var prefecture model.Prefecture
+	err := db.Where("Name = ?", prefecture_name).First(&prefecture).Error
+	if err != nil {
 		return fmt.Errorf("error[insert prefectureID to student]:prefecture does not exist")
-	} else {
-		st.Prefecture_id = check.ID
-		return nil
 	}
+	student.PrefectureID = prefecture.ID
+	return nil
 }
 
 // studentにunivesity_idを代入
-func Insert_universityID_to_student(db *gorm.DB, st *model.Student, university_name string) error {
-	var check model.University
-	result := db.Where("Name = ?", university_name).First(&check)
-	if result.Error != nil {
+func InsertUniversityIDToStudent(db *gorm.DB, student *model.Student, university_name string) error {
+	var university model.University
+	err := db.Where("Name = ?", university_name).First(&university).Error
+	if err != nil {
 		return fmt.Errorf("error[insert universityID to student]:university does not exist")
-	} else {
-		st.University_id = check.ID
-		return nil
 	}
+	student.UniversityID = university.ID
+	return nil
 }
 
 // laboratoryにunivesity_idを代入
-func Insert_universityID_to_laboratory(db *gorm.DB, lb *model.Laboratory, university_name string) error {
-	var check model.University
-	result := db.Where("Name = ?", university_name).First(&check)
-	if result.Error != nil {
+func InsertUniversityIDToLaboratory(db *gorm.DB, lb *model.Laboratory, university_name string) error {
+	var university model.University
+	err := db.Where("Name = ?", university_name).First(&university).Error
+	if err != nil {
 		return fmt.Errorf("error[insert universityID to student]:prefecture does not exist")
-	} else {
-		lb.University_id = check.ID
-		return nil
 	}
+	lb.UniversityID = university.ID
+	return nil
 }
 
 // universityをprefecture_idを代入して作成
-func Create_university(db *gorm.DB, uv_name, pf_name, address string, max_gpa float64) error {
-	var check_uv model.University
-	result := db.Where("Name = ?", uv_name).First(&check_uv)
-	if result.Error == nil {
+func CreateUniversity(db *gorm.DB, university_name, prefecture_name, address string, max_gpa float64) error {
+	var university model.University
+	exist_check := db.Where("Name = ?", university_name).Find(&university)
+	if exist_check.RowsAffected != 0 {
 		return fmt.Errorf("error[create university]:university already exist")
 	}
-	var check_pf model.Prefecture
-	result = db.Where("Name = ?", pf_name).First(&check_pf)
-	if result.Error != nil {
+	var prefecture model.Prefecture
+	err := db.Where("Name = ?", prefecture_name).First(&prefecture).Error
+	if err != nil {
 		return fmt.Errorf("error[create university]:prefecture does not exist")
 	}
-	new_uv := model.University{
-		Name:          uv_name,
-		Prefecture_id: check_pf.ID,
-		Address:       address,
-		Max_gpa:       max_gpa,
+	new_university := model.University{
+		Name:         university_name,
+		PrefectureID: prefecture.ID,
+		Address:      address,
+		MaxGpa:       max_gpa,
 	}
-	db.Create(&new_uv)
+	db.Create(&new_university)
 	return nil
-
 }
 
-func Create_prefecture(db *gorm.DB, pf_name string) error {
-	var check model.Prefecture
-	result := db.Where("Name = ?", pf_name).First(&check)
-	if result.Error == nil {
+func CreatePrefecture(db *gorm.DB, prefecture_name string) error {
+	var prefecture model.Prefecture
+	exist_check := db.Where("Name = ?", prefecture_name).Find(&prefecture)
+	if exist_check.RowsAffected != 0 {
 		return fmt.Errorf("error[create prefecure]:prefecture already exist")
 	}
-	new_pf := model.Prefecture{
-		Name: pf_name,
+	new_prefecture := model.Prefecture{
+		Name: prefecture_name,
 	}
-	db.Create(&new_pf)
+	db.Create(&new_prefecture)
 	return nil
 }
 
-func Create_major(db *gorm.DB, major_name string) error {
-	var check model.Major
-	result := db.Where("Name = ?", major_name).First(&check)
-	if result.Error == nil {
+func CreateMajor(db *gorm.DB, major_name string) error {
+	var major model.Major
+	exist_check := db.Where("Name = ?", major_name).Find(&major)
+	if exist_check.RowsAffected != 0 {
 		return fmt.Errorf("error[create major]:major already exist")
 	}
 	new_major := model.Major{
@@ -225,30 +220,30 @@ func Create_major(db *gorm.DB, major_name string) error {
 	return nil
 }
 
-func Create_account_laboratory(db *gorm.DB, account model.Laboratory, university_name string) error {
-	error_check := Insert_universityID_to_laboratory(db, &account, university_name)
-	if error_check != nil {
-		return error_check
+func CreateAccountLaboratory(db *gorm.DB, account_laboratory model.Laboratory, university_name string) error {
+	err := InsertUniversityIDToLaboratory(db, &account_laboratory, university_name)
+	if err != nil {
+		return err
 	}
-	db.Create(&account)
+	db.Create(&account_laboratory)
 	return nil
 }
 
-func Create_account_student(db *gorm.DB, account model.Student, university_name string, prefecture_name string) error {
-	error_check := Insert_universityID_to_student(db, &account, university_name)
-	if error_check != nil {
-		return error_check
+func CreateAccountStudent(db *gorm.DB, account_student model.Student, university_name string, prefecture_name string) error {
+	err := InsertUniversityIDToStudent(db, &account_student, university_name)
+	if err != nil {
+		return err
 	}
-	error_check = Insert_prefectureID_to_student(db, &account, prefecture_name)
-	if error_check != nil {
-		return error_check
+	err = InsertPrefectureIDToStudent(db, &account_student, prefecture_name)
+	if err != nil {
+		return err
 	}
-	db.Create(&account)
+	db.Create(&account_student)
 	return nil
 }
 
 // test用
-func Create_model_student(
+func CreateModelStudent(
 	db gorm.DB,
 	name string,
 	email string,
@@ -264,23 +259,23 @@ func Create_model_student(
 	uid uint,
 ) model.Student {
 	return model.Student{
-		Name:      name,
-		Email:     email,
-		Gender:    gender,
-		Grade:     grade,
-		Comment:   comment,
-		Interest:  interest,
-		Birthday:  birthday,
-		Gpa:       gpa,
-		Image_url: image_url,
-		Status:    Status,
-		Password:  password,
-		Uid:       uid,
+		Name:     name,
+		Email:    email,
+		Gender:   gender,
+		Grade:    grade,
+		Comment:  comment,
+		Interest: interest,
+		Birthday: birthday,
+		Gpa:      gpa,
+		ImageUrl: image_url,
+		Status:   Status,
+		Password: password,
+		Uid:      uid,
 	}
 }
 
 // test用
-func Create_model_laboratory(
+func CreateModelLaboratory(
 	db gorm.DB,
 	name string,
 	professor string,
@@ -294,15 +289,15 @@ func Create_model_laboratory(
 	uid uint,
 ) model.Laboratory {
 	return model.Laboratory{
-		Name:           name,
-		Professor:      professor,
-		Num_students:   num_students,
-		Comment:        comment,
-		Status:         status,
-		Image_url:      image_url,
-		Laboratory_url: laboratory_url,
-		Email:          email,
-		Password:       password,
-		Uid:            uid,
+		Name:          name,
+		Professor:     professor,
+		NumStudents:   num_students,
+		Comment:       comment,
+		Status:        status,
+		ImageUrl:      image_url,
+		LaboratoryUrl: laboratory_url,
+		Email:         email,
+		Password:      password,
+		Uid:           uid,
 	}
 }
