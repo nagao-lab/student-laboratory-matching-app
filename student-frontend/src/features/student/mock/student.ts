@@ -52,7 +52,7 @@ export const MockStudents: Student[] = [
         gpa: 3.0,
         gender: '性別1',
         birthday: '1111/11/11',
-        image_url: 'imageurl1',
+        image_url: 'https://image.lgtmoon.dev/222483',
     },
     {
         name: '学生2',
@@ -74,7 +74,7 @@ export const MockStudents: Student[] = [
         gpa: 4.5,
         gender: '性別2',
         birthday: '2222/22/22',
-        image_url: 'imageurl2',
+        image_url: 'https://image.lgtmoon.dev/222486',
     },
     {
         name: '学生3',
@@ -96,6 +96,6 @@ export const MockStudents: Student[] = [
         gpa: 3.5,
         gender: '性別3',
         birthday: '3333/33/33',
-        image_url: 'imageurl3',
+        image_url: 'https://image.lgtmoon.dev/222487',
     }
 ];
