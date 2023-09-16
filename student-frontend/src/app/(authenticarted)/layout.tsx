@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   return(
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box>
         <AppBar position="static">
           <Toolbar>
             <Typography    
@@ -33,29 +33,28 @@ const Layout = ({ children }: { children: ReactNode }) => {
               タイトル
             </Typography>
 
-            <div style={{ flexGrow: 1 }}></div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={() => router.push("/messages")}
-                color="inherit"
-              >
-                <Message />
-              </IconButton>
+            <Box sx={{ flexGrow: 1 }} />
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={() => router.push("/messages")}
+              color="inherit"
+            >
+              <Message />
+            </IconButton>
 
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={() => router.push("/student")}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={() => router.push("/student")}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </Box>
