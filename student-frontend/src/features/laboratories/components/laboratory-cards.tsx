@@ -42,7 +42,7 @@ export const LaboratoryCards = ({ laboratories }: Props) => {
             </Button>
           </CardActions>
           <CardContent>
-            <ChangeStatusToIconButton status={laboratory.status}/>
+            <ChangeStatusToIconButton status={laboratory.studentLaboratory.status}/>
           </CardContent>
 
           
