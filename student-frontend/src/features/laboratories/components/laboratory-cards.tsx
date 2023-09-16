@@ -20,9 +20,6 @@ export const LaboratoryCards = ({ laboratories }: Props) => {
   return (
     <Box>
       {laboratories
-      .filter((item) => {
-        return item.status==='1';
-      })
       
       .map((laboratory, i) => (
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
