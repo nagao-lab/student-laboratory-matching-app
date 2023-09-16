@@ -14,29 +14,27 @@ func main() {
 	defer fmt.Println("Successfully Migrated")
 	defer db.CloseDB(dbConn)
 
-	// dbConn.AutoMigrate(&model.Prefecture{})
-	// dbConn.AutoMigrate(&model.Laboratory_Major{})
-	// dbConn.AutoMigrate(&model.Laboratory{})
-	// dbConn.AutoMigrate(&model.Major{})
-	// dbConn.AutoMigrate(&model.Message{})
-	// dbConn.AutoMigrate(&model.Student{})
-	// dbConn.AutoMigrate(&model.Student_Laboratory{})
-	// dbConn.AutoMigrate(&model.Student_Major{})
-	// dbConn.AutoMigrate(&model.University{})
+	dbConn.AutoMigrate(&model.Prefecture{})
+	dbConn.AutoMigrate(&model.Laboratory_Major{})
+	dbConn.AutoMigrate(&model.Laboratory{})
+	dbConn.AutoMigrate(&model.Major{})
+	dbConn.AutoMigrate(&model.Message{})
+	dbConn.AutoMigrate(&model.Student{})
+	dbConn.AutoMigrate(&model.Student_Laboratory{})
+	dbConn.AutoMigrate(&model.Student_Major{})
+	dbConn.AutoMigrate(&model.University{})
 
-	error_check := Create_university(dbConn, "Tokyo Daigaku", "Tokyo", "akamon", 5.0)
+	new_ac_st := Create_model_student(*dbConn, "suzuki", "suzuki@i.com", 0, 3, "fire", "water", time.Now(), 3.4, "i/url", 1, "passN", 2)
+	error_check := Signup_Student(dbConn, new_ac_st, "Tokyo Daigaku", "Tokyo", "info")
 	if error_check != nil {
 		fmt.Printf("%v\n", error_check)
 	} else {
-		fmt.Println("Success")
+		fmt.Println("Success:signin")
 	}
 
-	new_ac_st := Create_model_student(*dbConn, "nakanishi", "nakanishi@i.com", 0, 3, "fire", "water", time.Now(), 3.4, "i/url", 1, "passN", 2)
-	error_check = Signup_Student(dbConn, new_ac_st, "Tokyo Daigaku", "Tokyo", "info")
+	_, error_check = Login_Student(dbConn, "suzuki@i.com", "passN")
 	if error_check != nil {
 		fmt.Printf("%v\n", error_check)
-	} else {
-		fmt.Println("Success")
 	}
 
 }
@@ -281,6 +279,7 @@ func Create_model_student(
 	}
 }
 
+// test用
 func Create_model_laboratory(
 	db gorm.DB,
 	name string,
