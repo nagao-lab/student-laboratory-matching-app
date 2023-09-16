@@ -1,6 +1,7 @@
 // TODO 研究室一覧ページ用mockデータ : Laboratoryの型を定義し,exportする
 
 export type Laboratory = {
+  ID: number;
   name: string;
   status: string;
   comment: string;
@@ -26,6 +27,7 @@ export type StudentLaboratory = {
 
 export const MockLaboratories: Laboratory[] = [
   {
+    ID: 1,
     name: '研究室1',
     status: '1',
     comment: '研究室1のコメント',
@@ -40,6 +42,7 @@ export const MockLaboratories: Laboratory[] = [
     }
   },
   {
+    ID: 2,
     name: '研究室2',
     status: '1',
     comment: '研究室2のコメント',
@@ -50,7 +53,7 @@ export const MockLaboratories: Laboratory[] = [
       name: '学部2'
     },
     studentLaboratory: {
-      status: 'LIKE_FROM_LABORATORY'
+      status: 'LIKE_FROM_BOTH'
     }
   }
 ];

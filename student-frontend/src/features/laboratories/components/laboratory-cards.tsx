@@ -2,6 +2,7 @@
 'use client';
 
 import { Box, Button, Card, CardContent, CardActions, Typography } from "@mui/material";
+import { useRouter } from "next/navigation"
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
 import { Laboratory } from "../mock/laboratories";
 
@@ -17,6 +18,7 @@ type Props = {
 
 
 export const LaboratoryCards = ({ laboratories }: Props) => {
+  const router = useRouter()
   return (
     <Box>
       {laboratories
@@ -36,6 +38,7 @@ export const LaboratoryCards = ({ laboratories }: Props) => {
             <Button size="small"
             onClick={()=>{
               console.log(laboratory.studentLaboratory.status)
+              router.push(`/laboratories/${laboratory.ID}`)
             }}
             >
               詳細を見る

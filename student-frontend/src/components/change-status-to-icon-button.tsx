@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@mui/material";
-import { Favorite, FavoriteBorder} from '@mui/icons-material';
+import { Favorite} from '@mui/icons-material';
 
   
 type Props = {
@@ -12,18 +12,20 @@ export const  ChangeStatusToIconButton = ({status}: Props) => {
     
     return status === "BLANK" || status === "LIKE_FROM_LABORATORY"
     ?(<Button
-        variant="outlined"
-        startIcon={<FavoriteBorder/>}
+        variant="contained"
+        sx={{ backgroundColor : '#ff00ff' }}
+        startIcon={<Favorite />}
         onClick={()=>{
           return null;
         }}
       >
-      興味なし
+      興味あり
     </Button>
     )
 
     :(<Button
         variant="contained"
+        sx={{ color: '#888888', backgroundColor : '#cccccc' }}
         startIcon={<Favorite />}
         onClick={()=>{
           return null;
