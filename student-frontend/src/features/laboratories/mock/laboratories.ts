@@ -50,7 +50,7 @@ export const MockLaboratories: Laboratory[] = [
       name: '学部2'
     },
     studentLaboratory: {
-      status: 'LIKE_FROM_STUDENT'
+      status: 'LIKE_FROM_LABORATORY'
     }
   }
 ];

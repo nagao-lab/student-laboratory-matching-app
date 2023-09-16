@@ -1,4 +1,8 @@
+
+'use client';
+
 import { Box, Button, Card, CardContent, CardActions, Typography } from "@mui/material";
+import { ChangeStatusToIcon } from "../../../../src/components/change-status-to-icon";
 import { Laboratory } from "../mock/laboratories";
 
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
@@ -11,19 +15,6 @@ type Props = {
 // TODO 研究室一覧ページ : Boxの中で,map関数を利用してMuiのCardを挿入する
 // TODO 研究室一覧ページ : Cardの間にスペースを入れる
 
-const showStatus = (status: string) => {
-  switch(status){
-    case "LIKE_FROM_BOTH":
-      return "♥";
-    case "LIKE_FROM_STUDENT":
-      return "♡";
-    case "LIKE_FROM_LABORATORY":
-      return "♡";
-    case "BLANK":
-      return "×";
-
-    }
-};
 
 export const LaboratoryCards = ({ laboratories }: Props) => {
   return (
@@ -37,26 +28,32 @@ export const LaboratoryCards = ({ laboratories }: Props) => {
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
           <CardContent>
             <Typography variant="h5" component="div">
-              {laboratory.name}
+              {laboratory.university.name} {laboratory.major.name}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {laboratory.university.name} {laboratory.major.name}
+            {laboratory.name}
            </Typography>
-           <Typography variant="body2">
-              {laboratory.comment}
-            </Typography>
+           
           </CardContent>
           <CardActions>
-            <Button size="small">詳細を見る</Button>
+            <Button size="small"
+            onClick={()=>{
+              console.log(laboratory.studentLaboratory.status)
+            }}
+            >
+              詳細を見る
+            </Button>
           </CardActions>
           <CardContent>
-            <Typography variant="body1">
-              マッチング：{showStatus(laboratory.studentLaboratory.status)}
-            </Typography>
+            <ChangeStatusToIcon laboratory={laboratory}/>
           </CardContent>
+
+          
         </Card>
       ))}
     </Box>
+
+    
 
   );
 };
