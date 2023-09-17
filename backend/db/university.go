@@ -4,7 +4,7 @@ import "time"
 
 type University struct {
 	ID           uint `gorm:"primaryKey"`
-	PrefectureID uint `gorm:"foreignKey"`
+	PrefectureID uint
 	Name         string
 	Address      string
 	MaxGpa       float64
