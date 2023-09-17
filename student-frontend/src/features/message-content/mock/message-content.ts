@@ -26,15 +26,15 @@ export const MockMessageContent: Message[] = [
     {
         studentLaboratory: {
             student: {
-                name: '学生1'
+                name: '学生1111111111111111111111111111111111111\n11111111111111111'
             },
             laboratory: {
                 name: '研究室1'
             }
         },
         from: 0,
-        content: '学生1のメッセージ',
-        createdAt: '2023/01/01'
+        content: '学生1のメッセージ\naaaaaaa\nbbbbbbbbbああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
+        createdAt: '2023/01/01 1111111111111111111111111111111111111112222222222222222222222222222222222222222222222222222222'
     },
     {
         studentLaboratory: {
