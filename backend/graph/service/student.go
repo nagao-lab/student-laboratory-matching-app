@@ -15,9 +15,9 @@ type studentService struct {
 	db *gorm.DB
 }
 
-func (s *studentService) GetStudentById(id string) (*model.Student, error) {
+func (ss *studentService) GetStudentById(id string) (*model.Student, error) {
 	var student db.Student
-	err := s.db.First(&student, id).Error
+	err := ss.db.First(&student, id).Error
 	if err != nil {
 		return nil, err
 	}
