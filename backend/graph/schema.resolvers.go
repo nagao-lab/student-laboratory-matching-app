@@ -6,43 +6,18 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"student-laboratory-matching-app/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	return &model.Todo{
-		ID:   "TODO-3",
-		Text: input.Text,
-		User: &model.User{
-			ID:   input.UserID,
-			Name: "name",
-		},
-	}, nil
+// CreateStudent is the resolver for the createStudent field.
+func (r *mutationResolver) CreateStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
+	panic(fmt.Errorf("not implemented: CreateStudent - createStudent"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	return []*model.Todo{
-		{
-			ID:   "TODO-1",
-			Text: "My Todo 1",
-			User: &model.User{
-				ID:   "User-1",
-				Name: "hsaki",
-			},
-			Done: true,
-		},
-		{
-			ID:   "TODO-2",
-			Text: "My Todo 2",
-			User: &model.User{
-				ID:   "User-1",
-				Name: "hsaki",
-			},
-			Done: false,
-		},
-	}, nil
+// Student is the resolver for the student field.
+func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student, error) {
+	return r.Srv.GetStudentById(id)
 }
 
 // Mutation returns MutationResolver implementation.

@@ -1,28 +1,43 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
+scalar Time
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }
 
-type User {
+enum MatchStatus {
+  ACTIVE
+  INACTIVE
+}
+
+type Student {
   id: ID!
-  name: String!
+	uid: String!
+	name: String!
+	email: String!
+	password: String!
+	imageUrl: String!
+	gender: Gender!
+	birthday: Time!
+	universityId: ID!
+	grade: Int!
+	gpa: Float!
+	prefectureId: ID!
+	comment: String!
+	interest: String!
+	status: MatchStatus!
 }
 
 type Query {
-  todos: [Todo!]!
+  student(id: ID!): Student!
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+input NewStudent {
+  email: String!
+  password: String!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createStudent(input: NewStudent!): Student!
 }
