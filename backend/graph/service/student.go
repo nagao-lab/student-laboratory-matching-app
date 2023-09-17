@@ -16,10 +16,22 @@ type studentService struct {
 }
 
 func (ss *studentService) GetStudentById(id string) (*model.Student, error) {
-	var student db.Student
-	err := ss.db.First(&student, id).Error
+	var record db.Student
+	err := ss.db.First(&record, id).Error
 	if err != nil {
 		return nil, err
 	}
-	return model.ConvertStudent(&student), nil
+	student := model.ConvertStudent(&record)
+
+	var numLikes int64
+	err = ss.db.Table("student_laboratories").
+		Where("student_id = ? AND status IN (?, ?)", record.ID, model.LikeStatusIndexFromLaboratory, model.LikeStatusIndexFromBoth).
+		Count(&numLikes).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	student.NumLikes = int(numLikes)
+
+	return student, nil
 }

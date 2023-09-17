@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+type Major struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type NewStudent struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -35,6 +40,8 @@ type Student struct {
 	Comment    string      `json:"comment"`
 	Interest   string      `json:"interest"`
 	Status     MatchStatus `json:"status"`
+	Majors     []*Major    `json:"majors"`
+	NumLikes   int         `json:"numLikes"`
 }
 
 type University struct {

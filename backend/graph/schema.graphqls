@@ -27,6 +27,13 @@ type Student {
 	comment: String!
 	interest: String!
 	status: MatchStatus!
+  majors: [Major!]!
+  numLikes: Int!
+}
+
+type Major {
+  id: ID!
+  name: String!
 }
 
 type Prefecture {

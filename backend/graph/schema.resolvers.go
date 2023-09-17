@@ -30,6 +30,11 @@ func (r *studentResolver) Prefecture(ctx context.Context, obj *model.Student) (*
 	return r.Srv.GetPrefectureById(obj.Prefecture.ID)
 }
 
+// Majors is the resolver for the majors field.
+func (r *studentResolver) Majors(ctx context.Context, obj *model.Student) ([]*model.Major, error) {
+	return r.Srv.GetMajorByStudent(obj.ID)
+}
+
 // Prefecture is the resolver for the prefecture field.
 func (r *universityResolver) Prefecture(ctx context.Context, obj *model.University) (*model.Prefecture, error) {
 	return r.Srv.GetPrefectureById(obj.Prefecture.ID)

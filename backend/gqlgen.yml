@@ -91,6 +91,8 @@ models:
         resolver: true
       prefecture:
         resolver: true
+      majors:
+        resolver: true
   University:
     fields:
       prefecture:
