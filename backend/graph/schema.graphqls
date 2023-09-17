@@ -20,13 +20,26 @@ type Student {
 	imageUrl: String!
 	gender: Gender!
 	birthday: Time!
-	universityId: ID!
+	university: University!
 	grade: Int!
 	gpa: Float!
-	prefectureId: ID!
+	prefecture: Prefecture!
 	comment: String!
 	interest: String!
 	status: MatchStatus!
+}
+
+type Prefecture {
+  id: ID!
+  name: String!
+}
+
+type University {
+	id: ID!
+	prefecture: Prefecture!
+	name: String!
+	address: String!
+	maxGpa: Float!
 }
 
 type Query {

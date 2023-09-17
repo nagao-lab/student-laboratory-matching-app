@@ -85,3 +85,13 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  Student:
+    fields:
+      university:
+        resolver: true
+      prefecture:
+        resolver: true
+  University:
+    fields:
+      prefecture:
+        resolver: true

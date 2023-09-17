@@ -20,11 +20,34 @@ func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student,
 	return r.Srv.GetStudentById(id)
 }
 
+// University is the resolver for the university field.
+func (r *studentResolver) University(ctx context.Context, obj *model.Student) (*model.University, error) {
+	return r.Srv.GetUniversityById(obj.University.ID)
+}
+
+// Prefecture is the resolver for the prefecture field.
+func (r *studentResolver) Prefecture(ctx context.Context, obj *model.Student) (*model.Prefecture, error) {
+	return r.Srv.GetPrefectureById(obj.Prefecture.ID)
+}
+
+// Prefecture is the resolver for the prefecture field.
+func (r *universityResolver) Prefecture(ctx context.Context, obj *model.University) (*model.Prefecture, error) {
+	return r.Srv.GetPrefectureById(obj.Prefecture.ID)
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Student returns StudentResolver implementation.
+func (r *Resolver) Student() StudentResolver { return &studentResolver{r} }
+
+// University returns UniversityResolver implementation.
+func (r *Resolver) University() UniversityResolver { return &universityResolver{r} }
+
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type studentResolver struct{ *Resolver }
+type universityResolver struct{ *Resolver }

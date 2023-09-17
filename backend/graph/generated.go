@@ -40,6 +40,8 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
+	Student() StudentResolver
+	University() UniversityResolver
 }
 
 type DirectiveRoot struct {
@@ -50,26 +52,39 @@ type ComplexityRoot struct {
 		CreateStudent func(childComplexity int, input model.NewStudent) int
 	}
 
+	Prefecture struct {
+		ID   func(childComplexity int) int
+		Name func(childComplexity int) int
+	}
+
 	Query struct {
 		Student func(childComplexity int, id string) int
 	}
 
 	Student struct {
-		Birthday     func(childComplexity int) int
-		Comment      func(childComplexity int) int
-		Email        func(childComplexity int) int
-		Gender       func(childComplexity int) int
-		Gpa          func(childComplexity int) int
-		Grade        func(childComplexity int) int
-		ID           func(childComplexity int) int
-		ImageURL     func(childComplexity int) int
-		Interest     func(childComplexity int) int
-		Name         func(childComplexity int) int
-		Password     func(childComplexity int) int
-		PrefectureID func(childComplexity int) int
-		Status       func(childComplexity int) int
-		UID          func(childComplexity int) int
-		UniversityID func(childComplexity int) int
+		Birthday   func(childComplexity int) int
+		Comment    func(childComplexity int) int
+		Email      func(childComplexity int) int
+		Gender     func(childComplexity int) int
+		Gpa        func(childComplexity int) int
+		Grade      func(childComplexity int) int
+		ID         func(childComplexity int) int
+		ImageURL   func(childComplexity int) int
+		Interest   func(childComplexity int) int
+		Name       func(childComplexity int) int
+		Password   func(childComplexity int) int
+		Prefecture func(childComplexity int) int
+		Status     func(childComplexity int) int
+		UID        func(childComplexity int) int
+		University func(childComplexity int) int
+	}
+
+	University struct {
+		Address    func(childComplexity int) int
+		ID         func(childComplexity int) int
+		MaxGpa     func(childComplexity int) int
+		Name       func(childComplexity int) int
+		Prefecture func(childComplexity int) int
 	}
 }
 
@@ -78,6 +93,14 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	Student(ctx context.Context, id string) (*model.Student, error)
+}
+type StudentResolver interface {
+	University(ctx context.Context, obj *model.Student) (*model.University, error)
+
+	Prefecture(ctx context.Context, obj *model.Student) (*model.Prefecture, error)
+}
+type UniversityResolver interface {
+	Prefecture(ctx context.Context, obj *model.University) (*model.Prefecture, error)
 }
 
 type executableSchema struct {
@@ -106,6 +129,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateStudent(childComplexity, args["input"].(model.NewStudent)), true
+
+	case "Prefecture.id":
+		if e.complexity.Prefecture.ID == nil {
+			break
+		}
+
+		return e.complexity.Prefecture.ID(childComplexity), true
+
+	case "Prefecture.name":
+		if e.complexity.Prefecture.Name == nil {
+			break
+		}
+
+		return e.complexity.Prefecture.Name(childComplexity), true
 
 	case "Query.student":
 		if e.complexity.Query.Student == nil {
@@ -196,12 +233,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Student.Password(childComplexity), true
 
-	case "Student.prefectureId":
-		if e.complexity.Student.PrefectureID == nil {
+	case "Student.prefecture":
+		if e.complexity.Student.Prefecture == nil {
 			break
 		}
 
-		return e.complexity.Student.PrefectureID(childComplexity), true
+		return e.complexity.Student.Prefecture(childComplexity), true
 
 	case "Student.status":
 		if e.complexity.Student.Status == nil {
@@ -217,12 +254,47 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Student.UID(childComplexity), true
 
-	case "Student.universityId":
-		if e.complexity.Student.UniversityID == nil {
+	case "Student.university":
+		if e.complexity.Student.University == nil {
 			break
 		}
 
-		return e.complexity.Student.UniversityID(childComplexity), true
+		return e.complexity.Student.University(childComplexity), true
+
+	case "University.address":
+		if e.complexity.University.Address == nil {
+			break
+		}
+
+		return e.complexity.University.Address(childComplexity), true
+
+	case "University.id":
+		if e.complexity.University.ID == nil {
+			break
+		}
+
+		return e.complexity.University.ID(childComplexity), true
+
+	case "University.maxGpa":
+		if e.complexity.University.MaxGpa == nil {
+			break
+		}
+
+		return e.complexity.University.MaxGpa(childComplexity), true
+
+	case "University.name":
+		if e.complexity.University.Name == nil {
+			break
+		}
+
+		return e.complexity.University.Name(childComplexity), true
+
+	case "University.prefecture":
+		if e.complexity.University.Prefecture == nil {
+			break
+		}
+
+		return e.complexity.University.Prefecture(childComplexity), true
 
 	}
 	return 0, false
@@ -487,14 +559,14 @@ func (ec *executionContext) fieldContext_Mutation_createStudent(ctx context.Cont
 				return ec.fieldContext_Student_gender(ctx, field)
 			case "birthday":
 				return ec.fieldContext_Student_birthday(ctx, field)
-			case "universityId":
-				return ec.fieldContext_Student_universityId(ctx, field)
+			case "university":
+				return ec.fieldContext_Student_university(ctx, field)
 			case "grade":
 				return ec.fieldContext_Student_grade(ctx, field)
 			case "gpa":
 				return ec.fieldContext_Student_gpa(ctx, field)
-			case "prefectureId":
-				return ec.fieldContext_Student_prefectureId(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_Student_prefecture(ctx, field)
 			case "comment":
 				return ec.fieldContext_Student_comment(ctx, field)
 			case "interest":
@@ -515,6 +587,94 @@ func (ec *executionContext) fieldContext_Mutation_createStudent(ctx context.Cont
 	if fc.Args, err = ec.field_Mutation_createStudent_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Prefecture_id(ctx context.Context, field graphql.CollectedField, obj *model.Prefecture) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Prefecture_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Prefecture_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Prefecture",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Prefecture_name(ctx context.Context, field graphql.CollectedField, obj *model.Prefecture) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Prefecture_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Prefecture_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Prefecture",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
 	}
 	return fc, nil
 }
@@ -574,14 +734,14 @@ func (ec *executionContext) fieldContext_Query_student(ctx context.Context, fiel
 				return ec.fieldContext_Student_gender(ctx, field)
 			case "birthday":
 				return ec.fieldContext_Student_birthday(ctx, field)
-			case "universityId":
-				return ec.fieldContext_Student_universityId(ctx, field)
+			case "university":
+				return ec.fieldContext_Student_university(ctx, field)
 			case "grade":
 				return ec.fieldContext_Student_grade(ctx, field)
 			case "gpa":
 				return ec.fieldContext_Student_gpa(ctx, field)
-			case "prefectureId":
-				return ec.fieldContext_Student_prefectureId(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_Student_prefecture(ctx, field)
 			case "comment":
 				return ec.fieldContext_Student_comment(ctx, field)
 			case "interest":
@@ -1087,8 +1247,8 @@ func (ec *executionContext) fieldContext_Student_birthday(ctx context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _Student_universityId(ctx context.Context, field graphql.CollectedField, obj *model.Student) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Student_universityId(ctx, field)
+func (ec *executionContext) _Student_university(ctx context.Context, field graphql.CollectedField, obj *model.Student) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Student_university(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1101,7 +1261,7 @@ func (ec *executionContext) _Student_universityId(ctx context.Context, field gra
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UniversityID, nil
+		return ec.resolvers.Student().University(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1113,19 +1273,31 @@ func (ec *executionContext) _Student_universityId(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.University)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNUniversity2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Student_universityId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Student_university(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Student",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_University_id(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_University_prefecture(ctx, field)
+			case "name":
+				return ec.fieldContext_University_name(ctx, field)
+			case "address":
+				return ec.fieldContext_University_address(ctx, field)
+			case "maxGpa":
+				return ec.fieldContext_University_maxGpa(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type University", field.Name)
 		},
 	}
 	return fc, nil
@@ -1219,8 +1391,8 @@ func (ec *executionContext) fieldContext_Student_gpa(ctx context.Context, field 
 	return fc, nil
 }
 
-func (ec *executionContext) _Student_prefectureId(ctx context.Context, field graphql.CollectedField, obj *model.Student) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Student_prefectureId(ctx, field)
+func (ec *executionContext) _Student_prefecture(ctx context.Context, field graphql.CollectedField, obj *model.Student) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Student_prefecture(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1233,7 +1405,7 @@ func (ec *executionContext) _Student_prefectureId(ctx context.Context, field gra
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.PrefectureID, nil
+		return ec.resolvers.Student().Prefecture(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1245,19 +1417,25 @@ func (ec *executionContext) _Student_prefectureId(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.Prefecture)
 	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNPrefecture2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐPrefecture(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Student_prefectureId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Student_prefecture(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Student",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Prefecture_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Prefecture_name(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Prefecture", field.Name)
 		},
 	}
 	return fc, nil
@@ -1390,6 +1568,232 @@ func (ec *executionContext) fieldContext_Student_status(ctx context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type MatchStatus does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _University_id(ctx context.Context, field graphql.CollectedField, obj *model.University) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_University_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_University_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "University",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _University_prefecture(ctx context.Context, field graphql.CollectedField, obj *model.University) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_University_prefecture(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.University().Prefecture(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Prefecture)
+	fc.Result = res
+	return ec.marshalNPrefecture2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐPrefecture(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_University_prefecture(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "University",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Prefecture_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Prefecture_name(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Prefecture", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _University_name(ctx context.Context, field graphql.CollectedField, obj *model.University) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_University_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_University_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "University",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _University_address(ctx context.Context, field graphql.CollectedField, obj *model.University) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_University_address(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Address, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_University_address(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "University",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _University_maxGpa(ctx context.Context, field graphql.CollectedField, obj *model.University) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_University_maxGpa(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MaxGpa, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_University_maxGpa(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "University",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3263,6 +3667,50 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 	return out
 }
 
+var prefectureImplementors = []string{"Prefecture"}
+
+func (ec *executionContext) _Prefecture(ctx context.Context, sel ast.SelectionSet, obj *model.Prefecture) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, prefectureImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Prefecture")
+		case "id":
+			out.Values[i] = ec._Prefecture_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "name":
+			out.Values[i] = ec._Prefecture_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var queryImplementors = []string{"Query"}
 
 func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -3349,77 +3797,229 @@ func (ec *executionContext) _Student(ctx context.Context, sel ast.SelectionSet, 
 		case "id":
 			out.Values[i] = ec._Student_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "uid":
 			out.Values[i] = ec._Student_uid(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Student_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "email":
 			out.Values[i] = ec._Student_email(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "password":
 			out.Values[i] = ec._Student_password(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "imageUrl":
 			out.Values[i] = ec._Student_imageUrl(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "gender":
 			out.Values[i] = ec._Student_gender(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "birthday":
 			out.Values[i] = ec._Student_birthday(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "universityId":
-			out.Values[i] = ec._Student_universityId(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+		case "university":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Student_university(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "grade":
 			out.Values[i] = ec._Student_grade(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "gpa":
 			out.Values[i] = ec._Student_gpa(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
-		case "prefectureId":
-			out.Values[i] = ec._Student_prefectureId(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+		case "prefecture":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Student_prefecture(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "comment":
 			out.Values[i] = ec._Student_comment(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "interest":
 			out.Values[i] = ec._Student_interest(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "status":
 			out.Values[i] = ec._Student_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var universityImplementors = []string{"University"}
+
+func (ec *executionContext) _University(ctx context.Context, sel ast.SelectionSet, obj *model.University) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, universityImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("University")
+		case "id":
+			out.Values[i] = ec._University_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "prefecture":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._University_prefecture(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "name":
+			out.Values[i] = ec._University_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "address":
+			out.Values[i] = ec._University_address(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "maxGpa":
+			out.Values[i] = ec._University_maxGpa(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -3855,6 +4455,20 @@ func (ec *executionContext) unmarshalNNewStudent2studentᚑlaboratoryᚑmatching
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNPrefecture2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐPrefecture(ctx context.Context, sel ast.SelectionSet, v model.Prefecture) graphql.Marshaler {
+	return ec._Prefecture(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNPrefecture2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐPrefecture(ctx context.Context, sel ast.SelectionSet, v *model.Prefecture) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Prefecture(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3897,6 +4511,20 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNUniversity2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx context.Context, sel ast.SelectionSet, v model.University) graphql.Marshaler {
+	return ec._University(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUniversity2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx context.Context, sel ast.SelectionSet, v *model.University) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._University(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
