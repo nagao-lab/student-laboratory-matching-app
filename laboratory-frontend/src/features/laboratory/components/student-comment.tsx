@@ -1,6 +1,4 @@
-// TODO 学生ページ : StudentCommentコンポーネントを作成する
-// TODO 学生ページ : StudentCommentコンポーネント用のPropsの型を定義する
-// TODO 学生ページ : StudentCommentではMuiのBoxを利用する
+// TODO 学生ページ : 
 
 import { Box, Card, CardContent, Stack, Typography, IconButton } from "@mui/material";
 import { Edit } from '@mui/icons-material';
