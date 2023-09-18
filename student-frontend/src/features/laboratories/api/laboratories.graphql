@@ -1,0 +1,11 @@
+query Laboratories {
+  laboratories {
+    id
+    name
+    email
+    major {
+      id
+      name
+    }
+  }
+}

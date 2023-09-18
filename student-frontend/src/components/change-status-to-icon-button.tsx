@@ -1,37 +1,38 @@
-'use client';
+"use client";
 
-import { Button, makeStyles } from "@mui/material";
-import { Favorite} from '@mui/icons-material';
+import { Button } from "@mui/material";
+import { Favorite } from "@mui/icons-material";
 
-  
 type Props = {
-    status: string;
-  };
+  status: string;
+};
 
-export const  ChangeStatusToIconButton = ({status}: Props) => {
-
-    return status === "BLANK" || status === "LIKE_FROM_LABORATORY"
-    ?(<Button
-        variant="contained"
-        sx={{ backgroundColor : '#ff00ff', ":hover" : {background:  '#ff88ff'} }}
-        startIcon={<Favorite />}
-        onClick={()=>{
-          return null;
-        }}
-      >
+export const ChangeStatusToIconButton = ({ status }: Props) => {
+  return status === "BLANK" || status === "LIKE_FROM_LABORATORY" ? (
+    <Button
+      variant="contained"
+      sx={{ backgroundColor: "#ff00ff", ":hover": { background: "#ff88ff" } }}
+      startIcon={<Favorite />}
+      onClick={() => {
+        return null;
+      }}
+    >
       興味あり
     </Button>
-    )
-
-    :(<Button
-        variant="contained"
-        sx={{ color: '#888888', backgroundColor : '#cccccc' , ":hover" : {background:  '#aaaaaa'}}}
-        startIcon={<Favorite />}
-        onClick={()=>{
-          return null;
-        }}   
-      >
+  ) : (
+    <Button
+      variant="contained"
+      sx={{
+        color: "#888888",
+        backgroundColor: "#cccccc",
+        ":hover": { background: "#aaaaaa" },
+      }}
+      startIcon={<Favorite />}
+      onClick={() => {
+        return null;
+      }}
+    >
       興味あり
     </Button>
-    );
+  );
 };

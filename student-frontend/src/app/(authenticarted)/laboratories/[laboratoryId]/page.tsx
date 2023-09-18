@@ -1,10 +1,16 @@
+import { LaboratoryDetail, MockLaboratories } from "@/features/laboratory-detail";
+import { Stack } from "@mui/material";
+
 // 研究室詳細ページ（mock）
 
-import { Box } from "@mui/material";
 import { NextPage } from "next";
 
 const Page: NextPage = () => {
-  return <Box>laboratory detail</Box>;
+  return (
+    <Stack>
+      <LaboratoryDetail laboratories={MockLaboratories}/>
+    </Stack>
+  )
 };
 
 export default Page;
