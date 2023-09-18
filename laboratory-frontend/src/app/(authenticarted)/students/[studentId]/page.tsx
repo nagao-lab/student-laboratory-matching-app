@@ -1,10 +1,15 @@
 // 学生詳細ページ（mock）
 
-import { Box } from "@mui/material";
+import { StudentDetail, MockStudents } from "@/features/student-detail";
+import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
 const Page: NextPage = () => {
-  return <Box>student detail</Box>;
+  return (
+    <Stack>
+      <StudentDetail students={MockStudents}/>
+    </Stack>
+  )
 };
 
 export default Page;
