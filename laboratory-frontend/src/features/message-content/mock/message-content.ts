@@ -61,5 +61,70 @@ export const MockMessageContent: Message[] = [
         from: 0,
         content: '学生1のメッセージ',
         createdAt: '2023/01/02'
-    }
+    },
+    {
+        studentLaboratory: {
+            student: {
+                name: '学生1'
+            },
+            laboratory: {
+                name: '研究室1'
+            }
+        },
+        from: 1,
+        content: '研究室1のメッセージ',
+        createdAt: '2023/01/02'
+    },
+    {
+        studentLaboratory: {
+            student: {
+                name: '学生1'
+            },
+            laboratory: {
+                name: '研究室1'
+            }
+        },
+        from: 1,
+        content: '研究室1のメッセージ',
+        createdAt: '2023/01/02'
+    },
+    {
+        studentLaboratory: {
+            student: {
+                name: '学生1'
+            },
+            laboratory: {
+                name: '研究室1'
+            }
+        },
+        from: 1,
+        content: '研究室1のメッセージ',
+        createdAt: '2023/01/02'
+    },
+    {
+        studentLaboratory: {
+            student: {
+                name: '学生1'
+            },
+            laboratory: {
+                name: '研究室1'
+            }
+        },
+        from: 1,
+        content: '研究室1のメッセージ',
+        createdAt: '2023/01/02'
+    },
+    {
+        studentLaboratory: {
+            student: {
+                name: '学生1'
+            },
+            laboratory: {
+                name: '研究室1'
+            }
+        },
+        from: 1,
+        content: '研究室1のメッセージ',
+        createdAt: '2023/01/02'
+    },
 ]
