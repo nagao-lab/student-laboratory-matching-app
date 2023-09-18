@@ -5,11 +5,18 @@ import {
   TextField,
 } from "@mui/material";
 type Props = {
-  setFilterVal: (val: string) => void;
-};
+    setFilterVal: (val: string) => void
+    toggle: boolean
+    setToggle: (val: boolean) => void
+  };
 
-export const LaboratoryForm = ({ setFilterVal }: Props) => {
-  return (
+export const LaboratoryForm = ({ setFilterVal, toggle, setToggle }: Props) => {
+    const toggleComponent = () => {
+        
+      setToggle(!toggle)
+    }
+    
+    return(
     <>
       <TextField
         label="検索ワード"

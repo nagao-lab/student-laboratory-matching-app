@@ -15,7 +15,7 @@ const Page: NextPage = () => {
 
   return (
     <Stack>
-      <LaboratoryForm setFilterVal={setFilterVal} setToggle={setToggle}/>
+      <LaboratoryForm setFilterVal={setFilterVal} toggle={toggle} setToggle={setToggle}/>
       <LaboratoryCards laboratories={MockLaboratories} filterVal={filterVal} toggle={toggle}/>
     </Stack>
   )
