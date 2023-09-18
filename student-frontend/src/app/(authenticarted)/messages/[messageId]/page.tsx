@@ -11,21 +11,21 @@ const Page: NextPage = () => {
   <Box style={{
     display: "flex",
     flexDirection: "column",
-
+    maxHeight: "calc(100vh - 64px - 56px)"
   }}>
-    <div /*style={{overflow: "scroll"}}*/>
+    <div style={{overflowX: "hidden", overflowY: "auto"}}>
       <MessageDetail messages={MockMessageContent}/>
     </div>
     
     <footer style={{
       display: "grid",
-      // gridTemplateRows: "30px 1fr",
+      gridTemplateRows: "1fr 20px",
       gridTemplateColumns: "20px 1fr 70px",
       position: "fixed",
-      bottom: 20,
+      bottom: 0,
       zIndex: 1,
       width: "100%",
-      // backgroundColor: "green"
+      backgroundColor: "white"
     }}>
       <TextField
         id="standard-multiline-flexible"
