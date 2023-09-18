@@ -1,94 +1,43 @@
-# "@apollo/client": "^3.8.3"と"graphql": "^16.8.0"をインストールした
+scalar Time
 
-type Students {
-    id: ID!
-    name: String
-    email: String
-    gender: Int
-    university: Universities
-    grade: Int
-    comment: String
-    interest: String
-    birthday: String
-    prefecture: Prefectures
-    gpa: Float
-    image_url: String
-    match_status: Int
-    password: String
-    uid: Int
-    created_at: String
-    updated_at: String
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }
 
-type Prefectures {
-    id: ID!
-    name: String
-    created_at: String
-    updated_at: String    
+enum MatchStatus {
+  ACTIVE
+  INACTIVE
 }
 
-type Universities {
-    id: ID!
-    name: String
-    prefecture: Prefectures
-    address: String
-    max_gpa: Float
-    created_at: String
-    updated_at: String
+type Student {
+  id: ID!
+	uid: String!
+	name: String!
+	email: String!
+	password: String!
+	imageUrl: String!
+	gender: Gender!
+	birthday: Time!
+	universityId: ID!
+	grade: Int!
+	gpa: Float!
+	prefectureId: ID!
+	comment: String!
+	interest: String!
+	status: MatchStatus!
 }
 
-type Laboratories {
-    id: ID!
-    university: Universities
-    name: String
-    professor: String
-    num_students: Int
-    comment: String
-    match_status: Int
-    image_url: String
-    laboratory_url: String
-    email: String
-    password: String
-    uid: Int
-    created_at: String
-    updated_at: String
+type Query {
+  student(id: ID!): Student!
 }
 
-type Messages {
-    id: Int!
-    from: Int
-    student_laboratory: Student_Laboratory
-    content: String
-    created_at: String
-    updated_at: String
+input NewStudent {
+  email: String!
+  password: String!
 }
 
-type Majors {
-    id: Int!
-    name: String
-    created_at: String
-    updated_at: String
-}
-
-type Student_Laboratory {
-    id: Int!
-    student: Students
-    laboratory: Laboratories
-    like_status: Int
-    created_at: String
-    updated_at: String
-}
-
-type Student_Major {
-    student: Students!
-    major: Majors!
-    created_at: String
-    updated_at: String    
-}
-
-type Laboratory_Major {
-    laboratory: Laboratories!
-    major: Majors!
-    created_at: String
-    updated_at: String     
+type Mutation {
+  createStudent(input: NewStudent!): Student!
 }
