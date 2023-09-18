@@ -72,7 +72,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateStudent func(childComplexity int, input model.NewStudent) int
+		SignupStudent func(childComplexity int, input model.NewStudent) int
 	}
 
 	Prefecture struct {
@@ -120,7 +120,7 @@ type LaboratoryResolver interface {
 	Majors(ctx context.Context, obj *model.Laboratory) ([]*model.Major, error)
 }
 type MutationResolver interface {
-	CreateStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
+	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
 }
 type QueryResolver interface {
 	Student(ctx context.Context, id string) (*model.Student, error)
@@ -264,17 +264,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Major.Name(childComplexity), true
 
-	case "Mutation.createStudent":
-		if e.complexity.Mutation.CreateStudent == nil {
+	case "Mutation.signupStudent":
+		if e.complexity.Mutation.SignupStudent == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_createStudent_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_signupStudent_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateStudent(childComplexity, args["input"].(model.NewStudent)), true
+		return e.complexity.Mutation.SignupStudent(childComplexity, args["input"].(model.NewStudent)), true
 
 	case "Prefecture.id":
 		if e.complexity.Prefecture.ID == nil {
@@ -593,7 +593,7 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Mutation_createStudent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_signupStudent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 model.NewStudent
@@ -1413,8 +1413,8 @@ func (ec *executionContext) fieldContext_Major_name(ctx context.Context, field g
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_createStudent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createStudent(ctx, field)
+func (ec *executionContext) _Mutation_signupStudent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_signupStudent(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1427,7 +1427,7 @@ func (ec *executionContext) _Mutation_createStudent(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateStudent(rctx, fc.Args["input"].(model.NewStudent))
+		return ec.resolvers.Mutation().SignupStudent(rctx, fc.Args["input"].(model.NewStudent))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1444,7 +1444,7 @@ func (ec *executionContext) _Mutation_createStudent(ctx context.Context, field g
 	return ec.marshalNStudent2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐStudent(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_createStudent(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_signupStudent(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -1497,7 +1497,7 @@ func (ec *executionContext) fieldContext_Mutation_createStudent(ctx context.Cont
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createStudent_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_signupStudent_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -4943,9 +4943,9 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "createStudent":
+		case "signupStudent":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createStudent(ctx, field)
+				return ec._Mutation_signupStudent(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

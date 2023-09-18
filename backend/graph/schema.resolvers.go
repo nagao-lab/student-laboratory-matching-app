@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"student-laboratory-matching-app/graph/model"
 )
 
@@ -20,9 +19,9 @@ func (r *laboratoryResolver) Majors(ctx context.Context, obj *model.Laboratory) 
 	return r.Srv.GetMajorByLaboratory(obj.ID)
 }
 
-// CreateStudent is the resolver for the createStudent field.
-func (r *mutationResolver) CreateStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
-	panic(fmt.Errorf("not implemented: CreateStudent - createStudent"))
+// SignupStudent is the resolver for the signupStudent field.
+func (r *mutationResolver) SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
+	return r.Srv.Signup(input)
 }
 
 // Student is the resolver for the student field.

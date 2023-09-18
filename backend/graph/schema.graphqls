@@ -59,11 +59,11 @@ type Prefecture {
 }
 
 type University {
-	id: ID!
-	prefecture: Prefecture!
-	name: String!
-	address: String!
-	maxGpa: Float!
+  id: ID!
+  prefecture: Prefecture!
+  name: String!
+  address: String!
+  maxGpa: Float!
 }
 
 type Query {
@@ -77,5 +77,5 @@ input NewStudent {
 }
 
 type Mutation {
-  createStudent(input: NewStudent!): Student!
+  signupStudent(input: NewStudent!): Student!
 }
