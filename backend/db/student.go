@@ -13,10 +13,10 @@ type Student struct {
 	ImageUrl     string
 	Gender       int
 	Birthday     time.Time
-	UniversityID uint // fkey
+	UniversityID uint
 	Grade        int
 	Gpa          float64
-	PrefectureID uint // fkey
+	PrefectureID uint
 	Comment      string
 	Interest     string
 	Status       int

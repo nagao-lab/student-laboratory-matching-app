@@ -9,27 +9,47 @@ import (
 	"time"
 )
 
+type Major struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type NewStudent struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
+type Prefecture struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type Student struct {
-	ID           string      `json:"id"`
-	UID          string      `json:"uid"`
-	Name         string      `json:"name"`
-	Email        string      `json:"email"`
-	Password     string      `json:"password"`
-	ImageURL     string      `json:"imageUrl"`
-	Gender       Gender      `json:"gender"`
-	Birthday     time.Time   `json:"birthday"`
-	UniversityID string      `json:"universityId"`
-	Grade        int         `json:"grade"`
-	Gpa          float64     `json:"gpa"`
-	PrefectureID string      `json:"prefectureId"`
-	Comment      string      `json:"comment"`
-	Interest     string      `json:"interest"`
-	Status       MatchStatus `json:"status"`
+	ID         string      `json:"id"`
+	UID        string      `json:"uid"`
+	Name       string      `json:"name"`
+	Email      string      `json:"email"`
+	Password   string      `json:"password"`
+	ImageURL   string      `json:"imageUrl"`
+	Gender     Gender      `json:"gender"`
+	Birthday   time.Time   `json:"birthday"`
+	University *University `json:"university"`
+	Grade      int         `json:"grade"`
+	Gpa        float64     `json:"gpa"`
+	Prefecture *Prefecture `json:"prefecture"`
+	Comment    string      `json:"comment"`
+	Interest   string      `json:"interest"`
+	Status     MatchStatus `json:"status"`
+	Majors     []*Major    `json:"majors"`
+	NumLikes   int         `json:"numLikes"`
+}
+
+type University struct {
+	ID         string      `json:"id"`
+	Prefecture *Prefecture `json:"prefecture"`
+	Name       string      `json:"name"`
+	Address    string      `json:"address"`
+	MaxGpa     float64     `json:"maxGpa"`
 }
 
 type Gender string

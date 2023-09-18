@@ -4,16 +4,23 @@ import "gorm.io/gorm"
 
 type IService interface {
 	IStudentService
-	// 他のサービスインターフェースができたらそれらを追加していく
+	IUniversityService
+	IPrefectureService
+	IMajorService
 }
 
 type services struct {
 	*studentService
-	// 他のサービス構造体ができたらフィールドを追加していく
+	*univeristyService
+	*prefectureService
+	*majorService
 }
 
 func NewService(db *gorm.DB) IService {
 	return &services{
-		studentService: &studentService{db: db},
+		studentService:    &studentService{db: db},
+		univeristyService: &univeristyService{db: db},
+		prefectureService: &prefectureService{db: db},
+		majorService:      &majorService{db: db},
 	}
 }
