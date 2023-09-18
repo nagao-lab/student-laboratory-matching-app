@@ -1,12 +1,14 @@
 import { Checkbox, FormControlLabel, FormGroup, TextField } from "@mui/material";
 type Props = {
     setFilterVal: (val: string) => void
+    toggle: boolean
     setToggle: (val: boolean) => void
   };
 
-export const LaboratoryForm = ({ setFilterVal, setToggle }: Props) => {
+export const LaboratoryForm = ({ setFilterVal, toggle, setToggle }: Props) => {
     const toggleComponent = () => {
-        setToggle(prev => !prev)
+        
+      setToggle(!toggle)
     }
     
     return(
