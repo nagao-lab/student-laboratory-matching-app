@@ -10,6 +10,16 @@ import (
 	"student-laboratory-matching-app/graph/model"
 )
 
+// University is the resolver for the university field.
+func (r *laboratoryResolver) University(ctx context.Context, obj *model.Laboratory) (*model.University, error) {
+	return r.Srv.GetUniversityById(obj.University.ID)
+}
+
+// Majors is the resolver for the majors field.
+func (r *laboratoryResolver) Majors(ctx context.Context, obj *model.Laboratory) ([]*model.Major, error) {
+	return r.Srv.GetMajorByStudent(obj.ID)
+}
+
 // CreateStudent is the resolver for the createStudent field.
 func (r *mutationResolver) CreateStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
 	panic(fmt.Errorf("not implemented: CreateStudent - createStudent"))
@@ -18,6 +28,11 @@ func (r *mutationResolver) CreateStudent(ctx context.Context, input model.NewStu
 // Student is the resolver for the student field.
 func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student, error) {
 	return r.Srv.GetStudentById(id)
+}
+
+// Laboratory is the resolver for the laboratory field.
+func (r *queryResolver) Laboratory(ctx context.Context, id string) (*model.Laboratory, error) {
+	return r.Srv.GetLaboratoryById(id)
 }
 
 // University is the resolver for the university field.
@@ -40,6 +55,9 @@ func (r *universityResolver) Prefecture(ctx context.Context, obj *model.Universi
 	return r.Srv.GetPrefectureById(obj.Prefecture.ID)
 }
 
+// Laboratory returns LaboratoryResolver implementation.
+func (r *Resolver) Laboratory() LaboratoryResolver { return &laboratoryResolver{r} }
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
@@ -52,6 +70,7 @@ func (r *Resolver) Student() StudentResolver { return &studentResolver{r} }
 // University returns UniversityResolver implementation.
 func (r *Resolver) University() UniversityResolver { return &universityResolver{r} }
 
+type laboratoryResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type studentResolver struct{ *Resolver }

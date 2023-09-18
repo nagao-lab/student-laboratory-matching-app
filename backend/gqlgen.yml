@@ -93,6 +93,12 @@ models:
         resolver: true
       majors:
         resolver: true
+  Laboratory:
+    fields:
+      university:
+        resolver: true
+      majors:
+        resolver: true
   University:
     fields:
       prefecture:
