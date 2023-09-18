@@ -26,7 +26,7 @@ export type Message = {
         status: 'LIKE_FROM_BOTH'
       },
       student: {
-        name: '研究室1'
+        name: '学生1'
       },
       university: {
         name: '大学1'
@@ -37,7 +37,7 @@ export type Message = {
         status: 'LIKE_FROM_BOTH'
       },
       student: {
-        name: '研究室2'
+        name: '学生2'
       },
       university: {
         name: '大学2'
