@@ -2,7 +2,7 @@
 "use client";
 
 import { NextPage } from "next";
-import { LoginForm } from "src/features/login-form";
+import { LoginForm } from "@/features/login-form";
 
 const Page: NextPage = () => {
   return (
