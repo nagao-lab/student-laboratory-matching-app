@@ -1,6 +1,5 @@
 "use client";
 
-import { Controller } from "react-hook-form";
 import { LockOpen } from "@mui/icons-material";
 import {
   Container,
@@ -12,13 +11,11 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from "@mui/material/Link";
 import { useLoginForm } from "../hooks/login-form";
 
 export const LoginForm = () => {
-  const router = useRouter();
-  const { control, handleSubmit, errors, onSubmit } = useLoginForm();
+  const { setEmail, setPassword, onSubmit } = useLoginForm();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -40,47 +37,31 @@ export const LoginForm = () => {
         <Box sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Controller
-                control={control}
-                name="email"
-                rules={{
-                  required: true,
-                }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Email"
-                    fullWidth
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                )}
-              />
+              <TextField
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}/>
             </Grid>
             <Grid item xs={12}>
-              <Controller
-                control={control}
+              <TextField
+                required
+                fullWidth
+                id="password"
+                label="Password"
                 name="password"
-                rules={{
-                  required: true,
-                }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Password"
-                    fullWidth
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                )}
-              />
+                autoComplete="new-password"
+                onChange={(e) => setPassword(e.target.value)}/>
             </Grid>
           </Grid>
           <Button
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={handleSubmit(onSubmit)}
+            onClick={onSubmit}
           >
             ログイン
           </Button>
