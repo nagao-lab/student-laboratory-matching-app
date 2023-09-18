@@ -10,6 +10,8 @@ import { Laboratory } from "../mock/laboratories";
 
 type Props = {
   laboratories: Laboratory[];
+  filterVal: string;
+  toggle: boolean;
 };
 
 // TODO 研究室一覧ページ : MuiのBoxを利用する
@@ -17,12 +19,19 @@ type Props = {
 // TODO 研究室一覧ページ : Cardの間にスペースを入れる
 
 
-export const LaboratoryCards = ({ laboratories }: Props) => {
+export const LaboratoryCards = ({ laboratories, filterVal, toggle  }: Props) => {
   const router = useRouter()
   return (
     <Box>
       {laboratories
-      
+      .filter((laboratory) => {
+        const isMatch = laboratory.name.indexOf(filterVal) !== -1 || laboratory.university.name.indexOf(filterVal) !== -1 || laboratory.major.name.indexOf(filterVal) !== -1;
+        return isMatch
+      })
+      .filter((laboratory) => {
+        const isDisp = toggle === false || laboratory.studentLaboratory.status === "LIKE_FROM_STUDENT" || laboratory.studentLaboratory.status === "LIKE_FROM_BOTH";
+        return isDisp
+      })
       .map((laboratory, i) => (
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
           <CardContent>
