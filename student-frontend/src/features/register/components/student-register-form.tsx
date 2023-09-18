@@ -33,6 +33,7 @@ export const StudentRegisterForm = () => {
   const {
     genderOptions,
     universityOptions,
+    majorOptions,
     gradeOptions,
     prefectureOptions,
     statusOptions,
@@ -93,6 +94,23 @@ export const StudentRegisterForm = () => {
                     <TextField
                       {...params}
                       label="大学"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) =>
+                    setUniversity(selectedOption?.value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={majorOptions}
+                  id="major"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="専攻"
                       variant="outlined"
                       fullWidth
                     />
