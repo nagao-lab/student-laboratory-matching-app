@@ -10,7 +10,7 @@ type Props = {
 
 export const  ChangeStatusToIconButton = ({status}: Props) => {
 
-    return status === "BLANK" || status === "LIKE_FROM_LABORATORY"
+    return status === "BLANK" || status === "LIKE_FROM_STUDENT"
     ?(<Button
         variant="contained"
         sx={{ backgroundColor : '#ff00ff', ":hover" : {background:  '#ff88ff'} }}

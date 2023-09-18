@@ -53,7 +53,7 @@ export const MockStudents: Student[] = [
       name: '工学部'
     },
     studentLaboratory: {
-      status: 'LIKE_FROM_STUDENT'
+      status: 'LIKE_FROM_BOTH'
     }
   }
 ];

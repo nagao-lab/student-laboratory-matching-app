@@ -61,7 +61,7 @@ export type Student = {
       grade: 5,
       gpa: 2.5,
       studentLaboratory: {
-        status: 'LIKE_FROM_STUDENT'
+        status: 'LIKE_FROM_BOTH'
       }
     }
   ];
