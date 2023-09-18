@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type IService interface {
 	IStudentService
+	ILaboratoryService
 	IUniversityService
 	IPrefectureService
 	IMajorService
@@ -11,6 +12,7 @@ type IService interface {
 
 type services struct {
 	*studentService
+	*laboratoryService
 	*univeristyService
 	*prefectureService
 	*majorService
@@ -19,6 +21,7 @@ type services struct {
 func NewService(db *gorm.DB) IService {
 	return &services{
 		studentService:    &studentService{db: db},
+		laboratoryService: &laboratoryService{db: db},
 		univeristyService: &univeristyService{db: db},
 		prefectureService: &prefectureService{db: db},
 		majorService:      &majorService{db: db},

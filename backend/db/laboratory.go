@@ -1,9 +1,12 @@
 package db
 
-import "time"
+import (
+	"time"
+)
 
 type Laboratory struct {
 	ID            uint `gorm:"primaryKey"`
+	UID           uint
 	UniversityID  uint
 	Name          string
 	Professor     string
@@ -14,7 +17,6 @@ type Laboratory struct {
 	LaboratoryUrl string
 	Email         string
 	Password      string
-	Uid           uint
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }
