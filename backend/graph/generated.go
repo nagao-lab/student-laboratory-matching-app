@@ -54,6 +54,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
+		LoginStudent  func(childComplexity int, email string, password string) int
 		SignupStudent func(childComplexity int, input model.NewStudent) int
 	}
 
@@ -97,6 +98,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
+	LoginStudent(ctx context.Context, email string, password string) (*model.Student, error)
 }
 type QueryResolver interface {
 	Student(ctx context.Context, id string) (*model.Student, error)
@@ -140,6 +142,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Major.Name(childComplexity), true
+
+	case "Mutation.loginStudent":
+		if e.complexity.Mutation.LoginStudent == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_loginStudent_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.LoginStudent(childComplexity, args["email"].(string), args["password"].(string)), true
 
 	case "Mutation.signupStudent":
 		if e.complexity.Mutation.SignupStudent == nil {
@@ -458,6 +472,30 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
+func (ec *executionContext) field_Mutation_loginStudent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["email"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["email"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["password"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("password"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["password"] = arg1
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_signupStudent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -714,6 +752,97 @@ func (ec *executionContext) fieldContext_Mutation_signupStudent(ctx context.Cont
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_signupStudent_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_loginStudent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_loginStudent(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().LoginStudent(rctx, fc.Args["email"].(string), fc.Args["password"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Student)
+	fc.Result = res
+	return ec.marshalNStudent2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐStudent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_loginStudent(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Student_id(ctx, field)
+			case "uid":
+				return ec.fieldContext_Student_uid(ctx, field)
+			case "name":
+				return ec.fieldContext_Student_name(ctx, field)
+			case "email":
+				return ec.fieldContext_Student_email(ctx, field)
+			case "password":
+				return ec.fieldContext_Student_password(ctx, field)
+			case "imageUrl":
+				return ec.fieldContext_Student_imageUrl(ctx, field)
+			case "gender":
+				return ec.fieldContext_Student_gender(ctx, field)
+			case "birthday":
+				return ec.fieldContext_Student_birthday(ctx, field)
+			case "university":
+				return ec.fieldContext_Student_university(ctx, field)
+			case "grade":
+				return ec.fieldContext_Student_grade(ctx, field)
+			case "gpa":
+				return ec.fieldContext_Student_gpa(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_Student_prefecture(ctx, field)
+			case "comment":
+				return ec.fieldContext_Student_comment(ctx, field)
+			case "interest":
+				return ec.fieldContext_Student_interest(ctx, field)
+			case "status":
+				return ec.fieldContext_Student_status(ctx, field)
+			case "majors":
+				return ec.fieldContext_Student_majors(ctx, field)
+			case "numLikes":
+				return ec.fieldContext_Student_numLikes(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Student", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_loginStudent_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -3911,6 +4040,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "signupStudent":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_signupStudent(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "loginStudent":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_loginStudent(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

@@ -60,4 +60,5 @@ input NewStudent {
 
 type Mutation {
   signupStudent(input: NewStudent!): Student!
+  loginStudent(email: String!, password: String!): Student!
 }
