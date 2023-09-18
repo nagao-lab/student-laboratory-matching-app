@@ -2,18 +2,28 @@
 // TODO 学生ページ : StudentCommentコンポーネント用のPropsの型を定義する
 // TODO 学生ページ : StudentCommentではMuiのBoxを利用する
 
-import { Box, Card, CardContent } from "@mui/material";
+import { Box, Card, CardContent, Stack, Typography, IconButton } from "@mui/material";
+import { Edit } from '@mui/icons-material';
+import { Laboratory } from "../mock/laboratory"
 
 type Props = {
-    comment: string;
+    laboratory: Laboratory;
   };
 
-  export const StudentComment = ({ comment }: Props) => {
+  export const LaboratoryComment = ({ laboratory }: Props) => {
     return (
         <Box>
             <Card>
                 <CardContent>
-                    {comment}
+                <Stack spacing={3.0}>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography fontWeight="light" variant="h5">コメント</Typography>
+                            <IconButton sx={{right: 'right'}}>
+                                <Edit sx={{ fontSize: 14 }} />
+                            </IconButton>
+                        </Stack>
+                        {laboratory.comment}
+                    </Stack>
                 </CardContent>
             </Card>
         </Box>

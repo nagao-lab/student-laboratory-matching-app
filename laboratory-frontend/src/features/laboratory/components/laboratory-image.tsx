@@ -1,20 +1,17 @@
-// TODO 学生ページ :
-
 import { Box, Card, CardContent, Stack, Typography, IconButton, Avatar} from "@mui/material";
 import { Edit } from '@mui/icons-material';
-import { Student } from "../mock/student";
+import { Laboratory } from "../mock/laboratory";
 
 type Props = {
-    student: Student;
-  };
+    laboratory: Laboratory;
+};
 
-  export const StudentImage = ({ student }: Props) => {
+export const LaboratoryImage = ({ laboratory }: Props) => {
     return (
-        
         <Box>
             <Card>
                 <CardContent>
-                    <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" justifyContent="space-between">
                         <Typography></Typography>
                         <IconButton sx={{right: 'right'}}>
                             <Edit sx={{ fontSize: 14 }} />
@@ -23,9 +20,9 @@ type Props = {
                     <Avatar src="image.jpg"
                     sx={{ width: 150, height: 150 }}
                     />
-                    <Typography align="center" fontSize={25}>{student.name}</Typography>
-                </CardContent>   
-            </Card>  
+                    <Typography align="center" fontSize={25}>{laboratory.name}</Typography>
+                </CardContent>
+            </Card>
         </Box>
     )
-  }
+}
