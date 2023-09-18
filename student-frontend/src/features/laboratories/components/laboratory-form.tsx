@@ -28,6 +28,7 @@ export const LaboratoryForm = ({ setFilterVal, toggle, setToggle }: Props) => {
           sx={{ m: 1.25 }}
           control={<Checkbox />}
           label="「興味あり」のみ表示"
+          onChange={() => toggleComponent()}
         />
       </FormGroup>
     </>
