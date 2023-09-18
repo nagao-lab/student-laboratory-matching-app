@@ -8,7 +8,7 @@ export type Student = {
     interest: string;
     comment: string;
     university: University;
-    major: Major;
+    major: Major[];
     grade: number;
     gpa: number;
     studentLaboratory: StudentLaboratory;
@@ -37,9 +37,9 @@ export type Student = {
       university: {
         name: '入江大学'
       },
-      major: {
-        name: '理学部'
-      },
+      major: [{
+        name: '物理学'
+      }],
       grade: 3,
       gpa: 3.5,
       studentLaboratory: {
@@ -55,9 +55,10 @@ export type Student = {
       university: {
         name: '清水大学'
       },
-      major: {
-        name: '工学部'
-      },
+      major: [
+        {name: '電子工学'}, 
+        {name: '機械工学'}
+      ],
       grade: 5,
       gpa: 2.5,
       studentLaboratory: {

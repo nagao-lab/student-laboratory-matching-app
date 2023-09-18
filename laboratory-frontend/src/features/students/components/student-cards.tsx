@@ -24,7 +24,8 @@ export const StudentCards = ({ students, filterVal, toggle }: Props) => {
     <Box>
       {students
       .filter((student) => {
-        const isMatch = student.name.indexOf(filterVal) !== -1 || student.university.name.indexOf(filterVal) !== -1 || student.major.name.indexOf(filterVal) !== -1;
+        let isMatch = student.name.indexOf(filterVal) !== -1 || student.university.name.indexOf(filterVal) !== -1;
+        isMatch = isMatch || student.major.some((major) => major.name.indexOf(filterVal) !== -1);
         return isMatch
       })
       .filter((student) => {
@@ -34,11 +35,15 @@ export const StudentCards = ({ students, filterVal, toggle }: Props) => {
       .map((student, i) => (
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
           <CardContent>
-            <Typography variant="h5" component="div">
+            <Typography sx={{ mb: 0.75 }} variant="h5" component="div">
             {student.name}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {student.university.name} {student.major.name}
+            <Typography sx={{ mb: 0.75 }} color="text.secondary">
+            {student.university.name} 
+           </Typography>
+           
+           <Typography sx={{ mb: 0.75 }} color="text.secondary">
+           {student.major.map((item)=>(item.name + " "))}
            </Typography>
            
           </CardContent>

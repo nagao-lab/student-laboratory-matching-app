@@ -6,7 +6,7 @@ export type Student = {
   status: string;
   comment: string;
   university: University;
-  major: Major;
+  major: Major[];
   studentLaboratory: StudentLaboratory;
 };
 
@@ -34,9 +34,9 @@ export const MockStudents: Student[] = [
     university: {
       name: '入江大学'
     },
-    major: {
-      name: '理学部'
-    },
+    major: [
+      {name: '物理学'}
+    ],
     studentLaboratory: {
       status: 'BLANK'
     }
@@ -49,9 +49,10 @@ export const MockStudents: Student[] = [
     university: {
       name: '清水大学'
     },
-    major: {
-      name: '工学部'
-    },
+    major: [
+      {name: '電子工学'}, 
+      {name: '機械工学'}
+    ],
     studentLaboratory: {
       status: 'LIKE_FROM_BOTH'
     }

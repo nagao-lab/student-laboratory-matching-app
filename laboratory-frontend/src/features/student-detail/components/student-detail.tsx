@@ -26,7 +26,7 @@ export const StudentDetail = ({ students }: Props) => {
     <Box sx={{m: 5}}>
       <h1>{student.name} @{student.university.name}</h1>
       <h3>専攻</h3>
-      {student.major.name}
+      {student.major.map((item)=>(item.name + " "))}
       <h3>学年</h3>
       {student.grade <= 4 ? `B${student.grade}`: `M${student.grade - 4}`}
       <h3>GPA</h3>
