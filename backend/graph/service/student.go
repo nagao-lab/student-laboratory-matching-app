@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
+	"student-laboratory-matching-app/tools"
 
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -42,7 +42,8 @@ func (ss *studentService) GetStudentById(id string) (*model.Student, error) {
 func (ss *studentService) Signup(newStudent model.NewStudent) (*model.Student, error) {
 	student := db.Student{
 		Email:    newStudent.Email,
-		Password: newStudent.Password,
+		Password: tools.HashPassword(newStudent.Password),
+		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
 	}
 
 	// Check whether the email is already used.
@@ -52,24 +53,11 @@ func (ss *studentService) Signup(newStudent model.NewStudent) (*model.Student, e
 		return nil, fmt.Errorf("signup: the account already exist")
 	}
 
-	// TODO: create uid
-
-	hashedPassword, err := hashPassword(student.Password)
-	if err != nil {
-		return nil, fmt.Errorf("signup: cannot hash the password")
-	}
-	student.Password = hashedPassword
-
-	err = ss.db.Select("Email", "Password").Create(&student).Error
+	err := ss.db.Select("Email", "Password").Create(&student).Error
 	if err != nil {
 		return nil, err
 	}
 
 	fmt.Println("signup: Success!")
 	return model.ConvertStudent(&student), nil
-}
-
-func hashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
 }
