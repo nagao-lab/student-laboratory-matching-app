@@ -1,45 +1,68 @@
-// TODO フォームのデータ型を整える
-
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { RegisterFormValues } from "../types/student-register-form";
+import { useState } from "react";
 
 export const useRegisterForm = () => {
   const router = useRouter();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormValues>({
-    mode: "all",
-    criteriaMode: "all",
-    shouldFocusError: false,
-    defaultValues: {
-      name: "",
-      gender: 0,
-      university: "",
-      grade: 1,
-      comment: "",
-      interest: "",
-      birthday: "",
-      prefecture: "",
-      gpa: 3,
-      image_url: "",
-      status: 0,
-    },
-  });
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState<number | null>();
+  const [university, setUniversity] = useState<string | null>();
+  const [grade, setGrade] = useState<number | null>();
+  const [comment, setComment] = useState("");
+  const [interest, setInterest] = useState("");
+  const [birthday, setBirthday] = useState<Date | null>();
+  const [prefecture, setPrefecture] = useState<string | null>();
+  const [gpa, setGpa] = useState(3.0);
+  const [imageUrl, setImageUrl] = useState("");
+  const [status, setStatus] = useState<number | null>();
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    console.log(data);
+  const handleSubmit = () => {
+    if (
+      !name ||
+      !gender ||
+      !university ||
+      !grade ||
+      !comment ||
+      !interest ||
+      !birthday ||
+      !prefecture ||
+      !gpa ||
+      !imageUrl ||
+      !status
+    ) {
+      window.alert("すべての項目を入力してください");
+      return;
+    }
+
+    console.log({
+      name: name,
+      gender: gender,
+      university: university,
+      grade: grade,
+      comment: comment,
+      interest: interest,
+      birthday: birthday?.toString(),
+      prefecture: prefecture,
+      gpa: gpa,
+      image_url: imageUrl,
+      status: status,
+    });
     router.push("/");
   };
 
   return {
-    control,
+    setName,
+    setGender,
+    setUniversity,
+    setGrade,
+    setComment,
+    setInterest,
+    setBirthday,
+    setPrefecture,
+    setGpa,
+    setImageUrl,
+    setStatus,
     handleSubmit,
-    errors,
-    onSubmit,
   };
 };
