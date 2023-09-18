@@ -6,43 +6,38 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"student-laboratory-matching-app/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	return &model.Todo{
-		ID:   "TODO-3",
-		Text: input.Text,
-		User: &model.User{
-			ID:   input.UserID,
-			Name: "name",
-		},
-	}, nil
+// CreateStudent is the resolver for the createStudent field.
+func (r *mutationResolver) CreateStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
+	panic(fmt.Errorf("not implemented: CreateStudent - createStudent"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	return []*model.Todo{
-		{
-			ID:   "TODO-1",
-			Text: "My Todo 1",
-			User: &model.User{
-				ID:   "User-1",
-				Name: "hsaki",
-			},
-			Done: true,
-		},
-		{
-			ID:   "TODO-2",
-			Text: "My Todo 2",
-			User: &model.User{
-				ID:   "User-1",
-				Name: "hsaki",
-			},
-			Done: false,
-		},
-	}, nil
+// Student is the resolver for the student field.
+func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student, error) {
+	return r.Srv.GetStudentById(id)
+}
+
+// University is the resolver for the university field.
+func (r *studentResolver) University(ctx context.Context, obj *model.Student) (*model.University, error) {
+	return r.Srv.GetUniversityById(obj.University.ID)
+}
+
+// Prefecture is the resolver for the prefecture field.
+func (r *studentResolver) Prefecture(ctx context.Context, obj *model.Student) (*model.Prefecture, error) {
+	return r.Srv.GetPrefectureById(obj.Prefecture.ID)
+}
+
+// Majors is the resolver for the majors field.
+func (r *studentResolver) Majors(ctx context.Context, obj *model.Student) ([]*model.Major, error) {
+	return r.Srv.GetMajorByStudent(obj.ID)
+}
+
+// Prefecture is the resolver for the prefecture field.
+func (r *universityResolver) Prefecture(ctx context.Context, obj *model.University) (*model.Prefecture, error) {
+	return r.Srv.GetPrefectureById(obj.Prefecture.ID)
 }
 
 // Mutation returns MutationResolver implementation.
@@ -51,5 +46,13 @@ func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Student returns StudentResolver implementation.
+func (r *Resolver) Student() StudentResolver { return &studentResolver{r} }
+
+// University returns UniversityResolver implementation.
+func (r *Resolver) University() UniversityResolver { return &universityResolver{r} }
+
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type studentResolver struct{ *Resolver }
+type universityResolver struct{ *Resolver }

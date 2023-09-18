@@ -2,19 +2,136 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
-}
+import (
+	"fmt"
+	"io"
+	"strconv"
+	"time"
+)
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
-}
-
-type User struct {
+type Major struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+}
+
+type NewStudent struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type Prefecture struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type Student struct {
+	ID         string      `json:"id"`
+	UID        string      `json:"uid"`
+	Name       string      `json:"name"`
+	Email      string      `json:"email"`
+	Password   string      `json:"password"`
+	ImageURL   string      `json:"imageUrl"`
+	Gender     Gender      `json:"gender"`
+	Birthday   time.Time   `json:"birthday"`
+	University *University `json:"university"`
+	Grade      int         `json:"grade"`
+	Gpa        float64     `json:"gpa"`
+	Prefecture *Prefecture `json:"prefecture"`
+	Comment    string      `json:"comment"`
+	Interest   string      `json:"interest"`
+	Status     MatchStatus `json:"status"`
+	Majors     []*Major    `json:"majors"`
+	NumLikes   int         `json:"numLikes"`
+}
+
+type University struct {
+	ID         string      `json:"id"`
+	Prefecture *Prefecture `json:"prefecture"`
+	Name       string      `json:"name"`
+	Address    string      `json:"address"`
+	MaxGpa     float64     `json:"maxGpa"`
+}
+
+type Gender string
+
+const (
+	GenderMale   Gender = "MALE"
+	GenderFemale Gender = "FEMALE"
+	GenderOther  Gender = "OTHER"
+)
+
+var AllGender = []Gender{
+	GenderMale,
+	GenderFemale,
+	GenderOther,
+}
+
+func (e Gender) IsValid() bool {
+	switch e {
+	case GenderMale, GenderFemale, GenderOther:
+		return true
+	}
+	return false
+}
+
+func (e Gender) String() string {
+	return string(e)
+}
+
+func (e *Gender) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Gender(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Gender", str)
+	}
+	return nil
+}
+
+func (e Gender) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type MatchStatus string
+
+const (
+	MatchStatusActive   MatchStatus = "ACTIVE"
+	MatchStatusInactive MatchStatus = "INACTIVE"
+)
+
+var AllMatchStatus = []MatchStatus{
+	MatchStatusActive,
+	MatchStatusInactive,
+}
+
+func (e MatchStatus) IsValid() bool {
+	switch e {
+	case MatchStatusActive, MatchStatusInactive:
+		return true
+	}
+	return false
+}
+
+func (e MatchStatus) String() string {
+	return string(e)
+}
+
+func (e *MatchStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = MatchStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid MatchStatus", str)
+	}
+	return nil
+}
+
+func (e MatchStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
