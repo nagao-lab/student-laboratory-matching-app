@@ -35,7 +35,7 @@ export const MockLaboratories: Laboratory[] = [
       name: '大学1'
     },
     major: {
-      name: '学部1'
+      name: '専攻1'
     },
     studentLaboratory: {
       status: 'BLANK'
@@ -50,7 +50,7 @@ export const MockLaboratories: Laboratory[] = [
       name: '大学2'
     },
     major: {
-      name: '学部2'
+      name: '専攻2'
     },
     studentLaboratory: {
       status: 'LIKE_FROM_BOTH'

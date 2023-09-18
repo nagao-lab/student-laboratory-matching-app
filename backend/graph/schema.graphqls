@@ -1,0 +1,43 @@
+scalar Time
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MatchStatus {
+  ACTIVE
+  INACTIVE
+}
+
+type Student {
+  id: ID!
+	uid: String!
+	name: String!
+	email: String!
+	password: String!
+	imageUrl: String!
+	gender: Gender!
+	birthday: Time!
+	universityId: ID!
+	grade: Int!
+	gpa: Float!
+	prefectureId: ID!
+	comment: String!
+	interest: String!
+	status: MatchStatus!
+}
+
+type Query {
+  student(id: ID!): Student!
+}
+
+input NewStudent {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createStudent(input: NewStudent!): Student!
+}
