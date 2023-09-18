@@ -2,7 +2,7 @@
 
 export type Message = {
     studentLaboratory: StudentLaboratory;
-    laboratory: Laboratory;
+    student: Student;
     university: University;
   };
   
@@ -10,7 +10,7 @@ export type Message = {
     status: string;
   }
 
-  export type Laboratory = {
+  export type Student = {
     name: string;
   };
 
@@ -25,8 +25,8 @@ export type Message = {
       studentLaboratory: {
         status: 'LIKE_FROM_BOTH'
       },
-      laboratory: {
-        name: '研究室1'
+      student: {
+        name: '学生1'
       },
       university: {
         name: '大学1'
@@ -36,8 +36,8 @@ export type Message = {
       studentLaboratory: {
         status: 'LIKE_FROM_BOTH'
       },
-      laboratory: {
-        name: '研究室2'
+      student: {
+        name: '学生2'
       },
       university: {
         name: '大学2'
