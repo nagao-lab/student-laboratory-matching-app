@@ -8,6 +8,7 @@ export type Message = {
   
   export type StudentLaboratory = {
     status: string;
+    id: number;
   }
 
   export type Student = {
@@ -23,7 +24,8 @@ export type Message = {
   export const MockMessages: Message[] = [
     {
       studentLaboratory: {
-        status: 'LIKE_FROM_BOTH'
+        status: 'LIKE_FROM_BOTH',
+        id: 1
       },
       student: {
         name: '学生1'
@@ -34,7 +36,8 @@ export type Message = {
     },
     {
       studentLaboratory: {
-        status: 'LIKE_FROM_BOTH'
+        status: 'LIKE_FROM_BOTH',
+        id: 2
       },
       student: {
         name: '学生2'
