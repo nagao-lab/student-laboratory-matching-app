@@ -2,15 +2,16 @@
 
 export type Message = {
     studentLaboratory: StudentLaboratory;
-    laboratory: Laboratory;
+    student: Student;
     university: University;
   };
   
   export type StudentLaboratory = {
     status: string;
+    id: number;
   }
 
-  export type Laboratory = {
+  export type Student = {
     name: string;
   };
 
@@ -23,10 +24,11 @@ export type Message = {
   export const MockMessages: Message[] = [
     {
       studentLaboratory: {
-        status: 'LIKE_FROM_BOTH'
+        status: 'LIKE_FROM_BOTH',
+        id: 1
       },
-      laboratory: {
-        name: '研究室1'
+      student: {
+        name: '学生1'
       },
       university: {
         name: '大学1'
@@ -34,10 +36,11 @@ export type Message = {
     },
     {
       studentLaboratory: {
-        status: 'LIKE_FROM_BOTH'
+        status: 'LIKE_FROM_BOTH',
+        id: 2
       },
-      laboratory: {
-        name: '研究室2'
+      student: {
+        name: '学生2'
       },
       university: {
         name: '大学2'

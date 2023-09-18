@@ -1,10 +1,14 @@
 // TODO signupページ（リクエストなし）: SignUpコンポーネントをレンダリングする
-
-import { Box } from "@mui/material";
+"use client";
+import { SignupForm } from "@/features/signup-form/components/signup-form";
 import { NextPage } from "next";
 
 const Page: NextPage = () => {
-  return <Box>SignUp</Box>;
+  return (
+    <>
+      <SignupForm />
+    </>
+  );
 };
 
 export default Page;
