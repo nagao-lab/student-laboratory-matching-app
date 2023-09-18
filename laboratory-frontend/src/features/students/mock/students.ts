@@ -1,6 +1,7 @@
 // TODO 学生一覧ページ用mockデータ : Studentの型を定義し,exportする
 
 export type Student = {
+  ID: number
   name: string;
   status: string;
   comment: string;
@@ -26,6 +27,7 @@ export type StudentLaboratory = {
 
 export const MockStudents: Student[] = [
   {
+    ID:111,
     name: '内藤巧',
     status: '1',
     comment: 'Hello world.',
@@ -40,6 +42,7 @@ export const MockStudents: Student[] = [
     }
   },
   {
+    ID:222,
     name: '関口公平',
     status: '1',
     comment: 'hoge',
