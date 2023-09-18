@@ -1,32 +1,23 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { LoginFormValues } from "../types/login-form";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const useLoginForm = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
-    mode: "all",
-    criteriaMode: "all",
-    shouldFocusError: false,
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
+  const onSubmit = () => {
     console.log({
-      emil: data.email,
-      password: data.password,
+      email: email,
+      password: password,
     });
-  };
+
+    router.push("/")
+  }
 
   return {
-    control,
-    handleSubmit,
-    errors,
+    setEmail,
+    setPassword,
     onSubmit,
   };
 };
