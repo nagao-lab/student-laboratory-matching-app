@@ -17,7 +17,7 @@ func (r *laboratoryResolver) University(ctx context.Context, obj *model.Laborato
 
 // Majors is the resolver for the majors field.
 func (r *laboratoryResolver) Majors(ctx context.Context, obj *model.Laboratory) ([]*model.Major, error) {
-	return r.Srv.GetMajorByStudent(obj.ID)
+	return r.Srv.GetMajorByLaboratory(obj.ID)
 }
 
 // CreateStudent is the resolver for the createStudent field.
