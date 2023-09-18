@@ -39,27 +39,27 @@ export const MockMessageContent: Message[] = [
     {
         studentLaboratory: {
             student: {
-                name: '学生2'
+                name: '学生1'
             },
             laboratory: {
-                name: '研究室2'
+                name: '研究室1'
             }
         },
         from: 1,
-        content: '研究室2のメッセージ',
+        content: '研究室1のメッセージ',
         createdAt: '2023/01/02'
     },
     {
         studentLaboratory: {
             student: {
-                name: '学生2'
+                name: '学生1'
             },
             laboratory: {
-                name: '研究室2'
+                name: '研究室1'
             }
         },
         from: 0,
-        content: '学生2のメッセージ',
+        content: '学生1のメッセージ',
         createdAt: '2023/01/02'
     }
 ]
