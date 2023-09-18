@@ -24,9 +24,7 @@ func NewDB() *gorm.DB {
 		os.Getenv("MYSQL_DB"),
 	)
 
-	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{
-		SkipDefaultTransaction: true,
-	})
+	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err)
 	}
