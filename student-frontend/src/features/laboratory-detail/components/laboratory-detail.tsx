@@ -28,7 +28,7 @@ export const LaboratoryDetail = ({ laboratories }: Props) => {
       <h3>所在</h3>
       {laboratory.prefecture.name}
       <h3>専攻</h3>
-      {laboratory.major.name}
+      {laboratory.major.map((item)=>(item.name + " "))}
       <h3>教授</h3>
       {laboratory.professor}
       <h3>学生数</h3>
