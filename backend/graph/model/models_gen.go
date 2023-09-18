@@ -9,6 +9,23 @@ import (
 	"time"
 )
 
+type Laboratory struct {
+	ID            string      `json:"id"`
+	UID           string      `json:"uid"`
+	University    *University `json:"university"`
+	Name          string      `json:"name"`
+	Professor     string      `json:"professor"`
+	NumStudents   int         `json:"numStudents"`
+	Comment       string      `json:"comment"`
+	Status        MatchStatus `json:"status"`
+	ImageURL      string      `json:"imageUrl"`
+	LaboratoryURL string      `json:"laboratoryUrl"`
+	Email         string      `json:"email"`
+	Password      string      `json:"password"`
+	Majors        []*Major    `json:"majors"`
+	NumLikes      int         `json:"numLikes"`
+}
+
 type Major struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`

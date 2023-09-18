@@ -12,23 +12,40 @@ enum MatchStatus {
 }
 
 type Student {
-  id: ID!
-  uid: String!
-  name: String!
-  email: String!
-  password: String!
-  imageUrl: String!
-  gender: Gender!
-  birthday: Time!
-  university: University!
-  grade: Int!
-  gpa: Float!
-  prefecture: Prefecture!
-  comment: String!
-  interest: String!
-  status: MatchStatus!
-  majors: [Major!]!
-  numLikes: Int!
+	id: ID!
+	uid: String!
+	name: String!
+	email: String!
+	password: String!
+	imageUrl: String!
+	gender: Gender!
+	birthday: Time!
+	university: University!
+	grade: Int!
+	gpa: Float!
+	prefecture: Prefecture!
+	comment: String!
+	interest: String!
+	status: MatchStatus!
+	majors: [Major!]!
+	numLikes: Int!
+}
+
+type Laboratory {
+	id: ID!
+	uid: String!
+	university: University!
+	name: String!
+	professor: String!
+	numStudents: Int!
+	comment: String!
+	status: MatchStatus!
+	imageUrl: String!
+	laboratoryUrl: String!
+	email: String!
+	password: String!
+	majors: [Major!]!
+	numLikes: Int!
 }
 
 type Major {
@@ -51,6 +68,7 @@ type University {
 
 type Query {
   student(id: ID!): Student!
+  laboratory(id: ID!): Laboratory!
 }
 
 input NewStudent {

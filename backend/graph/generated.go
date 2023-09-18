@@ -38,6 +38,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Laboratory() LaboratoryResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 	Student() StudentResolver
@@ -48,6 +49,23 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Laboratory struct {
+		Comment       func(childComplexity int) int
+		Email         func(childComplexity int) int
+		ID            func(childComplexity int) int
+		ImageURL      func(childComplexity int) int
+		LaboratoryURL func(childComplexity int) int
+		Majors        func(childComplexity int) int
+		Name          func(childComplexity int) int
+		NumLikes      func(childComplexity int) int
+		NumStudents   func(childComplexity int) int
+		Password      func(childComplexity int) int
+		Professor     func(childComplexity int) int
+		Status        func(childComplexity int) int
+		UID           func(childComplexity int) int
+		University    func(childComplexity int) int
+	}
+
 	Major struct {
 		ID   func(childComplexity int) int
 		Name func(childComplexity int) int
@@ -63,7 +81,8 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Student func(childComplexity int, id string) int
+		Laboratory func(childComplexity int, id string) int
+		Student    func(childComplexity int, id string) int
 	}
 
 	Student struct {
@@ -95,11 +114,17 @@ type ComplexityRoot struct {
 	}
 }
 
+type LaboratoryResolver interface {
+	University(ctx context.Context, obj *model.Laboratory) (*model.University, error)
+
+	Majors(ctx context.Context, obj *model.Laboratory) ([]*model.Major, error)
+}
 type MutationResolver interface {
 	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
 }
 type QueryResolver interface {
 	Student(ctx context.Context, id string) (*model.Student, error)
+	Laboratory(ctx context.Context, id string) (*model.Laboratory, error)
 }
 type StudentResolver interface {
 	University(ctx context.Context, obj *model.Student) (*model.University, error)
@@ -126,6 +151,104 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e, 0, 0, nil}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "Laboratory.comment":
+		if e.complexity.Laboratory.Comment == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Comment(childComplexity), true
+
+	case "Laboratory.email":
+		if e.complexity.Laboratory.Email == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Email(childComplexity), true
+
+	case "Laboratory.id":
+		if e.complexity.Laboratory.ID == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.ID(childComplexity), true
+
+	case "Laboratory.imageUrl":
+		if e.complexity.Laboratory.ImageURL == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.ImageURL(childComplexity), true
+
+	case "Laboratory.laboratoryUrl":
+		if e.complexity.Laboratory.LaboratoryURL == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.LaboratoryURL(childComplexity), true
+
+	case "Laboratory.majors":
+		if e.complexity.Laboratory.Majors == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Majors(childComplexity), true
+
+	case "Laboratory.name":
+		if e.complexity.Laboratory.Name == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Name(childComplexity), true
+
+	case "Laboratory.numLikes":
+		if e.complexity.Laboratory.NumLikes == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.NumLikes(childComplexity), true
+
+	case "Laboratory.numStudents":
+		if e.complexity.Laboratory.NumStudents == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.NumStudents(childComplexity), true
+
+	case "Laboratory.password":
+		if e.complexity.Laboratory.Password == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Password(childComplexity), true
+
+	case "Laboratory.professor":
+		if e.complexity.Laboratory.Professor == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Professor(childComplexity), true
+
+	case "Laboratory.status":
+		if e.complexity.Laboratory.Status == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.Status(childComplexity), true
+
+	case "Laboratory.uid":
+		if e.complexity.Laboratory.UID == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.UID(childComplexity), true
+
+	case "Laboratory.university":
+		if e.complexity.Laboratory.University == nil {
+			break
+		}
+
+		return e.complexity.Laboratory.University(childComplexity), true
 
 	case "Major.id":
 		if e.complexity.Major.ID == nil {
@@ -166,6 +289,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Prefecture.Name(childComplexity), true
+
+	case "Query.laboratory":
+		if e.complexity.Query.Laboratory == nil {
+			break
+		}
+
+		args, err := ec.field_Query_laboratory_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Laboratory(childComplexity, args["id"].(string)), true
 
 	case "Query.student":
 		if e.complexity.Query.Student == nil {
@@ -488,6 +623,21 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_laboratory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_student_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -540,6 +690,640 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _Laboratory_id(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_uid(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_uid(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_uid(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_university(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_university(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Laboratory().University(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.University)
+	fc.Result = res
+	return ec.marshalNUniversity2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_university(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_University_id(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_University_prefecture(ctx, field)
+			case "name":
+				return ec.fieldContext_University_name(ctx, field)
+			case "address":
+				return ec.fieldContext_University_address(ctx, field)
+			case "maxGpa":
+				return ec.fieldContext_University_maxGpa(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type University", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_name(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_name(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_professor(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_professor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Professor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_professor(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_numStudents(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_numStudents(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumStudents, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_numStudents(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_comment(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_comment(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Comment, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_comment(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_status(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_status(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Status, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.MatchStatus)
+	fc.Result = res
+	return ec.marshalNMatchStatus2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMatchStatus(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_status(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type MatchStatus does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_imageUrl(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_imageUrl(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ImageURL, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_imageUrl(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_laboratoryUrl(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_laboratoryUrl(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LaboratoryURL, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_laboratoryUrl(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_email(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_email(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Email, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_email(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_password(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_password(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Password, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_password(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_majors(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_majors(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Laboratory().Majors(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Major)
+	fc.Result = res
+	return ec.marshalNMajor2ᚕᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMajorᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_majors(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Major_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Major_name(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Major", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Laboratory_numLikes(ctx context.Context, field graphql.CollectedField, obj *model.Laboratory) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Laboratory_numLikes(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumLikes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Laboratory_numLikes(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Laboratory",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
 
 func (ec *executionContext) _Major_id(ctx context.Context, field graphql.CollectedField, obj *model.Major) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Major_id(ctx, field)
@@ -893,6 +1677,91 @@ func (ec *executionContext) fieldContext_Query_student(ctx context.Context, fiel
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_student_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_laboratory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_laboratory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Laboratory(rctx, fc.Args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Laboratory)
+	fc.Result = res
+	return ec.marshalNLaboratory2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLaboratory(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_laboratory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Laboratory_id(ctx, field)
+			case "uid":
+				return ec.fieldContext_Laboratory_uid(ctx, field)
+			case "university":
+				return ec.fieldContext_Laboratory_university(ctx, field)
+			case "name":
+				return ec.fieldContext_Laboratory_name(ctx, field)
+			case "professor":
+				return ec.fieldContext_Laboratory_professor(ctx, field)
+			case "numStudents":
+				return ec.fieldContext_Laboratory_numStudents(ctx, field)
+			case "comment":
+				return ec.fieldContext_Laboratory_comment(ctx, field)
+			case "status":
+				return ec.fieldContext_Laboratory_status(ctx, field)
+			case "imageUrl":
+				return ec.fieldContext_Laboratory_imageUrl(ctx, field)
+			case "laboratoryUrl":
+				return ec.fieldContext_Laboratory_laboratoryUrl(ctx, field)
+			case "email":
+				return ec.fieldContext_Laboratory_email(ctx, field)
+			case "password":
+				return ec.fieldContext_Laboratory_password(ctx, field)
+			case "majors":
+				return ec.fieldContext_Laboratory_majors(ctx, field)
+			case "numLikes":
+				return ec.fieldContext_Laboratory_numLikes(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Laboratory", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_laboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -3845,6 +4714,172 @@ func (ec *executionContext) unmarshalInputNewStudent(ctx context.Context, obj in
 
 // region    **************************** object.gotpl ****************************
 
+var laboratoryImplementors = []string{"Laboratory"}
+
+func (ec *executionContext) _Laboratory(ctx context.Context, sel ast.SelectionSet, obj *model.Laboratory) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, laboratoryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Laboratory")
+		case "id":
+			out.Values[i] = ec._Laboratory_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "uid":
+			out.Values[i] = ec._Laboratory_uid(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "university":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Laboratory_university(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "name":
+			out.Values[i] = ec._Laboratory_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "professor":
+			out.Values[i] = ec._Laboratory_professor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "numStudents":
+			out.Values[i] = ec._Laboratory_numStudents(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "comment":
+			out.Values[i] = ec._Laboratory_comment(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "status":
+			out.Values[i] = ec._Laboratory_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "imageUrl":
+			out.Values[i] = ec._Laboratory_imageUrl(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "laboratoryUrl":
+			out.Values[i] = ec._Laboratory_laboratoryUrl(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "email":
+			out.Values[i] = ec._Laboratory_email(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "password":
+			out.Values[i] = ec._Laboratory_password(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		case "majors":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Laboratory_majors(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+		case "numLikes":
+			out.Values[i] = ec._Laboratory_numLikes(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&out.Invalids, 1)
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var majorImplementors = []string{"Major"}
 
 func (ec *executionContext) _Major(ctx context.Context, sel ast.SelectionSet, obj *model.Major) graphql.Marshaler {
@@ -4011,6 +5046,28 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_student(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "laboratory":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_laboratory(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
@@ -4750,6 +5807,20 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNLaboratory2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLaboratory(ctx context.Context, sel ast.SelectionSet, v model.Laboratory) graphql.Marshaler {
+	return ec._Laboratory(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNLaboratory2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLaboratory(ctx context.Context, sel ast.SelectionSet, v *model.Laboratory) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Laboratory(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNMajor2ᚕᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMajorᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Major) graphql.Marshaler {
