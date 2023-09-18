@@ -1,6 +1,5 @@
 "use client";
 
-import { Controller } from "react-hook-form";
 import { LockOpen } from "@mui/icons-material";
 import {
   Container,
@@ -17,7 +16,6 @@ import { useRouter } from "next/navigation";
 import { useLoginForm } from "../hooks/login-form";
 
 export const LoginForm = () => {
-  const router = useRouter();
   const { control, handleSubmit, errors, onSubmit } = useLoginForm();
 
   return (
