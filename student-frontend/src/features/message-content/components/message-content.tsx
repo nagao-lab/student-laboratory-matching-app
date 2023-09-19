@@ -6,7 +6,7 @@
 // TODO メッセージ詳細ページ（mock） : MessageDetailコンポーネントにMockMessageDetailを渡す
 // TODO メッセージ詳細ページ（mock） : MessageDetail内ではBoxを利用する
 
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, CardContent, Typography } from "@mui/material";
 import { Message } from "../mock/message-content";
 
 type Props = {
@@ -14,8 +14,7 @@ type Props = {
     messages: Message[];
 };
 
-export const MessageDetail = ({ messages, messageId }: Props) => {
-    
+export const MessageContent = ({ messages, messageId }: Props) => {
 
     const messageContents = messages.filter(
     (messageContent) => {
