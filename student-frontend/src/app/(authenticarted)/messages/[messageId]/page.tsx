@@ -6,7 +6,11 @@ import { NextPage } from "next";
 import { MessageDetail } from "@/features/message-content/components/message-content";
 import { MockMessageContent } from "@/features/message-content/mock/message-content";
 
-const Page: NextPage = () => {
+type Props = {
+  messageId: string;
+};
+
+const Page: NextPage<Props> = ({ messageId }) => {
   return (
   <Box style={{
     display: "flex",
@@ -14,7 +18,7 @@ const Page: NextPage = () => {
     maxHeight: "calc(100vh - 64px - 56px)"
   }}>
     <div style={{overflowX: "hidden", overflowY: "auto"}}>
-      <MessageDetail messages={MockMessageContent}/>
+      <MessageDetail messages={MockMessageContent} messageId={messageId}/>
     </div>
     
     <footer style={{
@@ -51,4 +55,6 @@ const Page: NextPage = () => {
   );
 };
 
-export default Page;
+export default function P({ params }: { params: { messageId: string } }) {
+  return <Page messageId={params.messageId} />;
+}

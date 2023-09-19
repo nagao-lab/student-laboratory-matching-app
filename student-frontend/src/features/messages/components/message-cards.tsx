@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 // TODO メッセージ一覧ページ : MessageCardsコンポーネント用のPropsを定義
 
 type Props = {
+  messageID: string;
   messages: Message[];
 };
 

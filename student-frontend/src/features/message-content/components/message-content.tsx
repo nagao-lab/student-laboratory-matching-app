@@ -8,20 +8,18 @@
 
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import { Message } from "../mock/message-content";
-import { useParams } from "next/navigation"
 
 type Props = {
+    messageId: string;
     messages: Message[];
 };
 
-export const MessageDetail = ({ messages }: Props) => {
-    const param = useParams();
-
-
+export const MessageDetail = ({ messages, messageId }: Props) => {
+    
 
     const messageContents = messages.filter(
     (messageContent) => {
-        return messageContent.studentLaboratory.id === +param.messageId
+        return messageContent.studentLaboratory.id === +messageId
     }
     );
     
