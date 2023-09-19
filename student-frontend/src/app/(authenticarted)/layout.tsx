@@ -4,6 +4,8 @@ import { Box, AppBar, Toolbar, Typography, IconButton} from "@mui/material";
 import {AccountCircle, Message} from '@mui/icons-material';
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@/lib/apollo/index';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   // TODO 共通化ヘッダー : MuiのAppBarコンポーネントを配置してください
@@ -13,6 +15,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   return(
     <>
+      <ApolloProvider client={client}>
       <Box>
         <AppBar position="static">
           <Toolbar>
@@ -59,6 +62,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </AppBar>
       </Box>
       {children}
+      </ApolloProvider>
     </>
   );
 };
