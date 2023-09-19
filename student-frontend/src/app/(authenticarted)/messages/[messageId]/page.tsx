@@ -1,59 +1,26 @@
-// TODO メッセージ詳細ページ（mock） : MessageContentコンポーントをレンダリングする
-
-import { Box, TextField, Button } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
+import { Box } from "@mui/material";
 import { NextPage } from "next";
-import { MessageDetail } from "@/features/message-content/components/message-content";
-import { MockMessageContent } from "@/features/message-content/mock/message-content";
+import { MessageContent, MessageFooter, MockMessageContent } from "@/features/message-content";
 
-const Page: NextPage = () => {
+
+type Props = {
+  params: {messageId: string}
+};
+
+const Page: NextPage<Props> = ({ params }: Props) => {
   return (
-    <Box
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        maxHeight: "calc(100vh - 64px - 56px)",
-      }}
-    >
-      <div style={{ overflowX: "hidden", overflowY: "auto" }}>
-        <MessageDetail messages={MockMessageContent} />
-      </div>
-
-      <footer
-        style={{
-          display: "grid",
-          gridTemplateRows: "1fr 20px",
-          gridTemplateColumns: "20px 1fr 70px",
-          position: "fixed",
-          bottom: 0,
-          zIndex: 1,
-          width: "100%",
-          backgroundColor: "white",
-        }}
-      >
-        <TextField
-          id="standard-multiline-flexible"
-          // label="Multiline"
-          placeholder="メッセージを入力"
-          multiline
-          // maxRows={4}
-          variant="standard"
-          style={{
-            // gridRow: 1,
-            gridColumn: 2,
-          }}
-        />
-        <Button
-          style={{
-            // gridRow: 1,
-            gridColumn: 3,
-          }}
-        >
-          <SendIcon />
-        </Button>
-      </footer>
+  <Box style={{
+    display: "flex",
+    flexDirection: "column",
+    maxHeight: "calc(100vh - 64px - 56px)"
+  }}>
+    <Box style={{overflowX: "hidden", overflowY: "auto"}}>
+      <MessageContent messages={MockMessageContent} messageId={params.messageId}/>
     </Box>
+    <MessageFooter/>
+  
+  </Box>
   );
 };
 
-export default Page;
+export default Page
