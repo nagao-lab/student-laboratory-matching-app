@@ -2,19 +2,25 @@ import {
   LaboratoryDetail,
   MockLaboratories,
 } from "@/features/laboratory-detail";
+import { LaboratoryDetailProvider } from "@/features/laboratory-detail/providers/laboratory-detail";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
 type Props = {
-  params: { laboratoryId: string } 
+  params: { laboratoryId: string };
 };
 
-const Page: NextPage<Props> = ({params}: Props)=> {
+const Page: NextPage<Props> = ({ params }: Props) => {
   return (
-    <Stack>
-      <LaboratoryDetail laboratoryId={params.laboratoryId} laboratories={MockLaboratories}/>
-    </Stack>
+    <LaboratoryDetailProvider>
+      <Stack>
+        <LaboratoryDetail
+          laboratoryId={params.laboratoryId}
+          laboratories={MockLaboratories}
+        />
+      </Stack>
+    </LaboratoryDetailProvider>
   );
 };
 
-export default Page
+export default Page;
