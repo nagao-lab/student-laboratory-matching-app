@@ -12,6 +12,7 @@ import (
 type IStudentService interface {
 	GetStudentById(id string) (*model.Student, error)
 	Signup(model.NewStudent) (*model.Student, error)
+	Login(string, string) (*model.Student, error)
 }
 
 type studentService struct {
@@ -60,4 +61,19 @@ func (ss *studentService) Signup(newStudent model.NewStudent) (*model.Student, e
 
 	fmt.Println("signup: Success!")
 	return model.ConvertStudent(&student), nil
+}
+
+func (ss *studentService) Login(email, password string) (*model.Student, error) {
+	var record db.Student
+	err := ss.db.Where("Email LIKE ?", email).Find(&record).Error
+	if err != nil {
+		return nil, fmt.Errorf("Login failed: the email or password is incorrect")
+	}
+
+	if ok := tools.CheckPassword(record.Password, password); !ok {
+		return nil, fmt.Errorf("Login failed: the email or password is incorrect")
+	}
+
+	fmt.Println("Login success")
+	return model.ConvertStudent(&record), nil
 }
