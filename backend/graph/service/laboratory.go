@@ -9,6 +9,7 @@ import (
 
 type ILaboratoryService interface {
 	GetLaboratoryById(id string) (*model.Laboratory, error)
+	GetLaboratoryList(id []string) ([]*model.Laboratory, error)
 }
 
 type laboratoryService struct {
@@ -32,6 +33,21 @@ func (ls *laboratoryService) GetLaboratoryById(id string) (*model.Laboratory, er
 		return nil, err
 	}
 	laboratory.NumLikes = int(numLikes)
+
+	return laboratory, nil
+}
+
+func (ls *laboratoryService) GetLaboratoryList(id []string) ([]*model.Laboratory, error) {
+	var records []db.Laboratory
+	err := ls.db.Where("id in ?", id).Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+
+	laboratory := []*model.Laboratory{}
+	for _, record := range records {
+		laboratory = append(laboratory, model.ConvertLaboratory(&record))
+	}
 
 	return laboratory, nil
 }

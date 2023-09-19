@@ -69,6 +69,7 @@ type University {
 type Query {
   student(id: ID!): Student!
   laboratory(id: ID!): Laboratory!
+  showLaboratoryList(id: [ID!]!): [Laboratory!]!
 }
 
 input NewStudent {
