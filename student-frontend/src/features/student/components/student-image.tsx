@@ -1,8 +1,9 @@
 // TODO 学生ページ :
 
-import { Box, Card, CardContent, Stack, Typography, IconButton, Avatar} from "@mui/material";
+import { Box, Card, CardContent, Stack, Typography, IconButton } from "@mui/material";
 import { Edit } from '@mui/icons-material';
 import { Student } from "../mock/student";
+import Image from 'next/image'
 
 type Props = {
     student: Student;
@@ -20,8 +21,10 @@ type Props = {
                             <Edit sx={{ fontSize: 14 }} />
                         </IconButton>
                     </Stack>
-                    <Avatar src="image.jpg"
-                    sx={{ width: 150, height: 150 }}
+                    <Image src="/yaruki_moeru_man.png"
+                    width={150}
+                    height={150} 
+                    alt="Picture of the author"
                     />
                     <Typography align="center" fontSize={25}>{student.name}</Typography>
                 </CardContent>   
