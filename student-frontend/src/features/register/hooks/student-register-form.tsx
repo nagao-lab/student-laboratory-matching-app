@@ -20,7 +20,7 @@ export const useRegisterForm = () => {
   const handleSubmit = () => {
     if (
       !name ||
-      !gender ||
+      gender===null ||
       !university ||
       !grade ||
       !comment ||
@@ -29,9 +29,22 @@ export const useRegisterForm = () => {
       !prefecture ||
       !gpa ||
       !imageUrl ||
-      !status
+      status===null
     ) {
       window.alert("すべての項目を入力してください");
+      console.log({
+        name: name,
+        gender: gender,
+        university: university,
+        grade: grade,
+        comment: comment,
+        interest: interest,
+        birthday: birthday?.toString(),
+        prefecture: prefecture,
+        gpa: gpa,
+        image_url: imageUrl,
+        status: status,
+      });      
       return;
     }
 
