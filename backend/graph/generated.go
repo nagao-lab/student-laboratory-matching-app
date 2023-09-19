@@ -82,15 +82,10 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-<<<<<<< HEAD
 		GetMatchableLaboratories func(childComplexity int, id string) int
+		GetMatchableStudents     func(childComplexity int, id string) int
 		Laboratory               func(childComplexity int, id string) int
 		Student                  func(childComplexity int, id string) int
-=======
-		GetMatchableStudents func(childComplexity int, id string) int
-		Laboratory           func(childComplexity int, id string) int
-		Student              func(childComplexity int, id string) int
->>>>>>> master
 	}
 
 	Student struct {
@@ -313,30 +308,29 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Prefecture.Name(childComplexity), true
 
-<<<<<<< HEAD
 	case "Query.getMatchableLaboratories":
 		if e.complexity.Query.GetMatchableLaboratories == nil {
 			break
 		}
 
 		args, err := ec.field_Query_getMatchableLaboratories_args(context.TODO(), rawArgs)
-=======
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GetMatchableLaboratories(childComplexity, args["id"].(string)), true
+
 	case "Query.getMatchableStudents":
 		if e.complexity.Query.GetMatchableStudents == nil {
 			break
 		}
 
 		args, err := ec.field_Query_getMatchableStudents_args(context.TODO(), rawArgs)
->>>>>>> master
 		if err != nil {
 			return 0, false
 		}
 
-<<<<<<< HEAD
-		return e.complexity.Query.GetMatchableLaboratories(childComplexity, args["id"].(string)), true
-=======
 		return e.complexity.Query.GetMatchableStudents(childComplexity, args["id"].(string)), true
->>>>>>> master
 
 	case "Query.laboratory":
 		if e.complexity.Query.Laboratory == nil {
@@ -695,11 +689,22 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 	return args, nil
 }
 
-<<<<<<< HEAD
 func (ec *executionContext) field_Query_getMatchableLaboratories_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-=======
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_getMatchableStudents_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
->>>>>>> master
 	var err error
 	args := map[string]interface{}{}
 	var arg0 string
