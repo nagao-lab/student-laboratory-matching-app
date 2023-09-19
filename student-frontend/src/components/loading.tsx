@@ -1,6 +1,6 @@
 "use client";
 
-import { CircularProgress, Box, Container, CssBaseline, Typography } from "@mui/material";
+import { LinearProgress, Box, Container, CssBaseline, Typography } from "@mui/material";
 
 export const Loading = () => {
     return (
@@ -14,7 +14,7 @@ export const Loading = () => {
               alignItems: "center",
             }}
           >
-            <CircularProgress />
+            <LinearProgress />
             <Typography component="h1" variant="h5">
               Loading
             </Typography>
