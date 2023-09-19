@@ -13,20 +13,20 @@ enum MatchStatus {
 
 type Student {
   id: ID!
-	uid: String!
-	name: String!
-	email: String!
-	password: String!
-	imageUrl: String!
-	gender: Gender!
-	birthday: Time!
-	universityId: ID!
-	grade: Int!
-	gpa: Float!
-	prefectureId: ID!
-	comment: String!
-	interest: String!
-	status: MatchStatus!
+  uid: String!
+  name: String!
+  email: String!
+  password: String!
+  imageUrl: String!
+  gender: Gender!
+  birthday: Time!
+  universityId: ID!
+  grade: Int!
+  gpa: Float!
+  prefectureId: ID!
+  comment: String!
+  interest: String!
+  status: MatchStatus!
 }
 
 type Query {

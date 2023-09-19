@@ -1,0 +1,6 @@
+query Student($id: ID!) {
+  student(id: $id) {
+    id
+    name
+  }
+}
