@@ -68,6 +68,7 @@ type University {
 
 type Query {
   student(id: ID!): Student!
+  getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
 }
 

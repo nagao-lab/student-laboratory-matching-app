@@ -34,6 +34,11 @@ func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student,
 	return r.Srv.GetStudentById(id)
 }
 
+// GetMatchableStudents is the resolver for the getMatchableStudents field.
+func (r *queryResolver) GetMatchableStudents(ctx context.Context, id string) ([]*model.Student, error) {
+	return r.Srv.GetMatchableStudents(id)
+}
+
 // Laboratory is the resolver for the laboratory field.
 func (r *queryResolver) Laboratory(ctx context.Context, id string) (*model.Laboratory, error) {
 	return r.Srv.GetLaboratoryById(id)

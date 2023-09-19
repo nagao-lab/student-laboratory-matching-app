@@ -13,6 +13,7 @@ type IStudentService interface {
 	GetStudentById(id string) (*model.Student, error)
 	Signup(model.NewStudent) (*model.Student, error)
 	Login(string, string) (*model.Student, error)
+	GetMatchableStudents(string) ([]*model.Student, error)
 }
 
 type studentService struct {
@@ -76,4 +77,40 @@ func (ss *studentService) Login(email, password string) (*model.Student, error) 
 
 	fmt.Println("Login success")
 	return model.ConvertStudent(&record), nil
+}
+
+func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.Student, error) {
+	// すでにいいねのアクションがある(非NULLかつBRANKでない)学生は除く
+	var excludedStudentIds []int
+	err := ss.db.Table("student_laboratories").
+		Select("DISTINCT student_id").
+		Where("laboratory_id = ?", laboratoryId).
+		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBrank).
+		Pluck("student_id", &excludedStudentIds).Error
+	if err != nil {
+		fmt.Println("GetMatchableStudents failed: cannot get studentIds", err)
+	}
+
+	// 学生の一覧を新しい順に取得する
+	var records []db.Student
+	err = ss.db.Table("students").
+		Where("id NOT IN (?)", excludedStudentIds).
+		Order("created_at DESC").
+		Find(&records).Error
+	if err != nil {
+		return nil, fmt.Errorf("GetMatchableStudents failed: cannot get students")
+	}
+
+	students := []*model.Student{}
+	for _, record := range records {
+		student := model.ConvertStudent(&record)
+		if student.IsNotActive() {
+			// students.status はsignup時 NULL であることを考慮して上のSQLクエリで絞らず、
+			// ここで INACTIVE でないかを判定する
+			// TODO: signup時に ACTIVE で挿入するか要検討
+			continue
+		}
+		students = append(students, student)
+	}
+	return students, nil
 }

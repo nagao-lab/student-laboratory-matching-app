@@ -36,3 +36,7 @@ func ConvertStudent(student *db.Student) *Student {
 		Status:     MatchStatusName[student.Status],
 	}
 }
+
+func (student Student) IsNotActive() bool {
+	return student.Status == MatchStatusInactive
+}
