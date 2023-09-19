@@ -4,6 +4,7 @@
 import { Box } from "@mui/material";
 import { useParams } from "next/navigation"
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
+import { Loading } from "../../../components/loading";
 import { Laboratory } from "../mock/laboratory-detail";
 
 type Props = {
