@@ -21,9 +21,10 @@ type Props = {
                             <Edit sx={{ fontSize: 14 }} />
                         </IconButton>
                     </Stack>
-                    <Image src="/yaruki_moeru_man.png"
-                    width={150}
-                    height={150} 
+                    <Image src={student.image_url}
+                    width={100}
+                    height={100} 
+                    style={{ objectFit: 'contain' }}
                     alt="Picture of the author"
                     />
                     <Typography align="center" fontSize={25}>{student.name}</Typography>

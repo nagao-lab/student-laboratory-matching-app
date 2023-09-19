@@ -1,6 +1,6 @@
 // TODO 学生ページ :
 
-import { Box, Card, CardContent, Typography, Stack, IconButton } from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, IconButton, Divider } from "@mui/material";
 import { Edit } from '@mui/icons-material';
 import { Student } from "../mock/student";
 
@@ -9,6 +9,11 @@ type Props = {
   };
 
   export const StudentDetail = ({ student }: Props) => {
+    var gender=(student.gender==0)?'男性':
+        (student.gender==1)?'女性':
+        'その他';
+    var nowStatus=(student.status)?'研究室探し中':'研究室を探していない';
+
     return (
         <Box>
             <Card>
@@ -20,9 +25,10 @@ type Props = {
                                 <Edit sx={{ fontSize: 14 }} />
                             </IconButton>
                         </Stack>
+                        <Divider />
                         <Stack>
                             <Typography fontWeight="light">性別</Typography>
-                            <Typography variant="h6">{student.gender}</Typography>
+                            <Typography variant="h6">{gender}</Typography>
                         </Stack> 
                         <Stack>
                             <Typography fontWeight="light">大学</Typography>
@@ -38,11 +44,11 @@ type Props = {
                         </Stack>
                         <Stack>
                             <Typography fontWeight="light">ステータス</Typography>
-                            <Typography variant="h6">{student.status}</Typography>
+                            <Typography variant="h6">{nowStatus}</Typography>
                         </Stack>
                         <Stack>
                             <Typography fontWeight="light">GPA</Typography>
-                            <Typography variant="h6">{student.gpa}</Typography>
+                            <Typography variant="h6">{student.gpa} /{student.university.max_gpa}</Typography>
                         </Stack>
                         <Stack>
                             <Typography fontWeight="light">居住地</Typography>

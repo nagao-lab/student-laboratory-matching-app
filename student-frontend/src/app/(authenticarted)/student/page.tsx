@@ -11,14 +11,16 @@ import { MockStudents } from "@/features/student";
 import { Box, Stack } from "@mui/material";
 import { NextPage } from "next";
 
+var num = 0;
+
 const Page: NextPage = () => {
   return <Box>
     <Stack direction="row" spacing={1.0}>
-      <StudentImage student={MockStudents[0]}/>
-      <Stack sx={{ width: 1 }}>
-        <StudentDetail student={MockStudents[0]}/>
-        <StudentComment student={MockStudents[0]}/>
-        <StudentInterest student={MockStudents[0]}/>
+      <StudentImage student={MockStudents[num]}/>
+      <Stack sx={{ width: 1 }} spacing={1.0}>
+        <StudentDetail student={MockStudents[num]}/>
+        <StudentComment student={MockStudents[num]}/>
+        <StudentInterest student={MockStudents[num]}/>
       </Stack>
     </Stack>
   </Box>

@@ -1,7 +1,7 @@
 // TODO 学生ページ : StudentCommentコンポーネントを作成する
 // TODO 学生ページ : StudentCommentコンポーネント用のPropsの型を定義する
 // TODO 学生ページ : StudentCommentではMuiのBoxを利用する
-import { Box, Card, CardContent, Stack, Typography, IconButton } from "@mui/material";
+import { Box, Card, CardContent, Stack, Typography, IconButton, Divider } from "@mui/material";
 import { Edit } from '@mui/icons-material';
 import { Student } from "../mock/student"
 
@@ -21,6 +21,7 @@ type Props = {
                                 <Edit sx={{ fontSize: 14 }} />
                             </IconButton>
                         </Stack>
+                        <Divider />
                         {student.comment}
                     </Stack>
                 </CardContent>
