@@ -5,12 +5,16 @@ import {
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
-const Page: NextPage = () => {
+type Props = {
+  params: { laboratoryId: string } 
+};
+
+const Page: NextPage<Props> = ({params}: Props)=> {
   return (
     <Stack>
-      <LaboratoryDetail laboratories={MockLaboratories} />
+      <LaboratoryDetail laboratoryId={params.laboratoryId} laboratories={MockLaboratories}/>
     </Stack>
   );
 };
 
-export default Page;
+export default Page

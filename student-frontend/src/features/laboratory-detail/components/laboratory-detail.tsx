@@ -2,22 +2,22 @@
 'use client';
 
 import { Box } from "@mui/material";
-import { useParams } from "next/navigation"
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
-import { Loading } from "../../../components/loading";
 import { Laboratory } from "../mock/laboratory-detail";
 
 type Props = {
     laboratories: Laboratory[];
+    laboratoryId: string;
   };
 
 // 研究室詳細ページ（mock）
-export const LaboratoryDetail = ({ laboratories }: Props) => {
+export const LaboratoryDetail = ({ laboratories, laboratoryId }: Props) => {
   
-  const param = useParams()
+  console.log(laboratoryId);
+
   const laboratory = laboratories.filter(
     (laboratory) => {
-      return laboratory.ID === +param.laboratoryId
+      return laboratory.ID === +laboratoryId
     }
   )[0];
 
