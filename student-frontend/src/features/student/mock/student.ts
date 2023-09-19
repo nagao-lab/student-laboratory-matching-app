@@ -12,13 +12,14 @@ export type Student = {
     comment: string;
     prefecture: Prefecture;
     gpa: number;
-    gender: string;
+    gender: number;
     birthday: string;
     image_url: string;
 };
 
 export type University = {
     name: string
+    max_gpa: number
 }
 
 export type Major = {
@@ -36,9 +37,10 @@ export const MockStudents: Student[] = [
         name: '学生1',
         email: 'email1',
         password: 'password1',
-        status: 0,
+        status: 1,
         university: {
-            name: '大学1'
+            name: '大学1',
+            max_gpa: 4.0
         },
         grade: 3,
         major: {
@@ -50,9 +52,9 @@ export const MockStudents: Student[] = [
             name: '都道府県1'
         },
         gpa: 3.0,
-        gender: '性別1',
+        gender: 0,
         birthday: '1111/11/11',
-        image_url: 'https://image.lgtmoon.dev/222483',
+        image_url: '/yaruki_moeru_man.png',
     },
     {
         name: '学生2',
@@ -60,7 +62,8 @@ export const MockStudents: Student[] = [
         password: 'password2',
         status: 0,
         university: {
-            name: '大学2'
+            name: '大学2' ,
+            max_gpa: 4.5
         },
         grade: 4,
         major: {
@@ -72,9 +75,9 @@ export const MockStudents: Student[] = [
             name: '都道府県2'
         },
         gpa: 4.5,
-        gender: '性別2',
+        gender: 1,
         birthday: '2222/22/22',
-        image_url: 'https://image.lgtmoon.dev/222486',
+        image_url: '/kakedasu_suit5.png',
     },
     {
         name: '学生3',
@@ -82,7 +85,8 @@ export const MockStudents: Student[] = [
         password: 'password3',
         status: 0,
         university: {
-            name: '大学3'
+            name: '大学3' ,
+            max_gpa: 4.5
         },
         grade: 2,
         major: {
@@ -94,8 +98,8 @@ export const MockStudents: Student[] = [
             name: '都道府県3'
         },
         gpa: 3.5,
-        gender: '性別3',
+        gender: 2,
         birthday: '3333/33/33',
-        image_url: 'https://image.lgtmoon.dev/222487',
+        image_url: '/salaryman_money.png',
     }
 ];
