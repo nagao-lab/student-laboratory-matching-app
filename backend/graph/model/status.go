@@ -13,14 +13,14 @@ var MatchStatusName = map[int]MatchStatus{
 type LikeStatus string
 
 const (
-	LikeStatusBrank          LikeStatus = "BRANK"
+	LikeStatusBlank          LikeStatus = "BLANK"
 	LikeStatusFromStudent    LikeStatus = "LIKE_FROM_STUDENT"
 	LikeStatusFromLaboratory LikeStatus = "LIKE_FROM_LABORATORY"
 	LikeStatusFromBoth       LikeStatus = "LIKE_FROM_BOTH"
 )
 
 const (
-	LikeStatusIndexBrank          int = iota // 0
+	LikeStatusIndexBlank          int = iota // 0
 	LikeStatusIndexFromStudent               // 1
 	LikeStatusIndexFromLaboratory            // 2
 	LikeStatusIndexFromBoth                  // 3

@@ -11,6 +11,7 @@ import (
 type ILaboratoryService interface {
 	GetLaboratoryById(id string) (*model.Laboratory, error)
 	GetMatchableLaboratories(string) ([]*model.Laboratory, error)
+	ThumbsupToLaboratory(string, string) (*model.Laboratory, error)
 }
 
 type laboratoryService struct {
@@ -39,12 +40,12 @@ func (ls *laboratoryService) GetLaboratoryById(id string) (*model.Laboratory, er
 }
 
 func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*model.Laboratory, error) {
-	// すでにいいねのアクションがある(非NULLかつBRANKでない)研究室は除く
+	// すでにいいねのアクションがある(非NULLかつBLANKでない)研究室は除く
 	var excludedLaboratoryIds []int
 	err := ls.db.Table("student_laboratories").
 		Select("DISTINCT laboratory_id").
 		Where("student_id = ?", studentId).
-		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBrank).
+		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBlank).
 		Pluck("laboratory_id", &excludedLaboratoryIds).Error
 	if err != nil {
 		fmt.Println("GetMatchableLaboratories failed: cannot get laboratoryIds", err)
