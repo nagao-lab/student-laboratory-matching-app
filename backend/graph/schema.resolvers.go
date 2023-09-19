@@ -39,9 +39,9 @@ func (r *queryResolver) Laboratory(ctx context.Context, id string) (*model.Labor
 	return r.Srv.GetLaboratoryById(id)
 }
 
-// ShowLaboratoryList is the resolver for the showLaboratoryList field.
-func (r *queryResolver) ShowLaboratoryList(ctx context.Context, id []string) ([]*model.Laboratory, error) {
-	return r.Srv.GetLaboratoryList(id)
+// GetMatchableLaboratories is the resolver for the getMatchableLaboratories field.
+func (r *queryResolver) GetMatchableLaboratories(ctx context.Context, id string) ([]*model.Laboratory, error) {
+	return r.Srv.GetMatchableLaboratories(id)
 }
 
 // University is the resolver for the university field.

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 
@@ -9,7 +10,7 @@ import (
 
 type ILaboratoryService interface {
 	GetLaboratoryById(id string) (*model.Laboratory, error)
-	GetLaboratoryList(id []string) ([]*model.Laboratory, error)
+	GetMatchableLaboratories(string) ([]*model.Laboratory, error)
 }
 
 type laboratoryService struct {
@@ -37,17 +38,38 @@ func (ls *laboratoryService) GetLaboratoryById(id string) (*model.Laboratory, er
 	return laboratory, nil
 }
 
-func (ls *laboratoryService) GetLaboratoryList(id []string) ([]*model.Laboratory, error) {
-	var records []db.Laboratory
-	err := ls.db.Where("id in ?", id).Find(&records).Error
+func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*model.Laboratory, error) {
+	// すでにいいねのアクションがある(非NULLかつBRANKでない)研究室は除く
+	var excludedLaboratoryIds []int
+	err := ls.db.Table("student_laboratories").
+		Select("DISTINCT laboratory_id").
+		Where("student_id = ?", studentId).
+		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBrank).
+		Pluck("laboratory_id", &excludedLaboratoryIds).Error
 	if err != nil {
-		return nil, err
+		fmt.Println("GetMatchableLaboratories failed: cannot get laboratoryIds", err)
 	}
 
-	laboratory := []*model.Laboratory{}
+	// 研究室の一覧を新しい順に取得する
+	var records []db.Laboratory
+	err = ls.db.Table("laboratories").
+		Where("id NOT IN (?)", excludedLaboratoryIds).
+		Order("created_at DESC").
+		Find(&records).Error
+	if err != nil {
+		return nil, fmt.Errorf("GetMatchableLaboratories failed: cannot get laboratories")
+	}
+
+	laboratories := []*model.Laboratory{}
 	for _, record := range records {
-		laboratory = append(laboratory, model.ConvertLaboratory(&record))
+		laboratory := model.ConvertLaboratory(&record)
+		if laboratory.IsNotActive() {
+			// students.status はsignup時 NULL であることを考慮して上のSQLクエリで絞らず、
+			// ここで INACTIVE でないかを判定する
+			// TODO: signup時に ACTIVE で挿入するか要検討
+			continue
+		}
+		laboratories = append(laboratories, laboratory)
 	}
-
-	return laboratory, nil
+	return laboratories, nil
 }

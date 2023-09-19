@@ -69,7 +69,7 @@ type University {
 type Query {
   student(id: ID!): Student!
   laboratory(id: ID!): Laboratory!
-  showLaboratoryList(id: [ID!]!): [Laboratory!]!
+  getMatchableLaboratories(id: ID!): [Laboratory]
 }
 
 input NewStudent {
