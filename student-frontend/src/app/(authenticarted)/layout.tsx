@@ -1,67 +1,64 @@
-'use client';
+"use client";
 
-import { Box, AppBar, Toolbar, Typography, IconButton} from "@mui/material";
-import {AccountCircle, Message} from '@mui/icons-material';
-import { ReactNode } from "react";
+import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import { AccountCircle, Message } from "@mui/icons-material";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "@/lib/apollo/index";
 import { useRouter } from "next/navigation";
-import { ApolloProvider } from '@apollo/client';
-import { client } from '@/lib/apollo/index';
+import { ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  // TODO 共通化ヘッダー : MuiのAppBarコンポーネントを配置してください
-  // TODO 共通化ヘッダー : AppBarを上部固定にしてください
-  // TODO 共通化ヘッダー : AppBarの中にタイトルを入れてください
-  // TODO 共通化ヘッダー : タイトルをクリックするとルートディレクトリに遷移するようにしてください
   const router = useRouter();
-  return(
+  return (
     <>
       <ApolloProvider client={client}>
-      <Box>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography    
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}> 
-              タイトル
-            </Typography>
+        <Box>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="/"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                タイトル
+              </Typography>
 
-            <Box sx={{ flexGrow: 1 }} />
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={() => router.push("/messages")}
-              color="inherit"
-            >
-              <Message />
-            </IconButton>
+              <Box sx={{ flexGrow: 1 }} />
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={() => router.push("/messages")}
+                color="inherit"
+              >
+                <Message />
+              </IconButton>
 
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={() => router.push("/student")}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      </Box>
-      {children}
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={() => router.push("/student")}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        </Box>
+        {children}
       </ApolloProvider>
     </>
   );

@@ -65,7 +65,7 @@ export const MockLaboratories: Laboratory[] = [
         image_url: 'https://image.lgtmoon.dev/222486',
     },
     {
-        name: '学生3',
+        name: '研究室3',
         email: 'email3',
         password: 'password3',
         status: 0,
@@ -76,7 +76,7 @@ export const MockLaboratories: Laboratory[] = [
         major: {
             name: '専攻3'
         },
-        comment: '研究室3',
+        comment: 'コメント3',
         prefecture: {
             name: '都道府県3'
         },

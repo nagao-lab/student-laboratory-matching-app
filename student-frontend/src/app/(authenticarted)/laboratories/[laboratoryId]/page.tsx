@@ -1,8 +1,8 @@
-import { LaboratoryDetail, MockLaboratories } from "@/features/laboratory-detail";
+import {
+  LaboratoryDetail,
+  MockLaboratories,
+} from "@/features/laboratory-detail";
 import { Stack } from "@mui/material";
-
-// 研究室詳細ページ（mock）
-
 import { NextPage } from "next";
 
 type Props = {
@@ -14,7 +14,7 @@ const Page: NextPage<Props> = ({params}: Props)=> {
     <Stack>
       <LaboratoryDetail laboratoryId={params.laboratoryId} laboratories={MockLaboratories}/>
     </Stack>
-  )
+  );
 };
 
 export default Page

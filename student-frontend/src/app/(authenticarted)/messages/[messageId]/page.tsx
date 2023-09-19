@@ -1,5 +1,3 @@
-// TODO メッセージ詳細ページ（mock） : MessageContentコンポーントをレンダリングする
-
 import { Box } from "@mui/material";
 import { NextPage } from "next";
 import { MessageContent, MessageFooter, MockMessageContent } from "@/features/message-content";
