@@ -1,4 +1,3 @@
-
 'use client';
 
 // TODO メッセージ詳細ページ（mock） : コンポーネントのPropsの型を定義する
@@ -10,6 +9,7 @@ import { Box, CardContent, Typography } from "@mui/material";
 import { Message } from "../mock/message-content";
 
 type Props = {
+
     messageId: string;
     messages: Message[];
 };
@@ -87,3 +87,23 @@ export const MessageContent = ({ messages, messageId }: Props) => {
     )
 }
 
+
+            <Typography
+              variant="body2"
+              component="p"
+              style={
+                message.from == 0
+                  ? {
+                      textAlign: "right",
+                    }
+                  : undefined
+              }
+            >
+              {message.createdAt}
+            </Typography>
+          </CardContent>
+        </Box>
+      ))}
+    </Box>
+  );
+};

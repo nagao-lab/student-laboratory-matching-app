@@ -10,9 +10,11 @@ import {
   Button,
   Grid,
   TextField,
+  Avatar
 } from "@mui/material";
 import { getOptions } from "../options/student-register-form";
 import { DatePicker } from "@mui/x-date-pickers";
+import EditIcon from '@mui/icons-material/Edit';
 
 export const StudentRegisterForm = () => {
   const {
@@ -33,6 +35,7 @@ export const StudentRegisterForm = () => {
   const {
     genderOptions,
     universityOptions,
+    majorOptions,
     gradeOptions,
     prefectureOptions,
     statusOptions,
@@ -52,6 +55,9 @@ export const StudentRegisterForm = () => {
             alignItems: "center",
           }}
         >
+          <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
+            <EditIcon />
+          </Avatar>          
           <Typography component="h1" variant="h5">
             学生登録
           </Typography>
@@ -64,7 +70,6 @@ export const StudentRegisterForm = () => {
                   fullWidth
                   onChange={(e) => {
                     setName(e.target.value);
-                    console.log(e.target.value);
                   }}
                 />
               </Grid>
@@ -72,6 +77,11 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={genderOptions}
                   id="gender"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )} 
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -89,10 +99,37 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={universityOptions}
                   id="university"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )} 
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="大学"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) =>
+                    setUniversity(selectedOption?.value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={majorOptions}
+                  id="major"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )} 
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="専攻"
                       variant="outlined"
                       fullWidth
                     />
@@ -107,6 +144,11 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={gradeOptions}
                   id="grade"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )} 
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -153,6 +195,11 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={prefectureOptions}
                   id="prefecture"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )} 
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -189,6 +236,11 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={statusOptions}
                   id="status"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )} 
                   renderInput={(params) => (
                     <TextField
                       {...params}

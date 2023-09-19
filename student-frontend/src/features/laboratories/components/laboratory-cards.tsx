@@ -25,7 +25,8 @@ export const LaboratoryCards = ({ laboratories, filterVal, toggle  }: Props) => 
     <Box>
       {laboratories
       .filter((laboratory) => {
-        const isMatch = laboratory.name.indexOf(filterVal) !== -1 || laboratory.university.name.indexOf(filterVal) !== -1 || laboratory.major.name.indexOf(filterVal) !== -1;
+        let isMatch = laboratory.name.indexOf(filterVal) !== -1 || laboratory.university.name.indexOf(filterVal) !== -1;
+        isMatch = isMatch || laboratory.major.some((major) => major.name.indexOf(filterVal) !== -1);
         return isMatch
       })
       .filter((laboratory) => {
@@ -35,11 +36,14 @@ export const LaboratoryCards = ({ laboratories, filterVal, toggle  }: Props) => 
       .map((laboratory, i) => (
         <Card key={i} sx={{ minWidth: 275, m: 5}}>
           <CardContent>
-            <Typography variant="h5" component="div">
-              {laboratory.university.name} {laboratory.major.name}
+            <Typography sx={{ mb: 0.75 }} variant="h4" component="div">
+              {laboratory.university.name}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {laboratory.name}
+            <Typography sx={{ mb: 0.75 }} variant="h5" component="div">
+              {laboratory.name}
+            </Typography>
+            <Typography sx={{ mb: 0.75 }} color="text.secondary">
+            {laboratory.major.map((item)=>(item.name + " "))}
            </Typography>
            
           </CardContent>
