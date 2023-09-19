@@ -14,7 +14,6 @@ const IsLoginContext = createContext<IsLoginContext>({
 
 export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLogin, setIsLogin] = useState(false);
-  console.log(isLogin);
 
   return (
     <IsLoginContext.Provider value={{ isLogin, setIsLogin }}>
