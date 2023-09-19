@@ -21,3 +21,7 @@ func ConvertLaboratory(laboratory *db.Laboratory) *Laboratory {
 		Password:      laboratory.Password,
 	}
 }
+
+func (laboratory Laboratory) IsNotActive() bool {
+	return laboratory.Status == MatchStatusInactive
+}

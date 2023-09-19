@@ -70,6 +70,7 @@ type Query {
   student(id: ID!): Student!
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
+  getMatchableLaboratories(id: ID!): [Laboratory]
 }
 
 input NewStudent {
