@@ -5,12 +5,18 @@ import { Stack } from "@mui/material";
 
 import { NextPage } from "next";
 
-const Page: NextPage = () => {
+type Props = {
+  laboratoryId: string;
+};
+
+const Page: NextPage<Props> = ({ laboratoryId }) => {
   return (
     <Stack>
-      <LaboratoryDetail laboratories={MockLaboratories}/>
+      <LaboratoryDetail laboratoryId={laboratoryId} laboratories={MockLaboratories}/>
     </Stack>
   )
 };
 
-export default Page;
+export default function P({ params }: { params: { laboratoryId: string } }) {
+  return <Page laboratoryId={params.laboratoryId} />;
+}
