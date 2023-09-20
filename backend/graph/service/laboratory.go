@@ -11,7 +11,6 @@ import (
 type ILaboratoryService interface {
 	GetLaboratoryById(id string) (*model.Laboratory, error)
 	GetMatchableLaboratories(string) ([]*model.Laboratory, error)
-	ThumbsupToLaboratory(string, string) (*model.Laboratory, error)
 }
 
 type laboratoryService struct {

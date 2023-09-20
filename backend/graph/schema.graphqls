@@ -11,6 +11,13 @@ enum MatchStatus {
   INACTIVE
 }
 
+enum LikeStatus {
+	BLANK
+	LIKE_FROM_STUDENT
+	LIKE_FROM_LABORATORY
+	LIKE_FROM_BOTH
+}
+
 type Student {
 	id: ID!
 	uid: String!
@@ -66,6 +73,13 @@ type University {
   maxGpa: Float!
 }
 
+type Student_Laboratory {
+	id: ID!
+	student: Student!
+	laboratory: Laboratory!
+	status: LikeStatus!
+}
+
 type Query {
   student(id: ID!): Student!
   getMatchableStudents(id: ID!): [Student]
@@ -81,4 +95,5 @@ input NewStudent {
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
+  thumbsupToLaboratory(id: ID!): Student_Laboratory!
 }

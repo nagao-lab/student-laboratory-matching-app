@@ -29,6 +29,11 @@ func (r *mutationResolver) LoginStudent(ctx context.Context, email string, passw
 	return r.Srv.Login(email, password)
 }
 
+// ThumbsupToLaboratory is the resolver for the thumbsupToLaboratory field.
+func (r *mutationResolver) ThumbsupToLaboratory(ctx context.Context, id string) (*model.StudentLaboratory, error) {
+	return r.Srv.ThumbsupToLaboratory(id)
+}
+
 // Student is the resolver for the student field.
 func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student, error) {
 	return r.Srv.GetStudentById(id)
