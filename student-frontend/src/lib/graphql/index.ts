@@ -146,7 +146,6 @@ export type StudentQueryVariables = Exact<{
 
 export type StudentQuery = { student: { id: string, name: string } };
 
-
 export const LaboratoryDocument = gql`
     query Laboratory($id: ID!) {
   laboratory(id: $id) {

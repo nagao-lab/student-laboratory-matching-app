@@ -1,0 +1,5 @@
+mutation loginStudent($email: String!, $password: String!){
+    loginStudent(email: $email, password: $password){
+        id
+    }
+}
