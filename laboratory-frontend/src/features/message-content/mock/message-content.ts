@@ -9,6 +9,7 @@ export type Message = {
 }
 
 export type StudentLaboratory = {
+    id: number;
     student: Student;
     laboratory: Laboratory;
 }
@@ -25,6 +26,7 @@ export type Laboratory = {
 export const MockMessageContent: Message[] = [
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -38,6 +40,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -51,6 +54,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -64,6 +68,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -77,6 +82,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -90,6 +96,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -103,6 +110,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -116,6 +124,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
