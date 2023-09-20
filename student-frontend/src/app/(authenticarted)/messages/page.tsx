@@ -5,11 +5,11 @@ import { NextPage } from "next";
 
 const Page: NextPage = () => {
   return (
-    <MessagesProvider>
+    // <MessagesProvider>
       <Stack>
         <MessageCards messages={MockMessages} />
       </Stack>
-    </MessagesProvider>
+    // </MessagesProvider>
   );
 };
 

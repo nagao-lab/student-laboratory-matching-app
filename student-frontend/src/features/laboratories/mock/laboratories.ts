@@ -8,6 +8,7 @@ export type Laboratory = {
   university: University;
   major: Major[];
   studentLaboratory: StudentLaboratory;
+  imageUrl: string;
 };
 
 export type University = {
@@ -41,7 +42,9 @@ export const MockLaboratories: Laboratory[] = [
     ],
     studentLaboratory: {
       status: 'BLANK'
-    }
+    },
+    imageUrl: 'l_URL'
+
   },
   {
     ID: 2,
@@ -57,6 +60,7 @@ export const MockLaboratories: Laboratory[] = [
 
     studentLaboratory: {
       status: 'LIKE_FROM_BOTH'
-    }
+    },
+    imageUrl: 'l_URL'
   }
 ];

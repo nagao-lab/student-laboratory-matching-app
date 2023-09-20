@@ -3,10 +3,12 @@
 "use client";
 
 import {
+  Avatar,
   Box,
   Card,
   CardContent,
   CardActionArea,
+  Grid,
   Typography,
 } from "@mui/material";
 import { Message } from "../mock/messages";
@@ -26,22 +28,26 @@ export const MessageCards = ({ messages }: Props) => {
           <CardActionArea>
             <CardContent
               onClick={() => {
-                console.log(
-                  message.university.name,
-                  "の",
-                  message.laboratory.name,
-                  "が押下された"
-                );
-
                 router.push(`/messages/${message.studentLaboratory.id}`);
               }}
             >
-              <Typography variant="h5" component="div">
-                {message.university.name}
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {message.laboratory.name}
-              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={1}>
+                  <Avatar
+                    alt={message.laboratory.name}
+                    src={message.laboratory.imageUrl}
+                    sx={{ width: 120, height: 120 }}
+                  />  
+                </Grid>
+                <Grid item xs={12} md={11}>
+                  <Typography sx={{ marginTop: 1 }} variant="h3" component="div">
+                    {message.laboratory.name}
+                  </Typography>
+                  <Typography sx={{ marginTop: 1 }} variant="h5" component="div">
+                    {message.laboratory.university.name}
+                  </Typography>
+                </Grid>
+              </Grid>
             </CardContent>
           </CardActionArea>
         </Card>
