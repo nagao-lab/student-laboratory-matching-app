@@ -72,19 +72,12 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-<<<<<<< HEAD
 		CreateMajor          func(childComplexity int, name string) int
+		CreateUniversity     func(childComplexity int, input model.NewUniversity) int
 		LoginStudent         func(childComplexity int, email string, password string) int
 		SignupStudent        func(childComplexity int, input model.NewStudent) int
 		ThumbsupToLaboratory func(childComplexity int, id string) int
 		UpdateStudent        func(childComplexity int, input model.NewStudentFields) int
-=======
-		CreateMajor      func(childComplexity int, name string) int
-		CreateUniversity func(childComplexity int, input model.NewUniversity) int
-		LoginStudent     func(childComplexity int, email string, password string) int
-		SignupStudent    func(childComplexity int, input model.NewStudent) int
-		UpdateStudent    func(childComplexity int, input model.NewStudentFields) int
->>>>>>> master
 	}
 
 	Prefecture struct {
