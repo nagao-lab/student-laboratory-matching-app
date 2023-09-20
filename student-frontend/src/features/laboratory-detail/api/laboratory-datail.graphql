@@ -1,18 +1,21 @@
-query  Laboratory($id: ID!) {
-    laboratory(id: $id) {
-        id
-        university {
-            name
-        }
+query Laboratory($id: ID!) {
+  laboratory(id: $id) {
+    id
+    university {
+      name
+      prefecture {
         name
-        professor
-        numStudents
-        comment
-        status
-        imageUrl
-        laboratoryUrl
-        majors {
-            name
-        }
+      }
     }
+    name
+    professor
+    numStudents
+    comment
+    status
+    imageUrl
+    laboratoryUrl
+    majors {
+      name
+    }
+  }
 }
