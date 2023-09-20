@@ -24,17 +24,46 @@ export enum Gender {
   Other = 'OTHER'
 }
 
+export type Laboratory = {
+  comment: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  imageUrl: Scalars['String']['output'];
+  laboratoryUrl: Scalars['String']['output'];
+  majors: Array<Major>;
+  name: Scalars['String']['output'];
+  numLikes: Scalars['Int']['output'];
+  numStudents: Scalars['Int']['output'];
+  password: Scalars['String']['output'];
+  professor: Scalars['String']['output'];
+  status: MatchStatus;
+  uid: Scalars['String']['output'];
+  university: University;
+};
+
+export type Major = {
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
 export enum MatchStatus {
   Active = 'ACTIVE',
   Inactive = 'INACTIVE'
 }
 
 export type Mutation = {
-  createStudent: Student;
+  loginStudent: Student;
+  signupStudent: Student;
 };
 
 
-export type MutationCreateStudentArgs = {
+export type MutationLoginStudentArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
+export type MutationSignupStudentArgs = {
   input: NewStudent;
 };
 
@@ -43,8 +72,31 @@ export type NewStudent = {
   password: Scalars['String']['input'];
 };
 
+export type Prefecture = {
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type Query = {
+  getMatchableLaboratories?: Maybe<Array<Maybe<Laboratory>>>;
+  getMatchableStudents?: Maybe<Array<Maybe<Student>>>;
+  laboratory: Laboratory;
   student: Student;
+};
+
+
+export type QueryGetMatchableLaboratoriesArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetMatchableStudentsArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryLaboratoryArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -62,13 +114,31 @@ export type Student = {
   id: Scalars['ID']['output'];
   imageUrl: Scalars['String']['output'];
   interest: Scalars['String']['output'];
+  majors: Array<Major>;
   name: Scalars['String']['output'];
+  numLikes: Scalars['Int']['output'];
   password: Scalars['String']['output'];
-  prefectureId: Scalars['ID']['output'];
+  prefecture: Prefecture;
   status: MatchStatus;
   uid: Scalars['String']['output'];
-  universityId: Scalars['ID']['output'];
+  university: University;
 };
+
+export type University = {
+  address: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  maxGpa: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  prefecture: Prefecture;
+};
+
+export type LoginStudentMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+
+export type LoginStudentMutation = { loginStudent: { id: string } };
 
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -78,6 +148,40 @@ export type StudentQueryVariables = Exact<{
 export type StudentQuery = { student: { id: string, name: string } };
 
 
+export const LoginStudentDocument = gql`
+    mutation loginStudent($email: String!, $password: String!) {
+  loginStudent(email: $email, password: $password) {
+    id
+  }
+}
+    `;
+export type LoginStudentMutationFn = Apollo.MutationFunction<LoginStudentMutation, LoginStudentMutationVariables>;
+
+/**
+ * __useLoginStudentMutation__
+ *
+ * To run a mutation, you first call `useLoginStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginStudentMutation, { data, loading, error }] = useLoginStudentMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions<LoginStudentMutation, LoginStudentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginStudentMutation, LoginStudentMutationVariables>(LoginStudentDocument, options);
+      }
+export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
+export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
+export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
