@@ -1,9 +1,9 @@
-
 'use client';
 
 import { Box } from "@mui/material";
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
 import { Laboratory } from "../mock/laboratory-detail";
+import { useLaboratoryDetail } from "../hooks/laboratory-datail";
 
 type Props = {
     laboratories: Laboratory[];
@@ -13,13 +13,17 @@ type Props = {
 // 研究室詳細ページ（mock）
 export const LaboratoryDetail = ({ laboratories, laboratoryId }: Props) => {
   
-  console.log(laboratoryId);
+  // const {data, loading, error} = useLaboratoryDetail();
 
   const laboratory = laboratories.filter(
     (laboratory) => {
       return laboratory.ID === +laboratoryId
     }
   )[0];
+
+  // if(loading){
+  //   return <Box>loading...</Box>
+  // }
 
   return( 
     <>
