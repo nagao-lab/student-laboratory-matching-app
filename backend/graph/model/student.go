@@ -17,6 +17,12 @@ var genderName = map[int]Gender{
 	OTHER:  GenderOther,
 }
 
+var GenderIndex = map[Gender]int{
+	GenderMale:   MALE,
+	GenderFemale: FEMALE,
+	GenderOther:  OTHER,
+}
+
 func ConvertStudent(student *db.Student) *Student {
 	return &Student{
 		ID:         strconv.FormatUint(uint64(student.ID), 10),

@@ -92,8 +92,31 @@ input NewStudent {
   password: String!
 }
 
+input NewStudentFields {
+	id: ID!
+	name: String
+	email: String
+	password: String
+	imageUrl: String
+	gender: Gender
+	birthday: Time
+	universityId: ID
+	grade: Int
+	gpa: Float
+	prefectureId: ID
+	comment: String
+	interest: String
+	status: MatchStatus
+	majorIds: [ID]
+}
+
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
+<<<<<<< HEAD
   thumbsupToLaboratory(id: ID!): Student_Laboratory!
+=======
+  updateStudent(input: NewStudentFields!): Student!
+  createMajor(name: String!): Major!
+>>>>>>> master
 }

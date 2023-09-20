@@ -11,9 +11,11 @@ import (
 )
 
 func NewDB() *gorm.DB {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalln(err)
+	if os.Getenv("GO_ENV") == "dev" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	DSN := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
