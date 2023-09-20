@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 
 type Props = {
-  status: string;
+  status: string | undefined;
 };
 
 export const ChangeStatusToIconButton = ({ status }: Props) => {

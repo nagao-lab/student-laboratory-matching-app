@@ -1,6 +1,6 @@
 "use client";
 
-import { useIsLoginContext } from "@/features/login-form/providers/login-form";
+import { useAuthContext } from "@/providers/auth";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -17,17 +17,17 @@ export const MessageContentProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { isLogin } = useIsLoginContext();
+  const { userId } = useAuthContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isLogin) {
+    if (userId === "") {
       router.push("/login");
     } else {
       setLoading(false);
     }
-  }, [isLogin, router]);
+  }, [userId, router]);
 
   return (
     <MessageContentContext.Provider value={{ loading }}>
