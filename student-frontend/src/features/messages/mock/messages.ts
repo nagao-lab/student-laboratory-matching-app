@@ -3,7 +3,6 @@
 export type Message = {
     studentLaboratory: StudentLaboratory;
     laboratory: Laboratory;
-    university: University;
   };
   
   export type StudentLaboratory = {
@@ -11,14 +10,16 @@ export type Message = {
     id: number;
   }
 
-  export type Laboratory = {
-    name: string;
-  };
-
   export type University = {
     name: string
   }
-  
+
+  export type Laboratory = {
+    name: string;
+    imageUrl: string;
+    university: University;
+  };
+
   // TODO メッセージ一覧ページ用mockデータ : mockデータを定義し,exportする
   
   export const MockMessages: Message[] = [
@@ -28,11 +29,12 @@ export type Message = {
         id: 1
       },
       laboratory: {
-        name: '研究室1'
+        name: '研究室1',
+        imageUrl: 'l_URL',
+        university: {
+          name: '大学1'
+        } 
       },
-      university: {
-        name: '大学1'
-      }
     },
     {
       studentLaboratory: {
@@ -40,11 +42,12 @@ export type Message = {
         id: 2
       },
       laboratory: {
-        name: '研究室2'
-      },
-      university: {
-        name: '大学2'
-      },
+        name: '研究室2',
+        imageUrl: 'l_URL',
+        university: {
+          name: '大学2'
+        }
+      }
     }
   ];
   

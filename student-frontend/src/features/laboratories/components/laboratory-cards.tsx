@@ -1,11 +1,13 @@
 "use client";
 
 import {
+  Avatar, 
   Box,
   Button,
   Card,
   CardContent,
   CardActions,
+  Grid, 
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -44,21 +46,34 @@ export const LaboratoryCards = ({ laboratories, filterVal, toggle }: Props) => {
           return isDisp;
         })
         .map((laboratory, i) => (
-          <Card key={i} sx={{ minWidth: 275, m: 5 }}>
+          <Card key={i} sx={{ minWidth: 275, m: 5 }} >
             <CardContent>
-              <Typography sx={{ mb: 0.75 }} variant="h4" component="div">
-                {laboratory.university.name}
-              </Typography>
-              <Typography sx={{ mb: 0.75 }} variant="h5" component="div">
-                {laboratory.name}
-              </Typography>
-              <Typography sx={{ mb: 0.75 }} color="text.secondary">
+              <Grid container spacing={2}>
+              <Grid item xs={12} md={2}>
+                <Avatar
+                  alt={laboratory.name}
+                  src={laboratory.imageUrl}
+                  sx={{ width: 120, height: 120 }}
+                />  
+              </Grid>
+              <Grid item xs={12} md={10}>
+                <Typography sx={{ marginTop: 1 }} variant="h3" component="div">
+                  {laboratory.university.name}
+                </Typography>
+                <Typography sx={{ marginTop: 1 }} variant="h5" component="div">
+                  {laboratory.name}
+                </Typography>
+                <Typography sx={{ marginTop: 1 }} color="text.secondary">
                 {laboratory.major.map((item) => item.name + " ")}
               </Typography>
+              </Grid>
+            </Grid>
+              
             </CardContent>
             <CardActions>
               <Button
-                size="small"
+                sx={{ marginLeft: 1 }}
+                size="medium"
                 onClick={() => {
                   console.log(laboratory.studentLaboratory.status);
                   router.push(`/laboratories/${laboratory.ID}`);
