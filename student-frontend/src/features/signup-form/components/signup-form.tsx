@@ -1,4 +1,5 @@
-// TODO signupページ（リクエストなし）: SignUpFormコンポーネントを作成
+'use client'
+
 import { 
     Avatar, 
     Box, 

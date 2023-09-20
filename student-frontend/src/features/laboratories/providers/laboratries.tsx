@@ -1,3 +1,5 @@
+'use client'
+
 import { useIsLoginContext } from "@/features/login-form/providers/login-form";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
