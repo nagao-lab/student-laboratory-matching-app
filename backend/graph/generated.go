@@ -72,12 +72,13 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateMajor          func(childComplexity int, name string) int
-		CreateUniversity     func(childComplexity int, input model.NewUniversity) int
-		LoginStudent         func(childComplexity int, email string, password string) int
-		SignupStudent        func(childComplexity int, input model.NewStudent) int
-		ThumbsupToLaboratory func(childComplexity int, id string) int
-		UpdateStudent        func(childComplexity int, input model.NewStudentFields) int
+		CreateMajor            func(childComplexity int, name string) int
+		CreateUniversity       func(childComplexity int, input model.NewUniversity) int
+		LoginStudent           func(childComplexity int, email string, password string) int
+		SignupStudent          func(childComplexity int, input model.NewStudent) int
+		ThumbsdownToLaboratory func(childComplexity int, id string) int
+		ThumbsupToLaboratory   func(childComplexity int, id string) int
+		UpdateStudent          func(childComplexity int, input model.NewStudentFields) int
 	}
 
 	Prefecture struct {
@@ -137,6 +138,7 @@ type MutationResolver interface {
 	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
 	LoginStudent(ctx context.Context, email string, password string) (*model.Student, error)
 	ThumbsupToLaboratory(ctx context.Context, id string) (*model.StudentLaboratory, error)
+	ThumbsdownToLaboratory(ctx context.Context, id string) (*model.StudentLaboratory, error)
 	UpdateStudent(ctx context.Context, input model.NewStudentFields) (*model.Student, error)
 	CreateMajor(ctx context.Context, name string) (*model.Major, error)
 	CreateUniversity(ctx context.Context, input model.NewUniversity) (*model.University, error)
@@ -332,6 +334,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.SignupStudent(childComplexity, args["input"].(model.NewStudent)), true
+
+	case "Mutation.thumbsdownToLaboratory":
+		if e.complexity.Mutation.ThumbsdownToLaboratory == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_thumbsdownToLaboratory_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ThumbsdownToLaboratory(childComplexity, args["id"].(string)), true
 
 	case "Mutation.thumbsupToLaboratory":
 		if e.complexity.Mutation.ThumbsupToLaboratory == nil {
@@ -794,6 +808,21 @@ func (ec *executionContext) field_Mutation_signupStudent_args(ctx context.Contex
 		}
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_thumbsdownToLaboratory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -1903,6 +1932,71 @@ func (ec *executionContext) fieldContext_Mutation_thumbsupToLaboratory(ctx conte
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_thumbsupToLaboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_thumbsdownToLaboratory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_thumbsdownToLaboratory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().ThumbsdownToLaboratory(rctx, fc.Args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.StudentLaboratory)
+	fc.Result = res
+	return ec.marshalNStudent_Laboratory2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐStudentLaboratory(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_thumbsdownToLaboratory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Student_Laboratory_id(ctx, field)
+			case "student":
+				return ec.fieldContext_Student_Laboratory_student(ctx, field)
+			case "laboratory":
+				return ec.fieldContext_Student_Laboratory_laboratory(ctx, field)
+			case "status":
+				return ec.fieldContext_Student_Laboratory_status(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Student_Laboratory", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_thumbsdownToLaboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -6207,6 +6301,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "thumbsupToLaboratory":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_thumbsupToLaboratory(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "thumbsdownToLaboratory":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_thumbsdownToLaboratory(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++

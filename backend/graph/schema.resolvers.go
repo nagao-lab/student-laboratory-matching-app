@@ -34,6 +34,11 @@ func (r *mutationResolver) ThumbsupToLaboratory(ctx context.Context, id string) 
 	return r.Srv.ThumbsupToLaboratory(id)
 }
 
+// ThumbsdownToLaboratory is the resolver for the thumbsdownToLaboratory field.
+func (r *mutationResolver) ThumbsdownToLaboratory(ctx context.Context, id string) (*model.StudentLaboratory, error) {
+	return r.Srv.ThumbsdownToLaboratory(id)
+}
+
 // UpdateStudent is the resolver for the updateStudent field.
 func (r *mutationResolver) UpdateStudent(ctx context.Context, input model.NewStudentFields) (*model.Student, error) {
 	return r.Srv.UpdateStudent(input)
