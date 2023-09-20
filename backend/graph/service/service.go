@@ -9,6 +9,7 @@ type IService interface {
 	IUniversityService
 	IPrefectureService
 	IMajorService
+	IMessageService
 }
 
 type services struct {
@@ -18,6 +19,7 @@ type services struct {
 	*univeristyService
 	*prefectureService
 	*majorService
+	*messageService
 }
 
 func NewService(db *gorm.DB) IService {
@@ -28,5 +30,6 @@ func NewService(db *gorm.DB) IService {
 		univeristyService:        &univeristyService{db: db},
 		prefectureService:        &prefectureService{db: db},
 		majorService:             &majorService{db: db},
+		messageService:           &messageService{db: db},
 	}
 }

@@ -31,9 +31,24 @@ type Major struct {
 	Name string `json:"name"`
 }
 
+type Message struct {
+	MessageID     string      `json:"messageId"`
+	MessageRoomID string      `json:"messageRoomId"`
+	From          MessageFrom `json:"from"`
+	Content       string      `json:"content"`
+	CreatedAt     time.Time   `json:"createdAt"`
+	UpdatedAt     time.Time   `json:"updatedAt"`
+}
+
 type NewLike struct {
 	StudentID    string `json:"studentId"`
 	LaboratoryID string `json:"laboratoryId"`
+}
+
+type NewMessage struct {
+	MessageRoomID string      `json:"messageRoomId"`
+	From          MessageFrom `json:"from"`
+	Content       string      `json:"content"`
 }
 
 type NewStudent struct {
@@ -225,5 +240,46 @@ func (e *MatchStatus) UnmarshalGQL(v interface{}) error {
 }
 
 func (e MatchStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type MessageFrom string
+
+const (
+	MessageFromStudnet    MessageFrom = "STUDNET"
+	MessageFromLaboratory MessageFrom = "LABORATORY"
+)
+
+var AllMessageFrom = []MessageFrom{
+	MessageFromStudnet,
+	MessageFromLaboratory,
+}
+
+func (e MessageFrom) IsValid() bool {
+	switch e {
+	case MessageFromStudnet, MessageFromLaboratory:
+		return true
+	}
+	return false
+}
+
+func (e MessageFrom) String() string {
+	return string(e)
+}
+
+func (e *MessageFrom) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = MessageFrom(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid MessageFrom", str)
+	}
+	return nil
+}
+
+func (e MessageFrom) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
