@@ -72,16 +72,11 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-<<<<<<< HEAD
+		CreateMajor          func(childComplexity int, name string) int
 		LoginStudent         func(childComplexity int, email string, password string) int
 		SignupStudent        func(childComplexity int, input model.NewStudent) int
 		ThumbsupToLaboratory func(childComplexity int, id string) int
-=======
-		CreateMajor   func(childComplexity int, name string) int
-		LoginStudent  func(childComplexity int, email string, password string) int
-		SignupStudent func(childComplexity int, input model.NewStudent) int
-		UpdateStudent func(childComplexity int, input model.NewStudentFields) int
->>>>>>> master
+		UpdateStudent        func(childComplexity int, input model.NewStudentFields) int
 	}
 
 	Prefecture struct {
@@ -140,12 +135,9 @@ type LaboratoryResolver interface {
 type MutationResolver interface {
 	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
 	LoginStudent(ctx context.Context, email string, password string) (*model.Student, error)
-<<<<<<< HEAD
 	ThumbsupToLaboratory(ctx context.Context, id string) (*model.StudentLaboratory, error)
-=======
 	UpdateStudent(ctx context.Context, input model.NewStudentFields) (*model.Student, error)
 	CreateMajor(ctx context.Context, name string) (*model.Major, error)
->>>>>>> master
 }
 type QueryResolver interface {
 	Student(ctx context.Context, id string) (*model.Student, error)
@@ -327,30 +319,29 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.SignupStudent(childComplexity, args["input"].(model.NewStudent)), true
 
-<<<<<<< HEAD
 	case "Mutation.thumbsupToLaboratory":
 		if e.complexity.Mutation.ThumbsupToLaboratory == nil {
 			break
 		}
 
 		args, err := ec.field_Mutation_thumbsupToLaboratory_args(context.TODO(), rawArgs)
-=======
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ThumbsupToLaboratory(childComplexity, args["id"].(string)), true
+
 	case "Mutation.updateStudent":
 		if e.complexity.Mutation.UpdateStudent == nil {
 			break
 		}
 
 		args, err := ec.field_Mutation_updateStudent_args(context.TODO(), rawArgs)
->>>>>>> master
 		if err != nil {
 			return 0, false
 		}
 
-<<<<<<< HEAD
-		return e.complexity.Mutation.ThumbsupToLaboratory(childComplexity, args["id"].(string)), true
-=======
 		return e.complexity.Mutation.UpdateStudent(childComplexity, args["input"].(model.NewStudentFields)), true
->>>>>>> master
 
 	case "Prefecture.id":
 		if e.complexity.Prefecture.ID == nil {
@@ -776,7 +767,6 @@ func (ec *executionContext) field_Mutation_signupStudent_args(ctx context.Contex
 	return args, nil
 }
 
-<<<<<<< HEAD
 func (ec *executionContext) field_Mutation_thumbsupToLaboratory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -784,7 +774,14 @@ func (ec *executionContext) field_Mutation_thumbsupToLaboratory_args(ctx context
 	if tmp, ok := rawArgs["id"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
 		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-=======
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_updateStudent_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -792,16 +789,11 @@ func (ec *executionContext) field_Mutation_updateStudent_args(ctx context.Contex
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNNewStudentFields2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐNewStudentFields(ctx, tmp)
->>>>>>> master
 		if err != nil {
 			return nil, err
 		}
 	}
-<<<<<<< HEAD
-	args["id"] = arg0
-=======
 	args["input"] = arg0
->>>>>>> master
 	return args, nil
 }
 
@@ -1822,13 +1814,8 @@ func (ec *executionContext) fieldContext_Mutation_loginStudent(ctx context.Conte
 	return fc, nil
 }
 
-<<<<<<< HEAD
 func (ec *executionContext) _Mutation_thumbsupToLaboratory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_thumbsupToLaboratory(ctx, field)
-=======
-func (ec *executionContext) _Mutation_updateStudent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_updateStudent(ctx, field)
->>>>>>> master
 	if err != nil {
 		return graphql.Null
 	}
@@ -1841,11 +1828,7 @@ func (ec *executionContext) _Mutation_updateStudent(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-<<<<<<< HEAD
 		return ec.resolvers.Mutation().ThumbsupToLaboratory(rctx, fc.Args["id"].(string))
-=======
-		return ec.resolvers.Mutation().UpdateStudent(rctx, fc.Args["input"].(model.NewStudentFields))
->>>>>>> master
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1857,21 +1840,12 @@ func (ec *executionContext) _Mutation_updateStudent(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-<<<<<<< HEAD
 	res := resTmp.(*model.StudentLaboratory)
 	fc.Result = res
 	return ec.marshalNStudent_Laboratory2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐStudentLaboratory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_thumbsupToLaboratory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-=======
-	res := resTmp.(*model.Student)
-	fc.Result = res
-	return ec.marshalNStudent2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐStudent(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Mutation_updateStudent(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
->>>>>>> master
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -1880,7 +1854,6 @@ func (ec *executionContext) fieldContext_Mutation_updateStudent(ctx context.Cont
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-<<<<<<< HEAD
 				return ec.fieldContext_Student_Laboratory_id(ctx, field)
 			case "student":
 				return ec.fieldContext_Student_Laboratory_student(ctx, field)
@@ -1890,7 +1863,62 @@ func (ec *executionContext) fieldContext_Mutation_updateStudent(ctx context.Cont
 				return ec.fieldContext_Student_Laboratory_status(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Student_Laboratory", field.Name)
-=======
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_thumbsupToLaboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_updateStudent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_updateStudent(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateStudent(rctx, fc.Args["input"].(model.NewStudentFields))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Student)
+	fc.Result = res
+	return ec.marshalNStudent2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐStudent(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_updateStudent(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
 				return ec.fieldContext_Student_id(ctx, field)
 			case "uid":
 				return ec.fieldContext_Student_uid(ctx, field)
@@ -1926,7 +1954,6 @@ func (ec *executionContext) fieldContext_Mutation_updateStudent(ctx context.Cont
 				return ec.fieldContext_Student_numLikes(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Student", field.Name)
->>>>>>> master
 		},
 	}
 	defer func() {
@@ -1936,9 +1963,6 @@ func (ec *executionContext) fieldContext_Mutation_updateStudent(ctx context.Cont
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-<<<<<<< HEAD
-	if fc.Args, err = ec.field_Mutation_thumbsupToLaboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-=======
 	if fc.Args, err = ec.field_Mutation_updateStudent_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
@@ -2001,7 +2025,6 @@ func (ec *executionContext) fieldContext_Mutation_createMajor(ctx context.Contex
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_createMajor_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
->>>>>>> master
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -6028,11 +6051,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-<<<<<<< HEAD
 		case "thumbsupToLaboratory":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_thumbsupToLaboratory(ctx, field)
-=======
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "updateStudent":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_updateStudent(ctx, field)
@@ -6043,7 +6068,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "createMajor":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createMajor(ctx, field)
->>>>>>> master
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -7013,7 +7037,6 @@ func (ec *executionContext) marshalNLaboratory2ᚖstudentᚑlaboratoryᚑmatchin
 	return ec._Laboratory(ctx, sel, v)
 }
 
-<<<<<<< HEAD
 func (ec *executionContext) unmarshalNLikeStatus2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLikeStatus(ctx context.Context, v interface{}) (model.LikeStatus, error) {
 	var res model.LikeStatus
 	err := res.UnmarshalGQL(v)
@@ -7022,10 +7045,10 @@ func (ec *executionContext) unmarshalNLikeStatus2studentᚑlaboratoryᚑmatching
 
 func (ec *executionContext) marshalNLikeStatus2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLikeStatus(ctx context.Context, sel ast.SelectionSet, v model.LikeStatus) graphql.Marshaler {
 	return v
-=======
+}
+
 func (ec *executionContext) marshalNMajor2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMajor(ctx context.Context, sel ast.SelectionSet, v model.Major) graphql.Marshaler {
 	return ec._Major(ctx, sel, &v)
->>>>>>> master
 }
 
 func (ec *executionContext) marshalNMajor2ᚕᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMajorᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Major) graphql.Marshaler {

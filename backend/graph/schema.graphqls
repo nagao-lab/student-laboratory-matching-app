@@ -113,10 +113,7 @@ input NewStudentFields {
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
-<<<<<<< HEAD
   thumbsupToLaboratory(id: ID!): Student_Laboratory!
-=======
   updateStudent(input: NewStudentFields!): Student!
   createMajor(name: String!): Major!
->>>>>>> master
 }

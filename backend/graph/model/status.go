@@ -10,16 +10,11 @@ var MatchStatusName = map[int]MatchStatus{
 	ACTIVE:   MatchStatusActive,
 }
 
-<<<<<<< HEAD
-=======
 var MatchStatusIndex = map[MatchStatus]int{
 	MatchStatusInactive: INACTIVE,
 	MatchStatusActive:   ACTIVE,
 }
 
-type LikeStatus string
-
->>>>>>> master
 const (
 	LikeStatusIndexBlank          int = iota // 0
 	LikeStatusIndexFromStudent               // 1
