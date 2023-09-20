@@ -132,13 +132,12 @@ export type University = {
   prefecture: Prefecture;
 };
 
-export type LoginStudentMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-  password: Scalars['String']['input'];
+export type LaboratoryQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
 }>;
 
 
-export type LoginStudentMutation = { loginStudent: { id: string } };
+export type LaboratoryQuery = { laboratory: { id: string, name: string, professor: string, numStudents: number, comment: string, status: MatchStatus, imageUrl: string, laboratoryUrl: string, university: { name: string }, majors: Array<{ name: string }> } };
 
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -147,41 +146,54 @@ export type StudentQueryVariables = Exact<{
 
 export type StudentQuery = { student: { id: string, name: string } };
 
-
-export const LoginStudentDocument = gql`
-    mutation loginStudent($email: String!, $password: String!) {
-  loginStudent(email: $email, password: $password) {
+export const LaboratoryDocument = gql`
+    query Laboratory($id: ID!) {
+  laboratory(id: $id) {
     id
+    university {
+      name
+    }
+    name
+    professor
+    numStudents
+    comment
+    status
+    imageUrl
+    laboratoryUrl
+    majors {
+      name
+    }
   }
 }
     `;
-export type LoginStudentMutationFn = Apollo.MutationFunction<LoginStudentMutation, LoginStudentMutationVariables>;
 
 /**
- * __useLoginStudentMutation__
+ * __useLaboratoryQuery__
  *
- * To run a mutation, you first call `useLoginStudentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLoginStudentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
+ * To run a query within a React component, call `useLaboratoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLaboratoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const [loginStudentMutation, { data, loading, error }] = useLoginStudentMutation({
+ * const { data, loading, error } = useLaboratoryQuery({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions<LoginStudentMutation, LoginStudentMutationVariables>) {
+export function useLaboratoryQuery(baseOptions: Apollo.QueryHookOptions<LaboratoryQuery, LaboratoryQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginStudentMutation, LoginStudentMutationVariables>(LoginStudentDocument, options);
+        return Apollo.useQuery<LaboratoryQuery, LaboratoryQueryVariables>(LaboratoryDocument, options);
       }
-export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
-export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
-export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
+export function useLaboratoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LaboratoryQuery, LaboratoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LaboratoryQuery, LaboratoryQueryVariables>(LaboratoryDocument, options);
+        }
+export type LaboratoryQueryHookResult = ReturnType<typeof useLaboratoryQuery>;
+export type LaboratoryLazyQueryHookResult = ReturnType<typeof useLaboratoryLazyQuery>;
+export type LaboratoryQueryResult = Apollo.QueryResult<LaboratoryQuery, LaboratoryQueryVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
