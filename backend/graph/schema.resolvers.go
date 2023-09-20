@@ -34,6 +34,11 @@ func (r *mutationResolver) UpdateStudent(ctx context.Context, input model.NewStu
 	return r.Srv.UpdateStudent(input)
 }
 
+// CreateMajor is the resolver for the createMajor field.
+func (r *mutationResolver) CreateMajor(ctx context.Context, name string) (*model.Major, error) {
+	return r.Srv.CreateMajor(name)
+}
+
 // CreateUniversity is the resolver for the createUniversity field.
 func (r *mutationResolver) CreateUniversity(ctx context.Context, input model.NewUniversity) (*model.University, error) {
 	return r.Srv.CreateUniversity(input)
