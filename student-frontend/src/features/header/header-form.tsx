@@ -1,3 +1,5 @@
+'use client'
+
 import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { AccountCircle, Message } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
