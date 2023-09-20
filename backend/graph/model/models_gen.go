@@ -36,6 +36,24 @@ type NewStudent struct {
 	Password string `json:"password"`
 }
 
+type NewStudentFields struct {
+	ID           string       `json:"id"`
+	Name         *string      `json:"name,omitempty"`
+	Email        *string      `json:"email,omitempty"`
+	Password     *string      `json:"password,omitempty"`
+	ImageURL     *string      `json:"imageUrl,omitempty"`
+	Gender       *Gender      `json:"gender,omitempty"`
+	Birthday     *time.Time   `json:"birthday,omitempty"`
+	UniversityID *string      `json:"universityId,omitempty"`
+	Grade        *int         `json:"grade,omitempty"`
+	Gpa          *float64     `json:"gpa,omitempty"`
+	PrefectureID *string      `json:"prefectureId,omitempty"`
+	Comment      *string      `json:"comment,omitempty"`
+	Interest     *string      `json:"interest,omitempty"`
+	Status       *MatchStatus `json:"status,omitempty"`
+	MajorIds     []*string    `json:"majorIds,omitempty"`
+}
+
 type Prefecture struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`

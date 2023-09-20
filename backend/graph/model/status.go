@@ -10,6 +10,11 @@ var MatchStatusName = map[int]MatchStatus{
 	ACTIVE:   MatchStatusActive,
 }
 
+var MatchStatusIndex = map[MatchStatus]int{
+	MatchStatusInactive: INACTIVE,
+	MatchStatusActive:   ACTIVE,
+}
+
 type LikeStatus string
 
 const (

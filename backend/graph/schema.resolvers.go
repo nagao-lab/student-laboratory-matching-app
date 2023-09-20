@@ -29,6 +29,11 @@ func (r *mutationResolver) LoginStudent(ctx context.Context, email string, passw
 	return r.Srv.Login(email, password)
 }
 
+// UpdateStudent is the resolver for the updateStudent field.
+func (r *mutationResolver) UpdateStudent(ctx context.Context, input model.NewStudentFields) (*model.Student, error) {
+	return r.Srv.UpdateStudent(input)
+}
+
 // Student is the resolver for the student field.
 func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student, error) {
 	return r.Srv.GetStudentById(id)

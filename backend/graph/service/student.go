@@ -2,11 +2,13 @@ package service
 
 import (
 	"fmt"
+	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type IStudentService interface {
@@ -14,6 +16,7 @@ type IStudentService interface {
 	Signup(model.NewStudent) (*model.Student, error)
 	Login(string, string) (*model.Student, error)
 	GetMatchableStudents(string) ([]*model.Student, error)
+	UpdateStudent(model.NewStudentFields) (*model.Student, error)
 }
 
 type studentService struct {
@@ -113,4 +116,83 @@ func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.St
 		students = append(students, student)
 	}
 	return students, nil
+}
+
+func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*model.Student, error) {
+	var student db.Student
+	err := ss.db.First(&student, newStudent.ID).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// 変更のあるカラムは上書きする (冗長だからどうにかしたい)
+	if newStudent.Name != nil {
+		student.Name = *newStudent.Name
+	}
+	if newStudent.Email != nil {
+		student.Email = *newStudent.Email
+	}
+	if newStudent.Password != nil {
+		student.Password = tools.HashPassword(*newStudent.Password)
+	}
+	if newStudent.ImageURL != nil {
+		// TODO: サーバーがS3にあげる？
+		student.ImageUrl = *newStudent.ImageURL
+	}
+	if newStudent.Gender != nil {
+		student.Gender = model.GenderIndex[*newStudent.Gender]
+	}
+	if newStudent.Birthday != nil {
+		student.Birthday = *newStudent.Birthday
+	}
+	if newStudent.UniversityID != nil {
+		universityIdUint64, _ := strconv.ParseUint(*newStudent.UniversityID, 10, 64)
+		student.UniversityID = uint(universityIdUint64)
+	}
+	if newStudent.Grade != nil {
+		student.Grade = *newStudent.Grade
+	}
+	if newStudent.Gpa != nil {
+		student.Gpa = *newStudent.Gpa
+	}
+	if newStudent.Comment != nil {
+		student.Comment = *newStudent.Comment
+	}
+	if newStudent.Interest != nil {
+		student.Interest = *newStudent.Interest
+	}
+	if newStudent.Status != nil {
+		student.Status = model.MatchStatusIndex[*newStudent.Status]
+	}
+	if newStudent.PrefectureID != nil {
+		prefectureIdUint64, _ := strconv.ParseUint(*newStudent.PrefectureID, 10, 64)
+		student.PrefectureID = uint(prefectureIdUint64)
+	}
+
+	err = ss.db.Save(&student).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if newStudent.MajorIds != nil {
+		// 現設計では初回設定のみ(つまりinsertのみ)をサポート
+		// TODO: updateするように変更
+		var studentMajors []*db.Student_Major
+		for _, majorId := range newStudent.MajorIds {
+			majorIdUint64, _ := strconv.ParseUint(*majorId, 10, 64)
+			studentMajors = append(studentMajors, &db.Student_Major{
+				StudentID: student.ID,
+				MajorID:   uint(majorIdUint64),
+			})
+		}
+		err = ss.db.Clauses(clause.OnConflict{DoNothing: true}).
+			// 主キー(studentId, majorId)の衝突時は既にレコードが存在するため無視する
+			Create(studentMajors).
+			Error
+		if err != nil {
+			fmt.Println("UpdateStudent failed: cannot create student_majors")
+		}
+	}
+
+	return model.ConvertStudent(&student), nil
 }
