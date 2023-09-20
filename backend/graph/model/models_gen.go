@@ -31,6 +31,11 @@ type Major struct {
 	Name string `json:"name"`
 }
 
+type NewLike struct {
+	StudentID    string `json:"studentId"`
+	LaboratoryID string `json:"laboratoryId"`
+}
+
 type NewStudent struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -84,13 +89,6 @@ type Student struct {
 	Status     MatchStatus `json:"status"`
 	Majors     []*Major    `json:"majors"`
 	NumLikes   int         `json:"numLikes"`
-}
-
-type StudentLaboratory struct {
-	ID         string      `json:"id"`
-	Student    *Student    `json:"student"`
-	Laboratory *Laboratory `json:"laboratory"`
-	Status     LikeStatus  `json:"status"`
 }
 
 type University struct {

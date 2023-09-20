@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 
@@ -8,49 +9,44 @@ import (
 )
 
 type IStudentLaboratoryService interface {
-	ThumbsupToLaboratory(id string) (*model.StudentLaboratory, error)
+	FavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
 }
 
 type studentLaboratoryService struct {
 	db *gorm.DB
 }
 
-func (sls *studentLaboratoryService) ThumbsupToLaboratory(id string) (*model.StudentLaboratory, error) {
-	var studentLaboratory db.Student_Laboratory
-	err := sls.db.Table("student_laboratories").
-		Find(&studentLaboratory, id).Error
+func (sls *studentLaboratoryService) FavoriteLaboratory(newLikeIds model.NewLike) (model.LikeStatus, error) {
+	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
+	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
 
-	if err != nil {
-		return nil, err
+	studentLaboratory := db.Student_Laboratory{
+		StudentID:    uint(studentIdUint64),
+		LaboratoryID: uint(laboratoryIdUint64),
 	}
 
-	// statusがBLANKの場合はLIKE_FROM_LABORATORYに更新する
-	if studentLaboratory.Status == model.LikeStatusIndex[model.LikeStatusBlank] {
-		err = sls.db.Table("student_laboratories").
-			Where("id = ?", id).
-			Update("status", model.LikeStatusIndex[model.LikeStatusLikeFromLaboratory]).Error
+	result := sls.db.Where(&studentLaboratory).Find(&studentLaboratory)
+	if err := result.Error; err != nil {
+		return "", err
+	}
 
-		if err != nil {
-			return nil, err
+	var likeStatus model.LikeStatus
+	if result.RowsAffected == 0 {
+		likeStatus = model.LikeStatusLikeFromStudent
+	} else {
+		switch studentLaboratory.Status {
+		case model.LikeStatusIndexBlank:
+			likeStatus = model.LikeStatusLikeFromStudent
+		case model.LikeStatusIndexFromLaboratory:
+			likeStatus = model.LikeStatusLikeFromBoth
 		}
 	}
 
-	// statusがLIKE_FROM_STUDENTの場合はLIKE_FROM_BOTHに更新する
-	if studentLaboratory.Status == model.LikeStatusIndex[model.LikeStatusLikeFromStudent] {
-		err = sls.db.Table("student_laboratories").
-			Where("id = ?", id).
-			Update("status", model.LikeStatusIndex[model.LikeStatusLikeFromBoth]).Error
-
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	err = sls.db.Table("student_laboratories").
-		Find(&studentLaboratory, id).Error
+	studentLaboratory.Status = model.LikeStatusIndex[likeStatus]
+	err := sls.db.Save(&studentLaboratory).Error
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return model.ConvertStudentLaboratory(&studentLaboratory), nil
+	return likeStatus, nil
 }

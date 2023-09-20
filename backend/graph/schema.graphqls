@@ -73,13 +73,6 @@ type University {
   maxGpa: Float!
 }
 
-type Student_Laboratory {
-	id: ID!
-	student: Student!
-	laboratory: Laboratory!
-	status: LikeStatus!
-}
-
 type Query {
   student(id: ID!): Student!
   getMatchableStudents(id: ID!): [Student]
@@ -117,10 +110,15 @@ input NewUniversity {
 	maxGpa: Float!
 }
 
+input NewLike {
+	studentId: ID!
+	laboratoryId: ID!
+}
+
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
-  thumbsupToLaboratory(id: ID!): Student_Laboratory!
+  favoriteLaboratory(input: NewLike!): LikeStatus!
   updateStudent(input: NewStudentFields!): Student!
   createMajor(name: String!): Major!
   createUniversity(input: NewUniversity!): University!
