@@ -140,6 +140,13 @@ export type LoginStudentMutationVariables = Exact<{
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
 
+export type SignupStudentMutationVariables = Exact<{
+  input: NewStudent;
+}>;
+
+
+export type SignupStudentMutation = { signupStudent: { id: string } };
+
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -182,6 +189,39 @@ export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions
 export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
 export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
 export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
+export const SignupStudentDocument = gql`
+    mutation signupStudent($input: NewStudent!) {
+  signupStudent(input: $input) {
+    id
+  }
+}
+    `;
+export type SignupStudentMutationFn = Apollo.MutationFunction<SignupStudentMutation, SignupStudentMutationVariables>;
+
+/**
+ * __useSignupStudentMutation__
+ *
+ * To run a mutation, you first call `useSignupStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignupStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signupStudentMutation, { data, loading, error }] = useSignupStudentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSignupStudentMutation(baseOptions?: Apollo.MutationHookOptions<SignupStudentMutation, SignupStudentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignupStudentMutation, SignupStudentMutationVariables>(SignupStudentDocument, options);
+      }
+export type SignupStudentMutationHookResult = ReturnType<typeof useSignupStudentMutation>;
+export type SignupStudentMutationResult = Apollo.MutationResult<SignupStudentMutation>;
+export type SignupStudentMutationOptions = Apollo.BaseMutationOptions<SignupStudentMutation, SignupStudentMutationVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
