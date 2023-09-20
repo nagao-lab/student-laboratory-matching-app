@@ -8,12 +8,24 @@ import (
 )
 
 type IMajorService interface {
+	CreateMajor(string) (*model.Major, error)
 	GetMajorByStudent(studentId string) ([]*model.Major, error)
 	GetMajorByLaboratory(string) ([]*model.Major, error)
 }
 
 type majorService struct {
 	db *gorm.DB
+}
+
+func (ms *majorService) CreateMajor(name string) (*model.Major, error) {
+	major := db.Major{
+		Name: name,
+	}
+	err := ms.db.Create(&major).Error
+	if err != nil {
+		return nil, err
+	}
+	return model.ConvertMajor(&major), nil
 }
 
 func (ms *majorService) GetMajorByStudent(studentId string) ([]*model.Major, error) {
