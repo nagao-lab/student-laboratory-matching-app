@@ -73,7 +73,7 @@ type Query {
   getMatchableLaboratories(id: ID!): [Laboratory]
 }
 
-input NewStudent {
+input NewStudent {  
   email: String!
   password: String!
 }

@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
 import { Laboratory } from "../mock/laboratories";
+import { useLaboratories } from "../hooks/laboratories";
 
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
 
@@ -22,6 +23,12 @@ type Props = {
 
 export const LaboratoryCards = ({ laboratories, filterVal, toggle }: Props) => {
   const router = useRouter();
+  const { data, loading, error } = useLaboratories();
+
+  if(loading){
+    return <Box>loading...</Box>
+  }
+
   return (
     <Box>
       {laboratories

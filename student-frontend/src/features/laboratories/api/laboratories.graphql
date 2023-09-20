@@ -1,0 +1,14 @@
+query Laboratories($id: ID!) {
+    getMatchableLaboratories(id: $id) {
+        id
+        university {
+            name
+        }
+        name
+        comment
+        majors {
+            name
+        }
+        status
+    }
+}
