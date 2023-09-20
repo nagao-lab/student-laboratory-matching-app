@@ -83,12 +83,12 @@ func (ss *studentService) Login(email, password string) (*model.Student, error) 
 }
 
 func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.Student, error) {
-	// すでにいいねのアクションがある(非NULLかつBRANKでない)学生は除く
+	// すでにいいねのアクションがある(非NULLかつBLANKでない)学生は除く
 	var excludedStudentIds []int
 	err := ss.db.Table("student_laboratories").
 		Select("DISTINCT student_id").
 		Where("laboratory_id = ?", laboratoryId).
-		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBrank).
+		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBlank).
 		Pluck("student_id", &excludedStudentIds).Error
 	if err != nil {
 		fmt.Println("GetMatchableStudents failed: cannot get studentIds", err)

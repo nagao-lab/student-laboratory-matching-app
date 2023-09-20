@@ -31,6 +31,11 @@ type Major struct {
 	Name string `json:"name"`
 }
 
+type NewLike struct {
+	StudentID    string `json:"studentId"`
+	LaboratoryID string `json:"laboratoryId"`
+}
+
 type NewStudent struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -134,6 +139,51 @@ func (e *Gender) UnmarshalGQL(v interface{}) error {
 }
 
 func (e Gender) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type LikeStatus string
+
+const (
+	LikeStatusBlank              LikeStatus = "BLANK"
+	LikeStatusLikeFromStudent    LikeStatus = "LIKE_FROM_STUDENT"
+	LikeStatusLikeFromLaboratory LikeStatus = "LIKE_FROM_LABORATORY"
+	LikeStatusLikeFromBoth       LikeStatus = "LIKE_FROM_BOTH"
+)
+
+var AllLikeStatus = []LikeStatus{
+	LikeStatusBlank,
+	LikeStatusLikeFromStudent,
+	LikeStatusLikeFromLaboratory,
+	LikeStatusLikeFromBoth,
+}
+
+func (e LikeStatus) IsValid() bool {
+	switch e {
+	case LikeStatusBlank, LikeStatusLikeFromStudent, LikeStatusLikeFromLaboratory, LikeStatusLikeFromBoth:
+		return true
+	}
+	return false
+}
+
+func (e LikeStatus) String() string {
+	return string(e)
+}
+
+func (e *LikeStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = LikeStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid LikeStatus", str)
+	}
+	return nil
+}
+
+func (e LikeStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
