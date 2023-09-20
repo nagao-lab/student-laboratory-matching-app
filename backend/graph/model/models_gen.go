@@ -54,6 +54,13 @@ type NewStudentFields struct {
 	MajorIds     []*string    `json:"majorIds,omitempty"`
 }
 
+type NewUniversity struct {
+	PrefectureID string  `json:"prefectureId"`
+	Name         string  `json:"name"`
+	Address      string  `json:"address"`
+	MaxGpa       float64 `json:"maxGpa"`
+}
+
 type Prefecture struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
