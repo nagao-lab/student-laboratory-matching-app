@@ -20,17 +20,57 @@ type Student {
   imageUrl: String!
   gender: Gender!
   birthday: Time!
-  universityId: ID!
+  university: University!
   grade: Int!
   gpa: Float!
-  prefectureId: ID!
+  prefecture: Prefecture!
   comment: String!
   interest: String!
   status: MatchStatus!
+  majors: [Major!]!
+  numLikes: Int!
+}
+
+type Laboratory {
+  id: ID!
+  uid: String!
+  university: University!
+  name: String!
+  professor: String!
+  numStudents: Int!
+  comment: String!
+  status: MatchStatus!
+  imageUrl: String!
+  laboratoryUrl: String!
+  email: String!
+  password: String!
+  majors: [Major!]!
+  numLikes: Int!
+}
+
+type Major {
+  id: ID!
+  name: String!
+}
+
+type Prefecture {
+  id: ID!
+  name: String!
+}
+
+type University {
+  id: ID!
+  prefecture: Prefecture!
+  name: String!
+  address: String!
+  maxGpa: Float!
 }
 
 type Query {
   student(id: ID!): Student!
+  getMatchableStudents(id: ID!): [Student]
+  laboratory(id: ID!): Laboratory!
+  getMatchableLaboratories(id: ID!): [Laboratory]
 }
 
 input NewStudent {
@@ -39,5 +79,6 @@ input NewStudent {
 }
 
 type Mutation {
-  createStudent(input: NewStudent!): Student!
+  signupStudent(input: NewStudent!): Student!
+  loginStudent(email: String!, password: String!): Student!
 }
