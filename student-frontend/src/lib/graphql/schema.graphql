@@ -1,0 +1,84 @@
+scalar Time
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MatchStatus {
+  ACTIVE
+  INACTIVE
+}
+
+type Student {
+  id: ID!
+  uid: String!
+  name: String!
+  email: String!
+  password: String!
+  imageUrl: String!
+  gender: Gender!
+  birthday: Time!
+  university: University!
+  grade: Int!
+  gpa: Float!
+  prefecture: Prefecture!
+  comment: String!
+  interest: String!
+  status: MatchStatus!
+  majors: [Major!]!
+  numLikes: Int!
+}
+
+type Laboratory {
+  id: ID!
+  uid: String!
+  university: University!
+  name: String!
+  professor: String!
+  numStudents: Int!
+  comment: String!
+  status: MatchStatus!
+  imageUrl: String!
+  laboratoryUrl: String!
+  email: String!
+  password: String!
+  majors: [Major!]!
+  numLikes: Int!
+}
+
+type Major {
+  id: ID!
+  name: String!
+}
+
+type Prefecture {
+  id: ID!
+  name: String!
+}
+
+type University {
+  id: ID!
+  prefecture: Prefecture!
+  name: String!
+  address: String!
+  maxGpa: Float!
+}
+
+type Query {
+  student(id: ID!): Student!
+  getMatchableStudents(id: ID!): [Student]
+  laboratory(id: ID!): Laboratory!
+  getMatchableLaboratories(id: ID!): [Laboratory]
+}
+
+input NewStudent {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  signupStudent(input: NewStudent!): Student!
+  loginStudent(email: String!, password: String!): Student!
+}

@@ -1,16 +1,26 @@
-import { LaboratoryDetail, MockLaboratories } from "@/features/laboratory-detail";
+import {
+  LaboratoryDetail,
+  MockLaboratories,
+} from "@/features/laboratory-detail";
+import { LaboratoryDetailProvider } from "@/features/laboratory-detail/providers/laboratory-detail";
 import { Stack } from "@mui/material";
-
-// 研究室詳細ページ（mock）
-
 import { NextPage } from "next";
 
-const Page: NextPage = () => {
+type Props = {
+  params: { laboratoryId: string };
+};
+
+const Page: NextPage<Props> = ({ params }: Props) => {
   return (
-    <Stack>
-      <LaboratoryDetail laboratories={MockLaboratories}/>
-    </Stack>
-  )
+    <LaboratoryDetailProvider>
+      <Stack>
+        <LaboratoryDetail
+          laboratoryId={params.laboratoryId}
+          laboratories={MockLaboratories}
+        />
+      </Stack>
+    </LaboratoryDetailProvider>
+  );
 };
 
 export default Page;

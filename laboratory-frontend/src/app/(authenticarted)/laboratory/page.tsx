@@ -3,7 +3,7 @@
 // TODO 研究室ページ : LaboratoryCommentコンポーネントを利用する
 // TODO 研究室ページ : LaboratoryCommentにmockデータを渡す
 
-import { MockLaboratories } from "@/features/laboratory/mock/laboratory";
+import { MockLaboratories } from "@/features/laboratory";
 import { LaboratoryImage } from "@/features/laboratory/components/laboratory-image";
 import { LaboratoryDetail } from "@/features/laboratory/components/laboratory-interest";
 import { LaboratoryComment } from "@/features/laboratory/components/laboratory-comment";
@@ -18,7 +18,7 @@ const Page: NextPage = () => {
         <LaboratoryDetail laboratory={MockLaboratories[0]}/>
         <LaboratoryComment laboratory={MockLaboratories[0]}/>
       </Stack>
-    </Stack>{/*laboratory*/}</Box>
+    </Stack>laboratory</Box>
 }
 
 export default Page;

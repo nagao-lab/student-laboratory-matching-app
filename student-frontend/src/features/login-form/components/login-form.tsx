@@ -38,13 +38,14 @@ export const LoginForm = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}/>
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -54,7 +55,8 @@ export const LoginForm = () => {
                 label="Password"
                 name="password"
                 autoComplete="new-password"
-                onChange={(e) => setPassword(e.target.value)}/>
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Grid>
           </Grid>
           <Button

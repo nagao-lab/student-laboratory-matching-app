@@ -1,24 +1,42 @@
+"use client";
 
-'use client';
-
-import { LaboratoryCards, LaboratoryForm, MockLaboratories } from "@/features/laboratories";
+import {
+  LaboratoriesProvider,
+  LaboratoryCards,
+  LaboratoryForm,
+  MockLaboratories,
+  useLaboratoriesContext,
+} from "@/features/laboratories";
 import { Stack } from "@mui/material";
 import { useState } from "react";
 import { NextPage } from "next";
-
-// TODO 研究室一覧ページ（mock） : MuiのStackを親要素として利用する(directionにcolumnを指定)
-// TODO 研究室一覧ページ（mock） : コンポーネントにmockデータを渡して表示する
+import { Loading } from "@/components/loading";
 
 const Page: NextPage = () => {
   const [filterVal, setFilterVal] = useState("");
   const [toggle, setToggle] = useState(false);
+  const { loading } = useLaboratoriesContext();
 
   return (
-    <Stack>
-      <LaboratoryForm setFilterVal={setFilterVal} setToggle={setToggle}/>
-      <LaboratoryCards laboratories={MockLaboratories} filterVal={filterVal} toggle={toggle}/>
-    </Stack>
-  )
-}
+    <LaboratoriesProvider>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Stack>
+          <LaboratoryForm
+            setFilterVal={setFilterVal}
+            toggle={toggle}
+            setToggle={setToggle}
+          />
+          <LaboratoryCards
+            laboratories={MockLaboratories}
+            filterVal={filterVal}
+            toggle={toggle}
+          />
+        </Stack>
+      )}
+    </LaboratoriesProvider>
+  );
+};
 
 export default Page;
