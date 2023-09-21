@@ -26,7 +26,6 @@ func (ps *prefectureService) GetPrefectureById(id string) (*model.Prefecture, er
 }
 
 func (ps *prefectureService) GetAllPrefectures() ([]*model.Prefecture, error) {
-	// 都道府県の一覧をidの小さい順に取得する
 	var records []db.Prefecture
 	err := ps.db.Table("prefectures").
 		Order("id ASC").
