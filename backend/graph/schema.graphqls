@@ -99,7 +99,7 @@ type Query {
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
-  studentLaboratory(input: NewLike!): LikeStatus!
+  getLikeStatus(input: NewLike!): LikeStatus!
   getMessages(messageRoomId: ID!): [Message]
   getMessagesByIds(input: NewLike!): [Message]
 }

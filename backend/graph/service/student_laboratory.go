@@ -9,7 +9,7 @@ import (
 )
 
 type IStudentLaboratoryService interface {
-	GetFavoriteStatusById(model.NewLike) (model.LikeStatus, error)
+	GetLikeStatusByIds(model.NewLike) (model.LikeStatus, error)
 	FavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
 	FavoriteStudent(model.NewLike) (model.LikeStatus, error)
 	UnfavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
@@ -20,7 +20,7 @@ type studentLaboratoryService struct {
 	db *gorm.DB
 }
 
-func (sls *studentLaboratoryService) GetFavoriteStatusById(newLikeIds model.NewLike) (model.LikeStatus, error) {
+func (sls *studentLaboratoryService) GetLikeStatusByIds(newLikeIds model.NewLike) (model.LikeStatus, error) {
 	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
 	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
 
