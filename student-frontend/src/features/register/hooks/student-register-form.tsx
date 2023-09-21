@@ -15,7 +15,7 @@ export const useRegisterForm = () => {
   const [birthday, setBirthday] = useState<Date | null>();
   const [prefecture, setPrefecture] = useState<string | null>();
   const [gpa, setGpa] = useState(3.0);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<number | null>();
 
   // upload image to s3
@@ -54,17 +54,35 @@ export const useRegisterForm = () => {
       !file ||
       status===null
     ) {
-      window.alert("すべての項目を入力してください"); 
+      window.alert("すべての項目を入力してください");
+      console.log({
+        name: name,
+        gender: gender,
+        university: university,
+        grade: grade,
+        comment: comment,
+        interest: interest,
+        birthday: birthday?.toString(),
+        prefecture: prefecture,
+        gpa: gpa,
+        file: file,
+        status: status,
+      });      
       return;
     }
-    
-    const res = uploadImage(file).then((url) => {
-    console.log(url);
-    return url;
-    })
-    .catch((err) => {
-      console.log(err);
-      return "";
+
+    console.log({
+      name: name,
+      gender: gender,
+      university: university,
+      grade: grade,
+      comment: comment,
+      interest: interest,
+      birthday: birthday?.toString(),
+      prefecture: prefecture,
+      gpa: gpa,
+      file: file,
+      status: status,
     });
 
     console.log(res)

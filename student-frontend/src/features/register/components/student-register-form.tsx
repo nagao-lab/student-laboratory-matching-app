@@ -17,6 +17,8 @@ import { DatePicker } from "@mui/x-date-pickers";
 import EditIcon from '@mui/icons-material/Edit';
 import { MuiFileInput } from "mui-file-input";
 import React from "react";
+import { checkUploadable } from "@/utils/check-uploadable";
+import { uploadedFileToComment } from "@/utils/uploaded-file-to-comment";
 
 export const StudentRegisterForm = () => {
   const {
@@ -29,7 +31,8 @@ export const StudentRegisterForm = () => {
     setBirthday,
     setPrefecture,
     setGpa,
-    setImageUrl,
+    file,
+    setFile,
     setStatus,
     handleSubmit,
   } = useRegisterForm();
@@ -45,7 +48,6 @@ export const StudentRegisterForm = () => {
 
   const MuiDatePicker = DatePicker<Date>;
 
-  const [file, setFile] = React.useState(null);
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -228,10 +230,13 @@ export const StudentRegisterForm = () => {
 
               <Grid item xs={12}>
                 <MuiFileInput
-                placeholder="Choose a file"
+                  label="プロフィール画像"
+                  placeholder="Choose a file"
                   value={file}
                   onChange={(file) => setFile(file)}
                 />
+                <Typography variant="caption" component="div" gutterBottom>jpg/png ファイルのみ、ファイルサイズは2MB以内。</Typography>
+                {file ? (checkUploadable(file)===0 || checkUploadable(file)===1 ?<Typography variant="caption" component="div" color="error.main" gutterBottom>{uploadedFileToComment(file)}</Typography> : <Typography variant="caption" component="div" color="green" gutterBottom>{uploadedFileToComment(file)}</Typography> ): (null)}
               </Grid>
 
               <Grid item xs={12}>
