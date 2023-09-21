@@ -141,6 +141,7 @@ type Mutation {
   favoriteLaboratory(input: NewLike!): LikeStatus!
   favoriteStudent(input: NewLike!): LikeStatus!
   unfavoriteLaboratory(input: NewLike!): LikeStatus!
+  unfavoriteStudent(input: NewLike!): LikeStatus!
   updateStudent(input: NewStudentFields!): Student!
   createMajor(name: String!): Major!
   createUniversity(input: NewUniversity!): University!

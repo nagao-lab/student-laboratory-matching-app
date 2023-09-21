@@ -44,6 +44,11 @@ func (r *mutationResolver) UnfavoriteLaboratory(ctx context.Context, input model
 	return r.Srv.UnfavoriteLaboratory(input)
 }
 
+// UnfavoriteStudent is the resolver for the unfavoriteStudent field.
+func (r *mutationResolver) UnfavoriteStudent(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
+	return r.Srv.UnfavoriteStudent(input)
+}
+
 // UpdateStudent is the resolver for the updateStudent field.
 func (r *mutationResolver) UpdateStudent(ctx context.Context, input model.NewStudentFields) (*model.Student, error) {
 	return r.Srv.UpdateStudent(input)
