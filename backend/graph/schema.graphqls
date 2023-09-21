@@ -92,6 +92,7 @@ type Query {
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
+  getAllPrefectures: [Prefecture]
 }
 
 input NewStudent {
