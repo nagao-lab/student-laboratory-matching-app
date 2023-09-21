@@ -89,6 +89,11 @@ func (r *queryResolver) GetMatchableLaboratories(ctx context.Context, id string)
 	return r.Srv.GetMatchableLaboratories(id)
 }
 
+// GetAllMajors is the resolver for the getAllMajors field.
+func (r *queryResolver) GetAllMajors(ctx context.Context) ([]*model.Major, error) {
+	return r.Srv.GetAllMajors()
+}
+
 // GetAllPrefectures is the resolver for the getAllPrefectures field.
 func (r *queryResolver) GetAllPrefectures(ctx context.Context) ([]*model.Prefecture, error) {
 	return r.Srv.GetAllPrefectures()

@@ -11,6 +11,7 @@ type IMajorService interface {
 	CreateMajor(string) (*model.Major, error)
 	GetMajorByStudent(studentId string) ([]*model.Major, error)
 	GetMajorByLaboratory(string) ([]*model.Major, error)
+	GetAllMajors() ([]*model.Major, error)
 }
 
 type majorService struct {
@@ -60,6 +61,23 @@ func (ms *majorService) GetMajorByLaboratory(laboratoryId string) ([]*model.Majo
 	majors := []*model.Major{}
 	for _, record := range records {
 		majors = append(majors, model.ConvertMajor(&record))
+	}
+	return majors, nil
+}
+
+func (ms *majorService) GetAllMajors() ([]*model.Major, error) {
+	var records []db.Major
+	err := ms.db.Table("majors").
+		Order("id ASC").
+		Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+
+	majors := []*model.Major{}
+	for _, record := range records {
+		major := model.ConvertMajor(&record)
+		majors = append(majors, major)
 	}
 	return majors, nil
 }
