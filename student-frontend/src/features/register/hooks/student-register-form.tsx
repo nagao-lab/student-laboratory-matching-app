@@ -14,7 +14,7 @@ export const useRegisterForm = () => {
   const [birthday, setBirthday] = useState<Date | null>();
   const [prefecture, setPrefecture] = useState<string | null>();
   const [gpa, setGpa] = useState(3.0);
-  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<number | null>();
 
   const handleSubmit = () => {
@@ -28,7 +28,7 @@ export const useRegisterForm = () => {
       !birthday ||
       !prefecture ||
       !gpa ||
-      !imageUrl ||
+      !file ||
       status===null
     ) {
       window.alert("すべての項目を入力してください");
@@ -42,7 +42,7 @@ export const useRegisterForm = () => {
         birthday: birthday?.toString(),
         prefecture: prefecture,
         gpa: gpa,
-        image_url: imageUrl,
+        file: file,
         status: status,
       });      
       return;
@@ -58,7 +58,7 @@ export const useRegisterForm = () => {
       birthday: birthday?.toString(),
       prefecture: prefecture,
       gpa: gpa,
-      image_url: imageUrl,
+      file: file,
       status: status,
     });
     router.push("/");
@@ -74,7 +74,8 @@ export const useRegisterForm = () => {
     setBirthday,
     setPrefecture,
     setGpa,
-    setImageUrl,
+    file,
+    setFile,
     setStatus,
     handleSubmit,
   };
