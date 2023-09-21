@@ -88,22 +88,22 @@ export const MessageContent = ({ messages, messageId }: Props) => {
 }
 
 
-            <Typography
-              variant="body2"
-              component="p"
-              style={
-                message.from == 0
-                  ? {
-                      textAlign: "right",
-                    }
-                  : undefined
-              }
-            >
-              {message.createdAt}
-            </Typography>
-          </CardContent>
-        </Box>
-      ))}
-    </Box>
-  );
-};
+//             <Typography
+//               variant="body2"
+//               component="p"
+//               style={
+//                 message.from == 0
+//                   ? {
+//                       textAlign: "right",
+//                     }
+//                   : undefined
+//               }
+//             >
+//               {message.createdAt}
+//             </Typography>
+//           </CardContent>
+//         </Box>
+//       ))}
+//     </Box>
+//   );
+// };
