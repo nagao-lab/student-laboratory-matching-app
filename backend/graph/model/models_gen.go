@@ -106,6 +106,13 @@ type Student struct {
 	NumLikes   int         `json:"numLikes"`
 }
 
+type StudentLaboratory struct {
+	ID         string      `json:"id"`
+	Student    *Student    `json:"student"`
+	Laboratory *Laboratory `json:"laboratory"`
+	Status     LikeStatus  `json:"status"`
+}
+
 type University struct {
 	ID         string      `json:"id"`
 	Prefecture *Prefecture `json:"prefecture"`
