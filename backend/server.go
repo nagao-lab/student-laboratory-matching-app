@@ -10,8 +10,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/go-chi/chi"
-	"github.com/rs/cors"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 )
 
 const defaultPort = "8080"
@@ -28,11 +28,11 @@ func main() {
 	service := service.NewService(dbConn)
 
 	router := chi.NewRouter()
-	router.Use(cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowCredentials: true,
 		Debug:            os.Getenv("GO_ENV") == "dev",
-	}).Handler)
+	}))
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		Srv: service,
