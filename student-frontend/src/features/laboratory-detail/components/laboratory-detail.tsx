@@ -39,7 +39,7 @@ export const LaboratoryDetail = ({ laboratoryId }: Props) => {
         {data?.laboratory.comment}
       </Box>
 
-      <ChangeStatusToIconButton status={data?.laboratory.status} />
+      <ChangeStatusToIconButton status={data?.laboratory.status} laboratoryID={data?.laboratory.id} />
     </>
   );
 };

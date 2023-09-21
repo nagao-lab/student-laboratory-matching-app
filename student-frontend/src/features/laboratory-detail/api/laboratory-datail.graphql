@@ -19,3 +19,7 @@ query Laboratory($id: ID!) {
     }
   }
 }
+
+mutation favoriteLaboratory($input: NewLike!){
+  favoriteLaboratory(input: $input)
+}
