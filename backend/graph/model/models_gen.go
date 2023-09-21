@@ -94,7 +94,7 @@ type Student struct {
 	Password   string      `json:"password"`
 	ImageURL   string      `json:"imageUrl"`
 	Gender     Gender      `json:"gender"`
-	Birthday   time.Time   `json:"birthday"`
+	Birthday   *time.Time  `json:"birthday,omitempty"`
 	University *University `json:"university"`
 	Grade      int         `json:"grade"`
 	Gpa        float64     `json:"gpa"`

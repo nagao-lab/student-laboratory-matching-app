@@ -1,13 +1,13 @@
 package model
 
 import (
-	"strconv"
 	"student-laboratory-matching-app/db"
+	"student-laboratory-matching-app/tools"
 )
 
 func ConvertMajor(major *db.Major) *Major {
 	return &Major{
-		ID:   strconv.FormatUint(uint64(major.ID), 10),
+		ID:   tools.ParseUintToString(major.ID),
 		Name: major.Name,
 	}
 }

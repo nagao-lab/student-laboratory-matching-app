@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 	"student-laboratory-matching-app/middleware/auth"
@@ -147,18 +146,16 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 		student.Password = tools.HashPassword(*newStudent.Password)
 	}
 	if newStudent.ImageURL != nil {
-		// TODO: サーバーがS3にあげる？
 		student.ImageUrl = *newStudent.ImageURL
 	}
 	if newStudent.Gender != nil {
 		student.Gender = model.GenderIndex[*newStudent.Gender]
 	}
 	if newStudent.Birthday != nil {
-		student.Birthday = *newStudent.Birthday
+		student.Birthday = newStudent.Birthday
 	}
 	if newStudent.UniversityID != nil {
-		universityIdUint64, _ := strconv.ParseUint(*newStudent.UniversityID, 10, 64)
-		student.UniversityID = uint(universityIdUint64)
+		student.UniversityID = tools.ParseStringToUint(*newStudent.UniversityID)
 	}
 	if newStudent.Grade != nil {
 		student.Grade = *newStudent.Grade
@@ -176,8 +173,7 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 		student.Status = model.MatchStatusIndex[*newStudent.Status]
 	}
 	if newStudent.PrefectureID != nil {
-		prefectureIdUint64, _ := strconv.ParseUint(*newStudent.PrefectureID, 10, 64)
-		student.PrefectureID = uint(prefectureIdUint64)
+		student.PrefectureID = tools.ParseStringToUint(*newStudent.PrefectureID)
 	}
 
 	err = ss.db.Save(&student).Error
@@ -188,12 +184,11 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 	if newStudent.MajorIds != nil {
 		// 現設計では初回設定のみ(つまりinsertのみ)をサポート
 		// TODO: updateするように変更
-		var studentMajors []*db.Student_Major
+		var studentMajors []*db.StudentMajor
 		for _, majorId := range newStudent.MajorIds {
-			majorIdUint64, _ := strconv.ParseUint(*majorId, 10, 64)
-			studentMajors = append(studentMajors, &db.Student_Major{
+			studentMajors = append(studentMajors, &db.StudentMajor{
 				StudentID: student.ID,
-				MajorID:   uint(majorIdUint64),
+				MajorID:   tools.ParseStringToUint(*majorId),
 			})
 		}
 		err = ss.db.Clauses(clause.OnConflict{DoNothing: true}).

@@ -5,7 +5,7 @@ import (
 	"student-laboratory-matching-app/tools"
 )
 
-func ConvertStudentLaboratory(studentLaboratory *db.Student_Laboratory) *StudentLaboratory {
+func ConvertStudentLaboratory(studentLaboratory *db.StudentLaboratory) *StudentLaboratory {
 	return &StudentLaboratory{
 		ID:         tools.ParseUintToString(studentLaboratory.ID),
 		Student:    &Student{ID: tools.ParseUintToString(studentLaboratory.StudentID)},

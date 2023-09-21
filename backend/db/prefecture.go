@@ -1,10 +1,10 @@
 package db
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type Prefecture struct {
-	ID        uint `gorm:"primaryKey"`
-	Name      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	gorm.Model
+	Name string
 }

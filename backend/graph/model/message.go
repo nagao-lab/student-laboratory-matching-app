@@ -2,8 +2,8 @@ package model
 
 import (
 	"fmt"
-	"strconv"
 	"student-laboratory-matching-app/db"
+	"student-laboratory-matching-app/tools"
 )
 
 const (
@@ -30,8 +30,8 @@ func ConvertMessageFromToInt(mf MessageFrom) (int, error) {
 
 func ConvertMessage(message *db.Message) *Message {
 	return &Message{
-		MessageID:     strconv.FormatUint(uint64(message.ID), 10),
-		MessageRoomID: strconv.FormatUint(uint64(message.StudentLaboratoryID), 10),
+		MessageID:     tools.ParseUintToString(message.ID),
+		MessageRoomID: tools.ParseUintToString(message.StudentLaboratoryID),
 		From:          messageFromToName[message.From],
 		Content:       message.Content,
 		CreatedAt:     message.CreatedAt,

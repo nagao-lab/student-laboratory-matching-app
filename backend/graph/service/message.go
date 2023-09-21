@@ -56,7 +56,7 @@ func (ms messageService) GetMessages(messageRoomId string) ([]*model.Message, er
 }
 
 func (ms messageService) GetMessagesByIds(matchingIds model.NewLike) ([]*model.Message, error) {
-	record := db.Student_Laboratory{
+	record := db.StudentLaboratory{
 		StudentID:    tools.ParseStringToUint(matchingIds.StudentID),
 		LaboratoryID: tools.ParseStringToUint(matchingIds.LaboratoryID),
 	}

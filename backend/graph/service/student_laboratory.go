@@ -22,12 +22,12 @@ type studentLaboratoryService struct {
 }
 
 func (sls *studentLaboratoryService) GetLikeStatusByIds(newLikeIds model.NewLike) (model.LikeStatus, error) {
-	studentLaboratory := db.Student_Laboratory{
+	studentLaboratory := db.StudentLaboratory{
 		StudentID:    tools.ParseStringToUint(newLikeIds.StudentID),
 		LaboratoryID: tools.ParseStringToUint(newLikeIds.LaboratoryID),
 	}
 
-	var record db.Student_Laboratory
+	var record db.StudentLaboratory
 	err := sls.db.Where(&studentLaboratory).Find(&record).Error
 	if err != nil {
 		return "", err
@@ -40,7 +40,7 @@ func (sls *studentLaboratoryService) FavoriteLaboratory(newLikeIds model.NewLike
 	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
 	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
 
-	studentLaboratory := db.Student_Laboratory{
+	studentLaboratory := db.StudentLaboratory{
 		StudentID:    uint(studentIdUint64),
 		LaboratoryID: uint(laboratoryIdUint64),
 	}
@@ -75,7 +75,7 @@ func (sls *studentLaboratoryService) FavoriteStudent(newLikeIds model.NewLike) (
 	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
 	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
 
-	studentLaboratory := db.Student_Laboratory{
+	studentLaboratory := db.StudentLaboratory{
 		StudentID:    uint(studentIdUint64),
 		LaboratoryID: uint(laboratoryIdUint64),
 	}
@@ -110,7 +110,7 @@ func (sls *studentLaboratoryService) UnfavoriteLaboratory(newLikeIds model.NewLi
 	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
 	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
 
-	studentLaboratory := db.Student_Laboratory{
+	studentLaboratory := db.StudentLaboratory{
 		StudentID:    uint(studentIdUint64),
 		LaboratoryID: uint(laboratoryIdUint64),
 	}
@@ -142,7 +142,7 @@ func (sls *studentLaboratoryService) UnfavoriteStudent(newLikeIds model.NewLike)
 	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
 	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
 
-	studentLaboratory := db.Student_Laboratory{
+	studentLaboratory := db.StudentLaboratory{
 		StudentID:    uint(studentIdUint64),
 		LaboratoryID: uint(laboratoryIdUint64),
 	}

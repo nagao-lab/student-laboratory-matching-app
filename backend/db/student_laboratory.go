@@ -1,12 +1,12 @@
 package db
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
-type Student_Laboratory struct {
-	ID           uint `gorm:"primaryKey"`
+type StudentLaboratory struct {
+	gorm.Model
 	StudentID    uint
 	LaboratoryID uint
 	Status       int
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
 }

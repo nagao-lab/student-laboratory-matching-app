@@ -1,13 +1,13 @@
 package db
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type University struct {
-	ID           uint `gorm:"primaryKey"`
-	PrefectureID uint
+	gorm.Model
 	Name         string
 	Address      string
 	MaxGpa       float64
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	PrefectureID uint
 }

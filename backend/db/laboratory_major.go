@@ -2,7 +2,7 @@ package db
 
 import "time"
 
-type Laboratory_Major struct {
+type LaboratoryMajor struct {
 	LaboratoryID uint `gorm:"primaryKey"`
 	MajorID      uint `gorm:"primaryKey"`
 	CreatedAt    time.Time

@@ -1,22 +1,20 @@
 package db
 
 import (
-	"time"
+	"gorm.io/gorm"
 )
 
 type Laboratory struct {
-	ID            uint `gorm:"primaryKey"`
-	UID           uint
-	UniversityID  uint
+	gorm.Model
+	UID           string
 	Name          string
+	Email         string
+	Password      string
 	Professor     string
 	NumStudents   int
 	Comment       string
 	Status        int
 	ImageUrl      string
 	LaboratoryUrl string
-	Email         string
-	Password      string
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
+	UniversityID  uint
 }

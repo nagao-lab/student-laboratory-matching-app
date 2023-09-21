@@ -1,16 +1,16 @@
 package model
 
 import (
-	"strconv"
 	"student-laboratory-matching-app/db"
+	"student-laboratory-matching-app/tools"
 )
 
 func ConvertUniversity(university *db.University) *University {
 	return &University{
-		ID:         strconv.FormatUint(uint64(university.ID), 10),
+		ID:         tools.ParseUintToString(university.ID),
 		Name:       university.Name,
-		Prefecture: &Prefecture{ID: strconv.FormatUint(uint64(university.PrefectureID), 10)},
 		Address:    university.Address,
 		MaxGpa:     university.MaxGpa,
+		Prefecture: &Prefecture{ID: tools.ParseUintToString(university.PrefectureID)},
 	}
 }

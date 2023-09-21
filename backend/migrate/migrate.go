@@ -7,8 +7,18 @@ import (
 
 func main() {
 	dbConn := db.NewDB()
-	defer fmt.Println("Successfully Migrated")
 	defer db.CloseDB(dbConn)
 
-	dbConn.AutoMigrate()
+	defer fmt.Println("Successfully Migrated")
+	dbConn.AutoMigrate(
+		&db.Student{},
+		&db.Laboratory{},
+		&db.StudentLaboratory{},
+		&db.Major{},
+		&db.Prefecture{},
+		&db.University{},
+		&db.Message{},
+		&db.StudentMajor{},
+		&db.LaboratoryMajor{},
+	)
 }
