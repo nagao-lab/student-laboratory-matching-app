@@ -34,6 +34,11 @@ func (r *mutationResolver) FavoriteLaboratory(ctx context.Context, input model.N
 	return r.Srv.FavoriteLaboratory(input)
 }
 
+// FavoriteStudent is the resolver for the favoriteStudent field.
+func (r *mutationResolver) FavoriteStudent(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
+	return r.Srv.FavoriteStudent(input)
+}
+
 // UpdateStudent is the resolver for the updateStudent field.
 func (r *mutationResolver) UpdateStudent(ctx context.Context, input model.NewStudentFields) (*model.Student, error) {
 	return r.Srv.UpdateStudent(input)
