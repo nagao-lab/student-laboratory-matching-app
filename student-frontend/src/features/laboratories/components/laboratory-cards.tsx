@@ -15,10 +15,9 @@ import { useLaboratories } from "../hooks/laboratories";
 
 type Props = {
   filterVal: string;
-  toggle: boolean;
 };
 
-export const LaboratoryCards = ({ filterVal, toggle }: Props) => {
+export const LaboratoryCards = ({ filterVal }: Props) => {
   const router = useRouter();
   const { data, loading, error } = useLaboratories();
 
@@ -32,7 +31,8 @@ export const LaboratoryCards = ({ filterVal, toggle }: Props) => {
 
   return (
     <Box>
-      {data?.getMatchableLaboratories?.filter((laboratory) => {
+      {data?.getMatchableLaboratories
+        ?.filter((laboratory) => {
           let isMatch =
             laboratory.name.indexOf(filterVal) !== -1 ||
             laboratory.university.name.indexOf(filterVal) !== -1;
@@ -75,9 +75,7 @@ export const LaboratoryCards = ({ filterVal, toggle }: Props) => {
               </Button>
             </CardActions>
             <CardContent>
-              <ChangeStatusToIconButton
-                status={laboratory.status}
-              />
+              <ChangeStatusToIconButton status={laboratory.status} />
             </CardContent>
           </Card>
         ))}
