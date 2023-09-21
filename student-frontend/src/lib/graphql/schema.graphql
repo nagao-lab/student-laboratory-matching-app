@@ -11,41 +11,48 @@ enum MatchStatus {
   INACTIVE
 }
 
+enum LikeStatus {
+	BLANK
+	LIKE_FROM_STUDENT
+	LIKE_FROM_LABORATORY
+	LIKE_FROM_BOTH
+}
+
 type Student {
-  id: ID!
-  uid: String!
-  name: String!
-  email: String!
-  password: String!
-  imageUrl: String!
-  gender: Gender!
-  birthday: Time!
-  university: University!
-  grade: Int!
-  gpa: Float!
-  prefecture: Prefecture!
-  comment: String!
-  interest: String!
-  status: MatchStatus!
-  majors: [Major!]!
-  numLikes: Int!
+	id: ID!
+	uid: String!
+	name: String!
+	email: String!
+	password: String!
+	imageUrl: String!
+	gender: Gender!
+	birthday: Time!
+	university: University!
+	grade: Int!
+	gpa: Float!
+	prefecture: Prefecture!
+	comment: String!
+	interest: String!
+	status: MatchStatus!
+	majors: [Major!]!
+	numLikes: Int!
 }
 
 type Laboratory {
-  id: ID!
-  uid: String!
-  university: University!
-  name: String!
-  professor: String!
-  numStudents: Int!
-  comment: String!
-  status: MatchStatus!
-  imageUrl: String!
-  laboratoryUrl: String!
-  email: String!
-  password: String!
-  majors: [Major!]!
-  numLikes: Int!
+	id: ID!
+	uid: String!
+	university: University!
+	name: String!
+	professor: String!
+	numStudents: Int!
+	comment: String!
+	status: MatchStatus!
+	imageUrl: String!
+	laboratoryUrl: String!
+	email: String!
+	password: String!
+	majors: [Major!]!
+	numLikes: Int!
 }
 
 type Major {
@@ -78,7 +85,42 @@ input NewStudent {
   password: String!
 }
 
+input NewStudentFields {
+	id: ID!
+	name: String
+	email: String
+	password: String
+	imageUrl: String
+	gender: Gender
+	birthday: Time
+	universityId: ID
+	grade: Int
+	gpa: Float
+	prefectureId: ID
+	comment: String
+	interest: String
+	status: MatchStatus
+	majorIds: [ID]
+}
+
+input NewUniversity {
+	prefectureId: ID!
+	name: String!
+	address: String!
+	maxGpa: Float!
+}
+
+input NewLike {
+	studentId: ID!
+	laboratoryId: ID!
+}
+
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
+  favoriteLaboratory(input: NewLike!): LikeStatus!
+  favoriteStudent(input: NewLike!): LikeStatus!
+  updateStudent(input: NewStudentFields!): Student!
+  createMajor(name: String!): Major!
+  createUniversity(input: NewUniversity!): University!
 }
