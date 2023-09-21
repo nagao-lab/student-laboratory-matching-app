@@ -41,6 +41,13 @@ export type Laboratory = {
   university: University;
 };
 
+export enum LikeStatus {
+  Blank = 'BLANK',
+  LikeFromBoth = 'LIKE_FROM_BOTH',
+  LikeFromLaboratory = 'LIKE_FROM_LABORATORY',
+  LikeFromStudent = 'LIKE_FROM_STUDENT'
+}
+
 export type Major = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -51,9 +58,56 @@ export enum MatchStatus {
   Inactive = 'INACTIVE'
 }
 
+export type Message = {
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Time']['output'];
+  from: MessageFrom;
+  messageId: Scalars['ID']['output'];
+  messageRoomId: Scalars['ID']['output'];
+  updatedAt: Scalars['Time']['output'];
+};
+
+export enum MessageFrom {
+  Laboratory = 'LABORATORY',
+  Studnet = 'STUDNET'
+}
+
 export type Mutation = {
+  createMajor: Major;
+  createMessage?: Maybe<Message>;
+  createUniversity: University;
+  favoriteLaboratory: LikeStatus;
+  favoriteStudent: LikeStatus;
   loginStudent: Student;
   signupStudent: Student;
+  unfavoriteLaboratory: LikeStatus;
+  unfavoriteStudent: LikeStatus;
+  updateStudent: Student;
+};
+
+
+export type MutationCreateMajorArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateMessageArgs = {
+  input: NewMessage;
+};
+
+
+export type MutationCreateUniversityArgs = {
+  input: NewUniversity;
+};
+
+
+export type MutationFavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationFavoriteStudentArgs = {
+  input: NewLike;
 };
 
 
@@ -67,9 +121,60 @@ export type MutationSignupStudentArgs = {
   input: NewStudent;
 };
 
+
+export type MutationUnfavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationUnfavoriteStudentArgs = {
+  input: NewLike;
+};
+
+
+export type MutationUpdateStudentArgs = {
+  input: NewStudentFields;
+};
+
+export type NewLike = {
+  laboratoryId: Scalars['ID']['input'];
+  studentId: Scalars['ID']['input'];
+};
+
+export type NewMessage = {
+  content: Scalars['String']['input'];
+  from: MessageFrom;
+  messageRoomId: Scalars['ID']['input'];
+};
+
 export type NewStudent = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type NewStudentFields = {
+  birthday?: InputMaybe<Scalars['Time']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Gender>;
+  gpa?: InputMaybe<Scalars['Float']['input']>;
+  grade?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  interest?: InputMaybe<Scalars['String']['input']>;
+  majorIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  prefectureId?: InputMaybe<Scalars['ID']['input']>;
+  status?: InputMaybe<MatchStatus>;
+  universityId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type NewUniversity = {
+  address: Scalars['String']['input'];
+  maxGpa: Scalars['Float']['input'];
+  name: Scalars['String']['input'];
+  prefectureId: Scalars['ID']['input'];
 };
 
 export type Prefecture = {
@@ -153,6 +258,13 @@ export type LoginStudentMutationVariables = Exact<{
 
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
+
+export type CreateMessageMutationVariables = Exact<{
+  input: NewMessage;
+}>;
+
+
+export type CreateMessageMutation = { createMessage?: { messageRoomId: string } };
 
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -291,6 +403,39 @@ export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions
 export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
 export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
 export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
+export const CreateMessageDocument = gql`
+    mutation createMessage($input: NewMessage!) {
+  createMessage(input: $input) {
+    messageRoomId
+  }
+}
+    `;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {

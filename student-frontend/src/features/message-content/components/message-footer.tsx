@@ -1,7 +1,12 @@
+"use client"
+
 import { TextField, Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
+import { useMessageFooter } from "../hooks/message-footer";
 
 export const MessageFooter = () => {
+  const { message, setMessage, onSubmit } = useMessageFooter();
+
     return (<footer style={{
         display: "grid",
         gridTemplateRows: "1fr 20px",
@@ -13,9 +18,10 @@ export const MessageFooter = () => {
         backgroundColor: "white"
       }}>
         <TextField
-          id="standard-multiline-flexible"
+          id="messageTextField"
           // label="Multiline"
           placeholder="メッセージを入力"
+          value={message}
           multiline
           // maxRows={4}
           variant="standard"
@@ -23,11 +29,13 @@ export const MessageFooter = () => {
             // gridRow: 1,
             gridColumn: 2
           }}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <Button style={{
             // gridRow: 1,
             gridColumn: 3
-          }}>
+          }}
+          onClick={onSubmit}>
           <SendIcon />
         </Button>
       </footer>)
