@@ -1,6 +1,5 @@
 import {
   LaboratoryDetail,
-  MockLaboratories,
 } from "@/features/laboratory-detail";
 import { LaboratoryDetailProvider } from "@/features/laboratory-detail/providers/laboratory-detail";
 import { Stack } from "@mui/material";
@@ -16,7 +15,6 @@ const Page: NextPage<Props> = ({ params }: Props) => {
       <Stack>
         <LaboratoryDetail
           laboratoryId={params.laboratoryId}
-          laboratories={MockLaboratories}
         />
       </Stack>
     </LaboratoryDetailProvider>
