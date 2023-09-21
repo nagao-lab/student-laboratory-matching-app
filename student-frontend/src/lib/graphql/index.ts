@@ -41,6 +41,13 @@ export type Laboratory = {
   university: University;
 };
 
+export enum LikeStatus {
+  Blank = 'BLANK',
+  LikeFromBoth = 'LIKE_FROM_BOTH',
+  LikeFromLaboratory = 'LIKE_FROM_LABORATORY',
+  LikeFromStudent = 'LIKE_FROM_STUDENT'
+}
+
 export type Major = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -52,8 +59,33 @@ export enum MatchStatus {
 }
 
 export type Mutation = {
+  createMajor: Major;
+  createUniversity: University;
+  favoriteLaboratory: LikeStatus;
+  favoriteStudent: LikeStatus;
   loginStudent: Student;
   signupStudent: Student;
+  updateStudent: Student;
+};
+
+
+export type MutationCreateMajorArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateUniversityArgs = {
+  input: NewUniversity;
+};
+
+
+export type MutationFavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationFavoriteStudentArgs = {
+  input: NewLike;
 };
 
 
@@ -67,9 +99,44 @@ export type MutationSignupStudentArgs = {
   input: NewStudent;
 };
 
+
+export type MutationUpdateStudentArgs = {
+  input: NewStudentFields;
+};
+
+export type NewLike = {
+  laboratoryId: Scalars['ID']['input'];
+  studentId: Scalars['ID']['input'];
+};
+
 export type NewStudent = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type NewStudentFields = {
+  birthday?: InputMaybe<Scalars['Time']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Gender>;
+  gpa?: InputMaybe<Scalars['Float']['input']>;
+  grade?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  interest?: InputMaybe<Scalars['String']['input']>;
+  majorIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  prefectureId?: InputMaybe<Scalars['ID']['input']>;
+  status?: InputMaybe<MatchStatus>;
+  universityId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type NewUniversity = {
+  address: Scalars['String']['input'];
+  maxGpa: Scalars['Float']['input'];
+  name: Scalars['String']['input'];
+  prefectureId: Scalars['ID']['input'];
 };
 
 export type Prefecture = {
@@ -132,6 +199,21 @@ export type University = {
   prefecture: Prefecture;
 };
 
+export type LaboratoriesQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
+
+export type FavoriteLaboratoryMutationVariables = Exact<{
+  studentId: Scalars['ID']['input'];
+  laboratoryId: Scalars['ID']['input'];
+}>;
+
+
+export type FavoriteLaboratoryMutation = { favoriteLaboratory: LikeStatus };
+
 export type LaboratoryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -155,6 +237,82 @@ export type StudentQueryVariables = Exact<{
 export type StudentQuery = { student: { id: string, name: string } };
 
 
+export const LaboratoriesDocument = gql`
+    query Laboratories($id: ID!) {
+  getMatchableLaboratories(id: $id) {
+    id
+    university {
+      name
+    }
+    name
+    comment
+    majors {
+      name
+    }
+    status
+  }
+}
+    `;
+
+/**
+ * __useLaboratoriesQuery__
+ *
+ * To run a query within a React component, call `useLaboratoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLaboratoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLaboratoriesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useLaboratoriesQuery(baseOptions: Apollo.QueryHookOptions<LaboratoriesQuery, LaboratoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LaboratoriesQuery, LaboratoriesQueryVariables>(LaboratoriesDocument, options);
+      }
+export function useLaboratoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LaboratoriesQuery, LaboratoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LaboratoriesQuery, LaboratoriesQueryVariables>(LaboratoriesDocument, options);
+        }
+export type LaboratoriesQueryHookResult = ReturnType<typeof useLaboratoriesQuery>;
+export type LaboratoriesLazyQueryHookResult = ReturnType<typeof useLaboratoriesLazyQuery>;
+export type LaboratoriesQueryResult = Apollo.QueryResult<LaboratoriesQuery, LaboratoriesQueryVariables>;
+export const FavoriteLaboratoryDocument = gql`
+    mutation favoriteLaboratory($studentId: ID!, $laboratoryId: ID!) {
+  favoriteLaboratory(input: {studentId: $studentId, laboratoryId: $laboratoryId})
+}
+    `;
+export type FavoriteLaboratoryMutationFn = Apollo.MutationFunction<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
+
+/**
+ * __useFavoriteLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useFavoriteLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavoriteLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favoriteLaboratoryMutation, { data, loading, error }] = useFavoriteLaboratoryMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      laboratoryId: // value for 'laboratoryId'
+ *   },
+ * });
+ */
+export function useFavoriteLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>(FavoriteLaboratoryDocument, options);
+      }
+export type FavoriteLaboratoryMutationHookResult = ReturnType<typeof useFavoriteLaboratoryMutation>;
+export type FavoriteLaboratoryMutationResult = Apollo.MutationResult<FavoriteLaboratoryMutation>;
+export type FavoriteLaboratoryMutationOptions = Apollo.BaseMutationOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
 export const LaboratoryDocument = gql`
     query Laboratory($id: ID!) {
   laboratory(id: $id) {

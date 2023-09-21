@@ -2,20 +2,21 @@
 
 import { Button } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
+import { useFavoriteLaboratory } from "@/features/laboratories/hooks/laboratories";
 
 type Props = {
-  status: string | undefined;
+  laboratoryId: string;
 };
 
-export const ChangeStatusToIconButton = ({ status }: Props) => {
-  return status === "BLANK" || status === "LIKE_FROM_LABORATORY" ? (
+export const ChangeStatusToIconButton = ({ laboratoryId }: Props) => {
+  const {state, clickHandler} = useFavoriteLaboratory(laboratoryId);
+
+  return state === "" || state === "LIKE_FROM_LABORATORY" ? (
     <Button
       variant="contained"
       sx={{ backgroundColor: "#ff00ff", ":hover": { background: "#ff88ff" } }}
       startIcon={<Favorite />}
-      onClick={() => {
-        return null;
-      }}
+      onClick={clickHandler}
     >
       興味あり
     </Button>
@@ -28,9 +29,7 @@ export const ChangeStatusToIconButton = ({ status }: Props) => {
         ":hover": { background: "#aaaaaa" },
       }}
       startIcon={<Favorite />}
-      onClick={() => {
-        return null;
-      }}
+      onClick={clickHandler}
     >
       興味あり
     </Button>
