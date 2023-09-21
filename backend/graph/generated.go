@@ -99,6 +99,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		GetAllUniversities       func(childComplexity int) int
 		GetLikeStatus            func(childComplexity int, input model.NewLike) int
 		GetMatchableLaboratories func(childComplexity int, id string) int
 		GetMatchableStudents     func(childComplexity int, id string) int
@@ -166,6 +167,7 @@ type QueryResolver interface {
 	GetMatchableStudents(ctx context.Context, id string) ([]*model.Student, error)
 	Laboratory(ctx context.Context, id string) (*model.Laboratory, error)
 	GetMatchableLaboratories(ctx context.Context, id string) ([]*model.Laboratory, error)
+	GetAllUniversities(ctx context.Context) ([]*model.University, error)
 	GetLikeStatus(ctx context.Context, input model.NewLike) (model.LikeStatus, error)
 	GetMessages(ctx context.Context, messageRoomID string) ([]*model.Message, error)
 	GetMessagesByIds(ctx context.Context, input model.NewLike) ([]*model.Message, error)
@@ -483,6 +485,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Prefecture.Name(childComplexity), true
+
+	case "Query.getAllUniversities":
+		if e.complexity.Query.GetAllUniversities == nil {
+			break
+		}
+
+		return e.complexity.Query.GetAllUniversities(childComplexity), true
 
 	case "Query.getLikeStatus":
 		if e.complexity.Query.GetLikeStatus == nil {
@@ -3299,6 +3308,59 @@ func (ec *executionContext) fieldContext_Query_getMatchableLaboratories(ctx cont
 	if fc.Args, err = ec.field_Query_getMatchableLaboratories_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_getAllUniversities(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_getAllUniversities(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GetAllUniversities(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.University)
+	fc.Result = res
+	return ec.marshalOUniversity2ᚕᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_getAllUniversities(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_University_id(ctx, field)
+			case "prefecture":
+				return ec.fieldContext_University_prefecture(ctx, field)
+			case "name":
+				return ec.fieldContext_University_name(ctx, field)
+			case "address":
+				return ec.fieldContext_University_address(ctx, field)
+			case "maxGpa":
+				return ec.fieldContext_University_maxGpa(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type University", field.Name)
+		},
 	}
 	return fc, nil
 }
@@ -7502,6 +7564,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "getAllUniversities":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getAllUniversities(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "getLikeStatus":
 			field := field
 
@@ -9109,6 +9190,54 @@ func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel
 	}
 	res := graphql.MarshalTime(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOUniversity2ᚕᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx context.Context, sel ast.SelectionSet, v []*model.University) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOUniversity2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOUniversity2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUniversity(ctx context.Context, sel ast.SelectionSet, v *model.University) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._University(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

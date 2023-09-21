@@ -16,7 +16,7 @@ type services struct {
 	*studentService
 	*laboratoryService
 	*studentLaboratoryService
-	*univeristyService
+	*universityService
 	*prefectureService
 	*majorService
 	*messageService
@@ -27,7 +27,7 @@ func NewService(db *gorm.DB) IService {
 		studentService:           &studentService{db: db},
 		laboratoryService:        &laboratoryService{db: db},
 		studentLaboratoryService: &studentLaboratoryService{db: db},
-		univeristyService:        &univeristyService{db: db},
+		universityService:        &universityService{db: db},
 		prefectureService:        &prefectureService{db: db},
 		majorService:             &majorService{db: db},
 		messageService:           &messageService{db: db},
