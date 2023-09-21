@@ -11,13 +11,14 @@ import (
 type IUniversityService interface {
 	CreateUniversity(model.NewUniversity) (*model.University, error)
 	GetUniversityById(id string) (*model.University, error)
+	GetAllUniversities() ([]*model.University, error)
 }
 
-type univeristyService struct {
+type universityService struct {
 	db *gorm.DB
 }
 
-func (us *univeristyService) CreateUniversity(newUniversity model.NewUniversity) (*model.University, error) {
+func (us *universityService) CreateUniversity(newUniversity model.NewUniversity) (*model.University, error) {
 	prefectureIdUint64, _ := strconv.ParseUint(newUniversity.PrefectureID, 10, 64)
 	university := db.University{
 		PrefectureID: uint(prefectureIdUint64),
@@ -32,11 +33,33 @@ func (us *univeristyService) CreateUniversity(newUniversity model.NewUniversity)
 	return model.ConvertUniversity(&university), nil
 }
 
-func (us *univeristyService) GetUniversityById(id string) (*model.University, error) {
+func (us *universityService) GetUniversityById(id string) (*model.University, error) {
 	var university db.University
 	err := us.db.First(&university, id).Error
 	if err != nil {
 		return nil, err
 	}
 	return model.ConvertUniversity(&university), nil
+}
+
+func (us *universityService) GetAllUniversities() ([]*model.University, error) {
+	// 大学の一覧をidの小さい順に取得する
+	var records []db.University
+	err := us.db.Table("universities").
+		Order("id ASC").
+		Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+
+	universities := []*model.University{}
+	for _, record := range records {
+		university := model.ConvertUniversity(&record)
+		universities = append(universities, university)
+	}
+
+	// 学生情報登録の際の選択肢のためだけであれば，大学名だけでいい気がするが
+	// 他のところでも使う可能性があるので[]*model.Universityを返すようにしている
+
+	return universities, nil
 }
