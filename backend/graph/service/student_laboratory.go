@@ -1,9 +1,12 @@
 package service
 
 import (
+	"context"
+	"fmt"
 	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
+	"student-laboratory-matching-app/middleware/auth"
 	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
@@ -15,6 +18,8 @@ type IStudentLaboratoryService interface {
 	FavoriteStudent(model.NewLike) (model.LikeStatus, error)
 	UnfavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
 	UnfavoriteStudent(model.NewLike) (model.LikeStatus, error)
+	GetStudentLaboratoriesByStudentId(context.Context, *string, *model.LikeStatus) ([]*model.StudentLaboratory, error)
+	GetStudentLaboratoriesByLaboratoryId(context.Context, *string, *model.LikeStatus) ([]*model.StudentLaboratory, error)
 }
 
 type studentLaboratoryService struct {
@@ -168,4 +173,68 @@ func (sls *studentLaboratoryService) UnfavoriteStudent(newLikeIds model.NewLike)
 	}
 
 	return likeStatus, nil
+}
+
+func (sls *studentLaboratoryService) GetStudentLaboratoriesByStudentId(ctx context.Context, studentId *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
+	if studentId == nil {
+		CA := auth.GetCookieAccess(ctx)
+		if !CA.IsLoggedIn {
+			return nil, fmt.Errorf("GetStudentLaboratories failed: login first or specify studentId")
+		}
+		studentId = &CA.UserId
+	}
+
+	var records []db.StudentLaboratory
+	err := sls.db.Select("id", "student_id", "laboratory_id", "status").
+		Where("student_id = ?", studentId).
+		Order("updated_at desc").
+		Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+
+	var studentLaboratories []*model.StudentLaboratory
+	for _, record := range records {
+		studentLaboratory := model.ConvertStudentLaboratory(&record)
+		if filter != nil {
+			if studentLaboratory.Status != *filter {
+				continue
+			}
+		}
+		studentLaboratories = append(studentLaboratories, studentLaboratory)
+	}
+
+	return studentLaboratories, nil
+}
+
+func (sls *studentLaboratoryService) GetStudentLaboratoriesByLaboratoryId(ctx context.Context, laboratoryId *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
+	if laboratoryId == nil {
+		CA := auth.GetCookieAccess(ctx)
+		if !CA.IsLoggedIn {
+			return nil, fmt.Errorf("GetStudentLaboratories failed: login first or specify laboratoryId")
+		}
+		laboratoryId = &CA.UserId
+	}
+
+	var records []db.StudentLaboratory
+	err := sls.db.Select("id", "student_id", "laboratory_id", "status").
+		Where("laboratory_id = ?", laboratoryId).
+		Order("updated_at desc").
+		Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+
+	var studentLaboratories []*model.StudentLaboratory
+	for _, record := range records {
+		studentLaboratory := model.ConvertStudentLaboratory(&record)
+		if filter != nil {
+			if studentLaboratory.Status != *filter {
+				continue
+			}
+		}
+		studentLaboratories = append(studentLaboratories, studentLaboratory)
+	}
+
+	return studentLaboratories, nil
 }

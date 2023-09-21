@@ -119,6 +119,16 @@ func (r *queryResolver) GetMessagesByIds(ctx context.Context, input model.NewLik
 	return r.Srv.GetMessagesByIds(input)
 }
 
+// GetStudentLaboratoriesByStudentID is the resolver for the getStudentLaboratoriesByStudentId field.
+func (r *queryResolver) GetStudentLaboratoriesByStudentID(ctx context.Context, id *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
+	return r.Srv.GetStudentLaboratoriesByStudentId(ctx, id, filter)
+}
+
+// GetStudentLaboratoriesByLaboratoryID is the resolver for the getStudentLaboratoriesByLaboratoryId field.
+func (r *queryResolver) GetStudentLaboratoriesByLaboratoryID(ctx context.Context, id *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
+	return r.Srv.GetStudentLaboratoriesByLaboratoryId(ctx, id, filter)
+}
+
 // University is the resolver for the university field.
 func (r *studentResolver) University(ctx context.Context, obj *model.Student) (*model.University, error) {
 	return r.Srv.GetUniversityById(obj.University.ID)
@@ -132,6 +142,16 @@ func (r *studentResolver) Prefecture(ctx context.Context, obj *model.Student) (*
 // Majors is the resolver for the majors field.
 func (r *studentResolver) Majors(ctx context.Context, obj *model.Student) ([]*model.Major, error) {
 	return r.Srv.GetMajorByStudent(obj.ID)
+}
+
+// Student is the resolver for the student field.
+func (r *studentLaboratoryResolver) Student(ctx context.Context, obj *model.StudentLaboratory) (*model.Student, error) {
+	return r.Srv.GetStudentById(obj.Student.ID)
+}
+
+// Laboratory is the resolver for the laboratory field.
+func (r *studentLaboratoryResolver) Laboratory(ctx context.Context, obj *model.StudentLaboratory) (*model.Laboratory, error) {
+	return r.Srv.GetLaboratoryById(obj.Laboratory.ID)
 }
 
 // Prefecture is the resolver for the prefecture field.
@@ -151,6 +171,11 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 // Student returns StudentResolver implementation.
 func (r *Resolver) Student() StudentResolver { return &studentResolver{r} }
 
+// StudentLaboratory returns StudentLaboratoryResolver implementation.
+func (r *Resolver) StudentLaboratory() StudentLaboratoryResolver {
+	return &studentLaboratoryResolver{r}
+}
+
 // University returns UniversityResolver implementation.
 func (r *Resolver) University() UniversityResolver { return &universityResolver{r} }
 
@@ -158,4 +183,5 @@ type laboratoryResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type studentResolver struct{ *Resolver }
+type studentLaboratoryResolver struct{ *Resolver }
 type universityResolver struct{ *Resolver }
