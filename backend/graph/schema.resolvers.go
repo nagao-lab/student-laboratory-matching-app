@@ -54,6 +54,11 @@ func (r *mutationResolver) CreateUniversity(ctx context.Context, input model.New
 	return r.Srv.CreateUniversity(input)
 }
 
+// CreateMessage is the resolver for the createMessage field.
+func (r *mutationResolver) CreateMessage(ctx context.Context, input model.NewMessage) (*model.Message, error) {
+	return r.Srv.CreateMessage(input)
+}
+
 // Student is the resolver for the student field.
 func (r *queryResolver) Student(ctx context.Context, id string) (*model.Student, error) {
 	return r.Srv.GetStudentById(id)
