@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
+	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
 )
@@ -21,12 +22,9 @@ type studentLaboratoryService struct {
 }
 
 func (sls *studentLaboratoryService) GetLikeStatusByIds(newLikeIds model.NewLike) (model.LikeStatus, error) {
-	studentIdUint64, _ := strconv.ParseUint(newLikeIds.StudentID, 10, 64)
-	laboratoryIdUint64, _ := strconv.ParseUint(newLikeIds.LaboratoryID, 10, 64)
-
 	studentLaboratory := db.Student_Laboratory{
-		StudentID:    uint(studentIdUint64),
-		LaboratoryID: uint(laboratoryIdUint64),
+		StudentID:    tools.ParseStringToUint(newLikeIds.StudentID),
+		LaboratoryID: tools.ParseStringToUint(newLikeIds.LaboratoryID),
 	}
 
 	var record db.Student_Laboratory
@@ -35,7 +33,7 @@ func (sls *studentLaboratoryService) GetLikeStatusByIds(newLikeIds model.NewLike
 		return "", err
 	}
 
-	return model.LikeStatus(model.ConvertStudentLaboratory(&record).Status), nil
+	return model.ConvertStudentLaboratory(&record).Status, nil
 }
 
 func (sls *studentLaboratoryService) FavoriteLaboratory(newLikeIds model.NewLike) (model.LikeStatus, error) {
