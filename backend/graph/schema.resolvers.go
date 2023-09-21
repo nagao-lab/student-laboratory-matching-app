@@ -21,12 +21,12 @@ func (r *laboratoryResolver) Majors(ctx context.Context, obj *model.Laboratory) 
 
 // SignupStudent is the resolver for the signupStudent field.
 func (r *mutationResolver) SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
-	return r.Srv.Signup(input)
+	return r.Srv.Signup(ctx, input)
 }
 
 // LoginStudent is the resolver for the loginStudent field.
 func (r *mutationResolver) LoginStudent(ctx context.Context, email string, password string) (*model.Student, error) {
-	return r.Srv.Login(email, password)
+	return r.Srv.Login(ctx, email, password)
 }
 
 // FavoriteLaboratory is the resolver for the favoriteLaboratory field.
@@ -92,6 +92,26 @@ func (r *queryResolver) GetMatchableLaboratories(ctx context.Context, id string)
 // GetAllPrefectures is the resolver for the getAllPrefectures field.
 func (r *queryResolver) GetAllPrefectures(ctx context.Context) ([]*model.Prefecture, error) {
 	return r.Srv.GetAllPrefectures()
+}
+
+// GetAllUniversities is the resolver for the getAllUniversities field.
+func (r *queryResolver) GetAllUniversities(ctx context.Context) ([]*model.University, error) {
+	return r.Srv.GetAllUniversities()
+}
+
+// GetLikeStatus is the resolver for the getLikeStatus field.
+func (r *queryResolver) GetLikeStatus(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
+	return r.Srv.GetLikeStatusByIds(input)
+}
+
+// GetMessages is the resolver for the getMessages field.
+func (r *queryResolver) GetMessages(ctx context.Context, messageRoomID string) ([]*model.Message, error) {
+	return r.Srv.GetMessages(messageRoomID)
+}
+
+// GetMessagesByIds is the resolver for the getMessagesByIds field.
+func (r *queryResolver) GetMessagesByIds(ctx context.Context, input model.NewLike) ([]*model.Message, error) {
+	return r.Srv.GetMessagesByIds(input)
 }
 
 // University is the resolver for the university field.

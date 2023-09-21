@@ -1,10 +1,12 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
+	"student-laboratory-matching-app/middleware/auth"
 	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
@@ -13,8 +15,8 @@ import (
 
 type IStudentService interface {
 	GetStudentById(id string) (*model.Student, error)
-	Signup(model.NewStudent) (*model.Student, error)
-	Login(string, string) (*model.Student, error)
+	Signup(context.Context, model.NewStudent) (*model.Student, error)
+	Login(context.Context, string, string) (*model.Student, error)
 	GetMatchableStudents(string) ([]*model.Student, error)
 	UpdateStudent(model.NewStudentFields) (*model.Student, error)
 }
@@ -44,30 +46,34 @@ func (ss *studentService) GetStudentById(id string) (*model.Student, error) {
 	return student, nil
 }
 
-func (ss *studentService) Signup(newStudent model.NewStudent) (*model.Student, error) {
-	student := db.Student{
+func (ss *studentService) Signup(ctx context.Context, newStudent model.NewStudent) (*model.Student, error) {
+	record := db.Student{
 		Email:    newStudent.Email,
 		Password: tools.HashPassword(newStudent.Password),
 		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
 	}
 
 	// Check whether the email is already used.
-	var record db.Student
-	result := ss.db.Where("Email = ?", student.Email).Find(&record)
+	result := ss.db.Where("Email = ?", record.Email).Find(&record)
 	if result.RowsAffected != 0 {
 		return nil, fmt.Errorf("signup: the account already exist")
 	}
 
-	err := ss.db.Select("Email", "Password").Create(&student).Error
+	err := ss.db.Select("Email", "Password").Create(&record).Error
 	if err != nil {
 		return nil, err
 	}
 
+	student := model.ConvertStudent(&record)
+
+	CA := auth.GetCookieAccess(ctx)
+	CA.Login(student.ID)
+
 	fmt.Println("signup: Success!")
-	return model.ConvertStudent(&student), nil
+	return student, nil
 }
 
-func (ss *studentService) Login(email, password string) (*model.Student, error) {
+func (ss *studentService) Login(ctx context.Context, email, password string) (*model.Student, error) {
 	var record db.Student
 	err := ss.db.Where("Email LIKE ?", email).Find(&record).Error
 	if err != nil {
@@ -78,8 +84,13 @@ func (ss *studentService) Login(email, password string) (*model.Student, error) 
 		return nil, fmt.Errorf("Login failed: the email or password is incorrect")
 	}
 
+	student := model.ConvertStudent(&record)
+
+	CA := auth.GetCookieAccess(ctx)
+	CA.Login(student.ID)
+
 	fmt.Println("Login success")
-	return model.ConvertStudent(&record), nil
+	return student, nil
 }
 
 func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.Student, error) {
