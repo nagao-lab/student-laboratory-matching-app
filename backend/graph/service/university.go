@@ -43,7 +43,6 @@ func (us *universityService) GetUniversityById(id string) (*model.University, er
 }
 
 func (us *universityService) GetAllUniversities() ([]*model.University, error) {
-	// 大学の一覧をidの小さい順に取得する
 	var records []db.University
 	err := us.db.Table("universities").
 		Order("id ASC").
@@ -57,9 +56,5 @@ func (us *universityService) GetAllUniversities() ([]*model.University, error) {
 		university := model.ConvertUniversity(&record)
 		universities = append(universities, university)
 	}
-
-	// 学生情報登録の際の選択肢のためだけであれば，大学名だけでいい気がするが
-	// 他のところでも使う可能性があるので[]*model.Universityを返すようにしている
-
 	return universities, nil
 }
