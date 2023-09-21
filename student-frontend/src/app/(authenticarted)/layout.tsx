@@ -1,15 +1,15 @@
 "use client";
 
 import { ReactNode } from "react";
-import { HeadrForm } from "@/features/header/header-form";
+import { HeaderForm } from "@/features/header/header-form";
+import { SessionProvider } from "@/providers/session";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <>
-      
-        <HeadrForm />
-        {children}
-    </>
+    <SessionProvider>
+      <HeaderForm />
+      {children}
+    </SessionProvider>
   );
 };
 
