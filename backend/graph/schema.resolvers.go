@@ -89,6 +89,16 @@ func (r *queryResolver) GetMatchableLaboratories(ctx context.Context, id string)
 	return r.Srv.GetMatchableLaboratories(id)
 }
 
+// GetMessages is the resolver for the getMessages field.
+func (r *queryResolver) GetMessages(ctx context.Context, messageRoomID string) ([]*model.Message, error) {
+	return r.Srv.GetMessages(messageRoomID)
+}
+
+// GetMessagesByIds is the resolver for the getMessagesByIds field.
+func (r *queryResolver) GetMessagesByIds(ctx context.Context, input model.NewLike) ([]*model.Message, error) {
+	return r.Srv.GetMessagesByIds(input)
+}
+
 // University is the resolver for the university field.
 func (r *studentResolver) University(ctx context.Context, obj *model.Student) (*model.University, error) {
 	return r.Srv.GetUniversityById(obj.University.ID)
