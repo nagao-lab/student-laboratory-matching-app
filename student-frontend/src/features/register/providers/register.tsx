@@ -23,7 +23,7 @@ export const RegisterProvider = ({
 
   useEffect(() => {
     if (userId === "") {
-      router.push("/login");
+      // router.push("/login");
     } else {
       setLoading(false);
     }
