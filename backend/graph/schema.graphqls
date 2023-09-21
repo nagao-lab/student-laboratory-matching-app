@@ -60,6 +60,13 @@ type Laboratory {
 	numLikes: Int!
 }
 
+type StudentLaboratory {
+	id: ID!
+	student: Student!
+	laboratory: Laboratory!
+	status: LikeStatus!
+}
+
 type Major {
   id: ID!
   name: String!
@@ -93,6 +100,9 @@ type Query {
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
   getAllUniversities: [University]
+  getLikeStatus(input: NewLike!): LikeStatus!
+  getMessages(messageRoomId: ID!): [Message]
+  getMessagesByIds(input: NewLike!): [Message]
 }
 
 input NewStudent {
@@ -125,7 +135,7 @@ input NewUniversity {
 	maxGpa: Float!
 }
 
-input NewLike {
+input NewLike { # TODO: rename
 	studentId: ID!
 	laboratoryId: ID!
 }
