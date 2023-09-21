@@ -16,6 +16,7 @@ type IStudentService interface {
 	GetStudentById(id string) (*model.Student, error)
 	Signup(context.Context, model.NewStudent) (*model.Student, error)
 	Login(context.Context, string, string) (*model.Student, error)
+	LogoutStudent(context.Context) (bool, error)
 	GetMatchableStudents(string) ([]*model.Student, error)
 	UpdateStudent(model.NewStudentFields) (*model.Student, error)
 }
@@ -90,6 +91,14 @@ func (ss *studentService) Login(ctx context.Context, email, password string) (*m
 
 	fmt.Println("Login success")
 	return student, nil
+}
+
+func (ss *studentService) LogoutStudent(ctx context.Context) (bool, error) {
+	CA := auth.GetCookieAccess(ctx)
+	CA.Logout()
+
+	fmt.Println("Logout success")
+	return true, nil
 }
 
 func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.Student, error) {

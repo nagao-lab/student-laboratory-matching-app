@@ -29,6 +29,11 @@ func (r *mutationResolver) LoginStudent(ctx context.Context, email string, passw
 	return r.Srv.Login(ctx, email, password)
 }
 
+// LogoutStudent is the resolver for the logoutStudent field.
+func (r *mutationResolver) LogoutStudent(ctx context.Context) (bool, error) {
+	return r.Srv.LogoutStudent(ctx)
+}
+
 // FavoriteLaboratory is the resolver for the favoriteLaboratory field.
 func (r *mutationResolver) FavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
 	return r.Srv.FavoriteLaboratory(input)
