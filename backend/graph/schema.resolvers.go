@@ -89,6 +89,11 @@ func (r *queryResolver) GetMatchableLaboratories(ctx context.Context, id string)
 	return r.Srv.GetMatchableLaboratories(id)
 }
 
+// StudentLaboratory is the resolver for the studentLaboratory field.
+func (r *queryResolver) StudentLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
+	return r.Srv.GetFavoriteStatusById(input)
+}
+
 // University is the resolver for the university field.
 func (r *studentResolver) University(ctx context.Context, obj *model.Student) (*model.University, error) {
 	return r.Srv.GetUniversityById(obj.University.ID)

@@ -60,6 +60,13 @@ type Laboratory {
 	numLikes: Int!
 }
 
+type StudentLaboratory {
+	id: ID!
+	student: Student!
+	laboratory: Laboratory!
+	status: LikeStatus!
+}
+
 type Major {
   id: ID!
   name: String!
@@ -92,6 +99,7 @@ type Query {
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
+  studentLaboratory(input: NewLike!): LikeStatus!
 }
 
 input NewStudent {
