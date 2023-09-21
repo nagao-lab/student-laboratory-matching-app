@@ -89,6 +89,11 @@ func (r *queryResolver) GetMatchableLaboratories(ctx context.Context, id string)
 	return r.Srv.GetMatchableLaboratories(id)
 }
 
+// GetLikeStatus is the resolver for the getLikeStatus field.
+func (r *queryResolver) GetLikeStatus(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
+	return r.Srv.GetLikeStatusByIds(input)
+}
+
 // GetMessages is the resolver for the getMessages field.
 func (r *queryResolver) GetMessages(ctx context.Context, messageRoomID string) ([]*model.Message, error) {
 	return r.Srv.GetMessages(messageRoomID)

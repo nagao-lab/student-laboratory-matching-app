@@ -4,11 +4,13 @@ import (
 	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
+	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
 )
 
 type IStudentLaboratoryService interface {
+	GetLikeStatusByIds(model.NewLike) (model.LikeStatus, error)
 	FavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
 	FavoriteStudent(model.NewLike) (model.LikeStatus, error)
 	UnfavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
@@ -17,6 +19,21 @@ type IStudentLaboratoryService interface {
 
 type studentLaboratoryService struct {
 	db *gorm.DB
+}
+
+func (sls *studentLaboratoryService) GetLikeStatusByIds(newLikeIds model.NewLike) (model.LikeStatus, error) {
+	studentLaboratory := db.Student_Laboratory{
+		StudentID:    tools.ParseStringToUint(newLikeIds.StudentID),
+		LaboratoryID: tools.ParseStringToUint(newLikeIds.LaboratoryID),
+	}
+
+	var record db.Student_Laboratory
+	err := sls.db.Where(&studentLaboratory).Find(&record).Error
+	if err != nil {
+		return "", err
+	}
+
+	return model.ConvertStudentLaboratory(&record).Status, nil
 }
 
 func (sls *studentLaboratoryService) FavoriteLaboratory(newLikeIds model.NewLike) (model.LikeStatus, error) {
