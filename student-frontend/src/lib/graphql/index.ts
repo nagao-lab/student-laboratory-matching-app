@@ -132,6 +132,13 @@ export type University = {
   prefecture: Prefecture;
 };
 
+export type LaboratoriesQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
+
 export type LaboratoryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -155,6 +162,50 @@ export type StudentQueryVariables = Exact<{
 export type StudentQuery = { student: { id: string, name: string } };
 
 
+export const LaboratoriesDocument = gql`
+    query Laboratories($id: ID!) {
+  getMatchableLaboratories(id: $id) {
+    id
+    university {
+      name
+    }
+    name
+    comment
+    majors {
+      name
+    }
+    status
+  }
+}
+    `;
+
+/**
+ * __useLaboratoriesQuery__
+ *
+ * To run a query within a React component, call `useLaboratoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLaboratoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLaboratoriesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useLaboratoriesQuery(baseOptions: Apollo.QueryHookOptions<LaboratoriesQuery, LaboratoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LaboratoriesQuery, LaboratoriesQueryVariables>(LaboratoriesDocument, options);
+      }
+export function useLaboratoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LaboratoriesQuery, LaboratoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LaboratoriesQuery, LaboratoriesQueryVariables>(LaboratoriesDocument, options);
+        }
+export type LaboratoriesQueryHookResult = ReturnType<typeof useLaboratoriesQuery>;
+export type LaboratoriesLazyQueryHookResult = ReturnType<typeof useLaboratoriesLazyQuery>;
+export type LaboratoriesQueryResult = Apollo.QueryResult<LaboratoriesQuery, LaboratoriesQueryVariables>;
 export const LaboratoryDocument = gql`
     query Laboratory($id: ID!) {
   laboratory(id: $id) {
