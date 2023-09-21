@@ -39,6 +39,11 @@ func (r *mutationResolver) FavoriteStudent(ctx context.Context, input model.NewL
 	return r.Srv.FavoriteStudent(input)
 }
 
+// UnfavoriteLaboratory is the resolver for the unfavoriteLaboratory field.
+func (r *mutationResolver) UnfavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
+	return r.Srv.UnfavoriteLaboratory(input)
+}
+
 // UnfavoriteStudent is the resolver for the unfavoriteStudent field.
 func (r *mutationResolver) UnfavoriteStudent(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
 	return r.Srv.UnfavoriteStudent(input)
@@ -57,6 +62,11 @@ func (r *mutationResolver) CreateMajor(ctx context.Context, name string) (*model
 // CreateUniversity is the resolver for the createUniversity field.
 func (r *mutationResolver) CreateUniversity(ctx context.Context, input model.NewUniversity) (*model.University, error) {
 	return r.Srv.CreateUniversity(input)
+}
+
+// CreateMessage is the resolver for the createMessage field.
+func (r *mutationResolver) CreateMessage(ctx context.Context, input model.NewMessage) (*model.Message, error) {
+	return r.Srv.CreateMessage(input)
 }
 
 // Student is the resolver for the student field.

@@ -18,6 +18,11 @@ enum LikeStatus {
 	LIKE_FROM_BOTH
 }
 
+enum MessageFrom {
+	STUDNET
+	LABORATORY
+}
+
 type Student {
 	id: ID!
 	uid: String!
@@ -73,6 +78,15 @@ type University {
   maxGpa: Float!
 }
 
+type Message {
+	messageId: ID! # id
+	messageRoomId: ID! # student_laboratory_id
+	from: MessageFrom!
+	content: String!
+	createdAt: Time!
+	updatedAt: Time!
+}
+
 type Query {
   student(id: ID!): Student!
   getMatchableStudents(id: ID!): [Student]
@@ -115,13 +129,21 @@ input NewLike {
 	laboratoryId: ID!
 }
 
+input NewMessage {
+	messageRoomId: ID! # student_laboratory_id
+	from: MessageFrom!
+	content: String!
+}
+
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
   favoriteLaboratory(input: NewLike!): LikeStatus!
   favoriteStudent(input: NewLike!): LikeStatus!
+  unfavoriteLaboratory(input: NewLike!): LikeStatus!
   unfavoriteStudent(input: NewLike!): LikeStatus!
   updateStudent(input: NewStudentFields!): Student!
   createMajor(name: String!): Major!
   createUniversity(input: NewUniversity!): University!
+  createMessage(input: NewMessage!): Message
 }
