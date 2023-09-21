@@ -23,14 +23,14 @@ export const LaboratoryForm = ({ setFilterVal, toggle, setToggle }: Props) => {
         sx={{ minWidth: 250, m: 1.25 }}
         onChange={(e) => setFilterVal(e.target.value)}
       />
-      <FormGroup>
+      {/* <FormGroup>
         <FormControlLabel
           sx={{ m: 1.25 }}
           control={<Checkbox />}
           label="「興味あり」のみ表示"
           onChange={() => toggleComponent()}
         />
-      </FormGroup>
+      </FormGroup> */}
     </>
   );
 };
