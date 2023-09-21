@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthContext } from "@/providers/auth";
+import { useSessionContext } from "@/providers/session";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -17,7 +17,7 @@ export const MessagesProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { userId } = useAuthContext();
+  const { userId } = useSessionContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
