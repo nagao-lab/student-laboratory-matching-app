@@ -71,6 +71,15 @@ export const useRegisterForm = () => {
       return;
     }
 
+    const res = uploadImage(file).then((url) => {
+      console.log(url);
+      return url;
+      })
+      .catch((err) => {
+        console.log(err);
+        return "";
+      });
+
     console.log({
       name: name,
       gender: gender,
@@ -81,7 +90,7 @@ export const useRegisterForm = () => {
       birthday: birthday?.toString(),
       prefecture: prefecture,
       gpa: gpa,
-      file: file,
+      file: res,
       status: status,
     });
 
