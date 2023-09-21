@@ -1,0 +1,5 @@
+mutation createMessage($input: NewMessage!){
+    createMessage(input: $input){
+        messageRoomId
+    }
+}
