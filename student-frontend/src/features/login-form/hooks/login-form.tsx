@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLoginStudentMutation } from "@/lib/graphql";
-import { useAuthContext } from "@/providers/auth";
+import { useSessionContext } from "@/providers/session";
 
 export const useLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [loginStudentMutation] = useLoginStudentMutation();
-  const { setUserId } = useAuthContext();
+  const { setUserId } = useSessionContext();
 
   const onSubmit = () => {
     console.log({
@@ -31,11 +31,12 @@ export const useLoginForm = () => {
         }
         setUserId(result.data?.loginStudent.id);
         console.log(result);
+        router.push("/");
       })
       .catch((error) => {
-        console.log("error:", error);
+        window.alert("ログインに失敗しました。");
+        console.log(error);
       });
-    router.push("/");
   };
 
   return {

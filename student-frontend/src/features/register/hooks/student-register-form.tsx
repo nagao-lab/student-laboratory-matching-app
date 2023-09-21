@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { S3 } from "aws-sdk";
 
 export const useRegisterForm = () => {
   const router = useRouter();
@@ -17,6 +18,28 @@ export const useRegisterForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<number | null>();
 
+  // upload image to s3
+  // if success, return url of image
+  // if fail, return empty string
+
+  const s3 = new S3({
+    region: process.env.NEXT_PUBLIC_S3_REGION ? process.env.NEXT_PUBLIC_S3_REGION : '',
+    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID ? process.env.NEXT_PUBLIC_ACCESS_KEY_ID : '',
+    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY ? process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY : '',
+  });
+
+  const uploadImage = async (file: File) => {
+    const params : S3.PutObjectRequest = {
+      Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME ? process.env.NEXT_PUBLIC_BUCKET_NAME : '',
+      Key: `${Date.now()}-${file.name}`,
+      ContentType: file.type,
+      Body: file,
+    };
+
+    const res = await s3.upload(params).promise();
+    return res.Location;
+  };
+    
   const handleSubmit = () => {
     if (
       !name ||
@@ -61,6 +84,8 @@ export const useRegisterForm = () => {
       file: file,
       status: status,
     });
+
+    console.log(res)
     router.push("/");
   };
 

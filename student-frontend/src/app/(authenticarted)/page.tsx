@@ -4,7 +4,6 @@ import {
   LaboratoriesProvider,
   LaboratoryCards,
   LaboratoryForm,
-  MockLaboratories,
 } from "@/features/laboratories";
 import { Stack } from "@mui/material";
 import { useState } from "react";
@@ -22,11 +21,7 @@ const Page: NextPage = () => {
           toggle={toggle}
           setToggle={setToggle}
         />
-        <LaboratoryCards
-          laboratories={MockLaboratories}
-          filterVal={filterVal}
-          toggle={toggle}
-        />
+        <LaboratoryCards filterVal={filterVal} />
       </Stack>
     </LaboratoriesProvider>
   );
