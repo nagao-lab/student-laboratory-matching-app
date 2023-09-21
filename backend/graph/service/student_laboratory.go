@@ -176,12 +176,16 @@ func (sls *studentLaboratoryService) UnfavoriteStudent(newLikeIds model.NewLike)
 }
 
 func (sls *studentLaboratoryService) GetStudentLaboratoriesByStudentId(ctx context.Context, studentId *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
-	if studentId == nil {
-		CA := auth.GetCookieAccess(ctx)
-		if !CA.IsLoggedIn {
-			return nil, fmt.Errorf("GetStudentLaboratories failed: login first or specify studentId")
-		}
+	CA := auth.GetCookieAccess(ctx)
+	if CA.IsLoggedIn {
+		// 学生ユーザーがログインしていてCookieにidがセットされている場合、
+		// 他学生ユーザーのidでマッチングを調べられないようCookieのidで引数を上書きする
+		// (引数のidを消すのがいちばん正しいはず)
 		studentId = &CA.UserId
+	}
+
+	if studentId == nil {
+		return nil, fmt.Errorf("GetStudentLaboratories failed: login first or specify studentId")
 	}
 
 	var records []db.StudentLaboratory
@@ -208,12 +212,16 @@ func (sls *studentLaboratoryService) GetStudentLaboratoriesByStudentId(ctx conte
 }
 
 func (sls *studentLaboratoryService) GetStudentLaboratoriesByLaboratoryId(ctx context.Context, laboratoryId *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
-	if laboratoryId == nil {
-		CA := auth.GetCookieAccess(ctx)
-		if !CA.IsLoggedIn {
-			return nil, fmt.Errorf("GetStudentLaboratories failed: login first or specify laboratoryId")
-		}
+	CA := auth.GetCookieAccess(ctx)
+	if CA.IsLoggedIn {
+		// 研究室ユーザーがログインしていてCookieにidがセットされている場合、
+		// 他研究室ユーザーのidでマッチングを調べられないようCookieのidで引数を上書きする
+		// (引数のidを消すのがいちばん正しいはず)
 		laboratoryId = &CA.UserId
+	}
+
+	if laboratoryId == nil {
+		return nil, fmt.Errorf("GetStudentLaboratories failed: login first or specify laboratoryId")
 	}
 
 	var records []db.StudentLaboratory
