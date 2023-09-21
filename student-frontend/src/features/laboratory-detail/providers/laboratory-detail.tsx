@@ -21,7 +21,7 @@ export const LaboratoryDetailProvider = ({
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { // TODO: userIDで認証する
     if (userId === "") {
       // router.push("/login");
     } else {
