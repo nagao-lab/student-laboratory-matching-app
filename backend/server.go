@@ -7,6 +7,7 @@ import (
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph"
 	"student-laboratory-matching-app/graph/service"
+	"student-laboratory-matching-app/middleware/auth"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -34,12 +35,12 @@ func main() {
 		Debug:            os.Getenv("GO_ENV") == "dev",
 	}))
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+	server := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		Srv: service,
 	}}))
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	router.Handle("/query", srv)
+	router.Handle("/query", auth.UserIdMiddleware(server))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
