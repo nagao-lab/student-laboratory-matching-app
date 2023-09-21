@@ -41,6 +41,13 @@ export type Laboratory = {
   university: University;
 };
 
+export enum LikeStatus {
+  Blank = 'BLANK',
+  LikeFromBoth = 'LIKE_FROM_BOTH',
+  LikeFromLaboratory = 'LIKE_FROM_LABORATORY',
+  LikeFromStudent = 'LIKE_FROM_STUDENT'
+}
+
 export type Major = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -52,8 +59,33 @@ export enum MatchStatus {
 }
 
 export type Mutation = {
+  createMajor: Major;
+  createUniversity: University;
+  favoriteLaboratory: LikeStatus;
+  favoriteStudent: LikeStatus;
   loginStudent: Student;
   signupStudent: Student;
+  updateStudent: Student;
+};
+
+
+export type MutationCreateMajorArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateUniversityArgs = {
+  input: NewUniversity;
+};
+
+
+export type MutationFavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationFavoriteStudentArgs = {
+  input: NewLike;
 };
 
 
@@ -67,9 +99,44 @@ export type MutationSignupStudentArgs = {
   input: NewStudent;
 };
 
+
+export type MutationUpdateStudentArgs = {
+  input: NewStudentFields;
+};
+
+export type NewLike = {
+  laboratoryId: Scalars['ID']['input'];
+  studentId: Scalars['ID']['input'];
+};
+
 export type NewStudent = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type NewStudentFields = {
+  birthday?: InputMaybe<Scalars['Time']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Gender>;
+  gpa?: InputMaybe<Scalars['Float']['input']>;
+  grade?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  interest?: InputMaybe<Scalars['String']['input']>;
+  majorIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  prefectureId?: InputMaybe<Scalars['ID']['input']>;
+  status?: InputMaybe<MatchStatus>;
+  universityId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type NewUniversity = {
+  address: Scalars['String']['input'];
+  maxGpa: Scalars['Float']['input'];
+  name: Scalars['String']['input'];
+  prefectureId: Scalars['ID']['input'];
 };
 
 export type Prefecture = {
@@ -139,6 +206,13 @@ export type LaboratoryQueryVariables = Exact<{
 
 export type LaboratoryQuery = { laboratory: { id: string, name: string, professor: string, numStudents: number, comment: string, status: MatchStatus, imageUrl: string, laboratoryUrl: string, university: { name: string, prefecture: { name: string } }, majors: Array<{ name: string }> } };
 
+export type FavoriteLaboratoryMutationVariables = Exact<{
+  input: NewLike;
+}>;
+
+
+export type FavoriteLaboratoryMutation = { favoriteLaboratory: LikeStatus };
+
 export type LoginStudentMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -206,6 +280,37 @@ export function useLaboratoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type LaboratoryQueryHookResult = ReturnType<typeof useLaboratoryQuery>;
 export type LaboratoryLazyQueryHookResult = ReturnType<typeof useLaboratoryLazyQuery>;
 export type LaboratoryQueryResult = Apollo.QueryResult<LaboratoryQuery, LaboratoryQueryVariables>;
+export const FavoriteLaboratoryDocument = gql`
+    mutation favoriteLaboratory($input: NewLike!) {
+  favoriteLaboratory(input: $input)
+}
+    `;
+export type FavoriteLaboratoryMutationFn = Apollo.MutationFunction<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
+
+/**
+ * __useFavoriteLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useFavoriteLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavoriteLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favoriteLaboratoryMutation, { data, loading, error }] = useFavoriteLaboratoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFavoriteLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>(FavoriteLaboratoryDocument, options);
+      }
+export type FavoriteLaboratoryMutationHookResult = ReturnType<typeof useFavoriteLaboratoryMutation>;
+export type FavoriteLaboratoryMutationResult = Apollo.MutationResult<FavoriteLaboratoryMutation>;
+export type FavoriteLaboratoryMutationOptions = Apollo.BaseMutationOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
 export const LoginStudentDocument = gql`
     mutation loginStudent($email: String!, $password: String!) {
   loginStudent(email: $email, password: $password) {
