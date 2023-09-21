@@ -21,12 +21,9 @@ const Page: NextPage = () => {
           toggle={toggle}
           setToggle={setToggle}
         />
-        <LaboratoryCards
-          filterVal={filterVal}
-          toggle={toggle}
-        />
+        <LaboratoryCards filterVal={filterVal} />
       </Stack>
-   </LaboratoriesProvider>
+    </LaboratoriesProvider>
   );
 };
 
