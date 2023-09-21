@@ -15,6 +15,8 @@ import {
 import { getOptions } from "../options/student-register-form";
 import { DatePicker } from "@mui/x-date-pickers";
 import EditIcon from '@mui/icons-material/Edit';
+import { MuiFileInput } from "mui-file-input";
+import React from "react";
 
 export const StudentRegisterForm = () => {
   const {
@@ -43,6 +45,7 @@ export const StudentRegisterForm = () => {
 
   const MuiDatePicker = DatePicker<Date>;
 
+  const [file, setFile] = React.useState(null);
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -224,11 +227,10 @@ export const StudentRegisterForm = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField
-                  label="プロフィール画像のURL"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(e) => setImageUrl(e.target.value)}
+                <MuiFileInput
+                placeholder="Choose a file"
+                  value={file}
+                  onChange={(file) => setFile(file)}
                 />
               </Grid>
 
