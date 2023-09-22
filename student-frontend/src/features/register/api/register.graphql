@@ -1,0 +1,16 @@
+query GetOptions {
+  getAllUniversities {
+    id
+    name
+  }
+
+  getAllPrefectures {
+    id
+    name
+  }
+
+  getAllMajors {
+    id
+    name
+  }
+}

@@ -14,7 +14,7 @@ const Page: NextPage = () => {
     // maxHeight: `${globalThis.window?.innerHeight - (64 + 56)}`
     maxHeight: "calc(100vh - 64px - 56px)"
   }}>
-    <div style={{overflow: "auto",}}>
+    <div style={{overflowX: "hidden", overflowY: "auto"}}>
       <MessageDetail messages={MockMessageContent}/>
     </div>
     

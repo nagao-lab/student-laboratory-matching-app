@@ -10,9 +10,16 @@ import {
   Button,
   Grid,
   TextField,
+  Avatar,
 } from "@mui/material";
 import { getOptions } from "../options/student-register-form";
 import { DatePicker } from "@mui/x-date-pickers";
+import EditIcon from "@mui/icons-material/Edit";
+import { MuiFileInput } from "mui-file-input";
+import React, { useState } from "react";
+import { checkUploadable } from "@/utils/check-uploadable";
+import { uploadedFileToComment } from "@/utils/uploaded-file-to-comment";
+import { useRegisterContext } from "../providers/register";
 
 export const StudentRegisterForm = () => {
   const {
@@ -25,20 +32,26 @@ export const StudentRegisterForm = () => {
     setBirthday,
     setPrefecture,
     setGpa,
-    setImageUrl,
+    file,
+    setFile,
     setStatus,
     handleSubmit,
   } = useRegisterForm();
 
-  const {
-    genderOptions,
-    universityOptions,
-    gradeOptions,
-    prefectureOptions,
-    statusOptions,
-  } = getOptions();
+  const { genderOptions, gradeOptions, statusOptions } = getOptions();
+
+  const { universities, prefectures, majors, loading } = useRegisterContext();
 
   const MuiDatePicker = DatePicker<Date>;
+  const [newFile, setNewFile] = useState<File | null>(null);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!universities || !prefectures || !majors) {
+    return <div>Failed to load.</div>;
+  }
 
   return (
     <>
@@ -52,6 +65,9 @@ export const StudentRegisterForm = () => {
             alignItems: "center",
           }}
         >
+          <Avatar sx={{ m: 1, bgcolor: "success.main" }}>
+            <EditIcon />
+          </Avatar>
           <Typography component="h1" variant="h5">
             学生登録
           </Typography>
@@ -64,7 +80,6 @@ export const StudentRegisterForm = () => {
                   fullWidth
                   onChange={(e) => {
                     setName(e.target.value);
-                    console.log(e.target.value);
                   }}
                 />
               </Grid>
@@ -72,6 +87,11 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={genderOptions}
                   id="gender"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -87,8 +107,14 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={universityOptions}
+                  options={universities}
                   id="university"
+                  getOptionLabel={(option) => (option ? option.name : "")}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
+                    </Box>
+                  )}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -98,7 +124,30 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.value)
+                    setUniversity(selectedOption?.id)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={majors}
+                  id="major"
+                  getOptionLabel={(option) => (option ? option.name : "")}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
+                    </Box>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="専攻"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) =>
+                    setUniversity(selectedOption?.id)
                   }
                 />
               </Grid>
@@ -107,6 +156,11 @@ export const StudentRegisterForm = () => {
                 <Autocomplete
                   options={gradeOptions}
                   id="grade"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -151,8 +205,14 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={prefectureOptions}
+                  options={prefectures}
                   id="prefecture"
+                  getOptionLabel={(option) => (option ? option.name : "")}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
+                    </Box>
+                  )}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -162,7 +222,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setPrefecture(selectedOption?.value)
+                    setPrefecture(selectedOption?.id)
                   }
                 />
               </Grid>
@@ -177,18 +237,50 @@ export const StudentRegisterForm = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField
-                  label="プロフィール画像のURL"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(e) => setImageUrl(e.target.value)}
+                <MuiFileInput
+                  label="プロフィール画像"
+                  placeholder="Choose a file"
+                  value={newFile}
+                  onChange={(newFile) => {
+                    setNewFile(newFile);
+                    setFile(newFile);
+                  }}
                 />
+                <Typography variant="caption" component="div" gutterBottom>
+                  jpg/png ファイルのみ、ファイルサイズは2MB以内。
+                </Typography>
+                {file ? (
+                  checkUploadable(file) === 0 || checkUploadable(file) === 1 ? (
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="error.main"
+                      gutterBottom
+                    >
+                      {uploadedFileToComment(file)}
+                    </Typography>
+                  ) : (
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="green"
+                      gutterBottom
+                    >
+                      {uploadedFileToComment(file)}
+                    </Typography>
+                  )
+                ) : null}
               </Grid>
 
               <Grid item xs={12}>
                 <Autocomplete
                   options={statusOptions}
                   id="status"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )}
                   renderInput={(params) => (
                     <TextField
                       {...params}

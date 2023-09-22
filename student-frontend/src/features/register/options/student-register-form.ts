@@ -9,6 +9,13 @@ const universityOptions = [
   { label: "京都大学", value: "id2" },
 ];
 
+// TODO : 本当はAPIから取得する
+const majorOptions = [
+  { label: "情報学", value: "id1" },
+  { label: "工学", value: "id2" },
+  { label: "理学", value: "id3" },
+];
+
 const gradeOptions = [
   { label: "1年", value: 1 },
   { label: "2年", value: 2 },
@@ -31,6 +38,7 @@ export const getOptions = () => {
   return {
     genderOptions,
     universityOptions,
+    majorOptions,
     gradeOptions,
     prefectureOptions,
     statusOptions,

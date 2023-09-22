@@ -1,0 +1,29 @@
+schema:
+  - "src/lib/graphql/schema.graphql"
+
+documents: "src/**/*.graphql"
+
+generates:
+  src/lib/graphql/index.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      # typescript-react-apollo
+      # -------------------------------------------------------
+      reactApolloVersion: 3
+      withResultType: true
+      withMutationOptionsType: true
+      withHOC: false
+      withComponent: false
+      withHooks: true
+
+      # typescript
+      # -------------------------------------------------------
+      maybeValue: "T"
+      avoidOptionals: false
+      skipTypename: true
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
