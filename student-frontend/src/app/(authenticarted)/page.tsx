@@ -14,19 +14,16 @@ const Page: NextPage = () => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    // <LaboratoriesProvider>
+    <LaboratoriesProvider>
       <Stack>
         <LaboratoryForm
           setFilterVal={setFilterVal}
           toggle={toggle}
           setToggle={setToggle}
         />
-        <LaboratoryCards
-          filterVal={filterVal}
-          toggle={toggle}
-        />
+        <LaboratoryCards filterVal={filterVal} />
       </Stack>
-    // </LaboratoriesProvider>
+    </LaboratoriesProvider>
   );
 };
 

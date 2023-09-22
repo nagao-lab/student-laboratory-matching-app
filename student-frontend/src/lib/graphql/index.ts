@@ -144,6 +144,7 @@ export type NewLike = {
 export type NewMessage = {
   content: Scalars['String']['input'];
   from: MessageFrom;
+  gpa?: InputMaybe<Scalars['Float']['input']>;
   messageRoomId: Scalars['ID']['input'];
 };
 
@@ -271,6 +272,7 @@ export type LaboratoriesQueryVariables = Exact<{
 
 
 export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
+
 export type GetLikeStatusQueryVariables = Exact<{
   studentId: Scalars['ID']['input'];
   laboratoryId: Scalars['ID']['input'];
@@ -286,6 +288,7 @@ export type FavoriteLaboratoryMutationVariables = Exact<{
 
 
 export type FavoriteLaboratoryMutation = { favoriteLaboratory: LikeStatus };
+
 export type LaboratoryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -300,10 +303,19 @@ export type LoginStudentMutationVariables = Exact<{
 
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
+
 export type UniversitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UniversitiesQuery = { getAllUniversities?: Array<{ id: string, name: string }> };
+
+export type SignupStudentMutationVariables = Exact<{
+  input: NewStudent;
+}>;
+
+
+export type SignupStudentMutation = { signupStudent: { id: string } };
+
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -542,6 +554,39 @@ export function useUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type UniversitiesQueryHookResult = ReturnType<typeof useUniversitiesQuery>;
 export type UniversitiesLazyQueryHookResult = ReturnType<typeof useUniversitiesLazyQuery>;
 export type UniversitiesQueryResult = Apollo.QueryResult<UniversitiesQuery, UniversitiesQueryVariables>;
+export const SignupStudentDocument = gql`
+    mutation signupStudent($input: NewStudent!) {
+  signupStudent(input: $input) {
+    id
+  }
+}
+    `;
+export type SignupStudentMutationFn = Apollo.MutationFunction<SignupStudentMutation, SignupStudentMutationVariables>;
+
+/**
+ * __useSignupStudentMutation__
+ *
+ * To run a mutation, you first call `useSignupStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignupStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signupStudentMutation, { data, loading, error }] = useSignupStudentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSignupStudentMutation(baseOptions?: Apollo.MutationHookOptions<SignupStudentMutation, SignupStudentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignupStudentMutation, SignupStudentMutationVariables>(SignupStudentDocument, options);
+      }
+export type SignupStudentMutationHookResult = ReturnType<typeof useSignupStudentMutation>;
+export type SignupStudentMutationResult = Apollo.MutationResult<SignupStudentMutation>;
+export type SignupStudentMutationOptions = Apollo.BaseMutationOptions<SignupStudentMutation, SignupStudentMutationVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
