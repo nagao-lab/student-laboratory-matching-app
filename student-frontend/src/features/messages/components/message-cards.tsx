@@ -1,5 +1,3 @@
-// TODO メッセージ一覧ページ : MessageCardsコンポーネントを作成
-
 "use client";
 
 import {
