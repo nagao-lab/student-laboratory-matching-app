@@ -7854,7 +7854,7 @@ func (ec *executionContext) unmarshalInputNewStudentFields(ctx context.Context, 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"id", "name", "email", "password", "imageUrl", "gender", "universityId", "grade", "gpa", "prefectureId", "comment", "interest", "status", "majorIds"}
+	fieldsInOrder := [...]string{"id", "name", "email", "password", "imageUrl", "gender", "birthday", "universityId", "grade", "gpa", "prefectureId", "comment", "interest", "status", "majorIds"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7915,6 +7915,15 @@ func (ec *executionContext) unmarshalInputNewStudentFields(ctx context.Context, 
 				return it, err
 			}
 			it.Gender = data
+		case "birthday":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("birthday"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Birthday = data
 		case "universityId":
 			var err error
 

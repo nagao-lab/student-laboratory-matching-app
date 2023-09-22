@@ -127,6 +127,7 @@ input NewStudentFields {
 	password: String
 	imageUrl: String
 	gender: Gender
+	birthday: Time  # Specify RFC3339 format string (e.g. "2001-01-01T00:00:00Z")
 	universityId: ID
 	grade: Int
 	gpa: Float
