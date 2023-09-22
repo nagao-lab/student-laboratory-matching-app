@@ -51,7 +51,6 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 	record := db.Laboratory{
 		Email:    newLaboratory.Email,
 		Password: tools.HashPassword(newLaboratory.Password),
-		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
 	}
 
 	// Check whether the email is already used.
@@ -60,7 +59,8 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 		return nil, fmt.Errorf("signup: the account already exist")
 	}
 
-	err := ls.db.Select("Email", "Password").Create(&record).Error
+	record.UID = tools.GeneratePrefixedUUID(model.UserTypeLaboratory.String())
+	err := ls.db.Select("Email", "Password", "UID").Create(&record).Error
 	if err != nil {
 		return nil, err
 	}

@@ -51,7 +51,6 @@ func (ss *studentService) SignupStudent(ctx context.Context, newStudent model.Ne
 	record := db.Student{
 		Email:    newStudent.Email,
 		Password: tools.HashPassword(newStudent.Password),
-		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
 	}
 
 	// Check whether the email is already used.
@@ -60,7 +59,8 @@ func (ss *studentService) SignupStudent(ctx context.Context, newStudent model.Ne
 		return nil, fmt.Errorf("signup: the account already exist")
 	}
 
-	err := ss.db.Select("Email", "Password").Create(&record).Error
+	record.UID = tools.GeneratePrefixedUUID(model.UserTypeStudnet.String())
+	err := ss.db.Select("Email", "Password", "UID").Create(&record).Error
 	if err != nil {
 		return nil, err
 	}
