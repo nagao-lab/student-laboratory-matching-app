@@ -30,7 +30,7 @@ func NewDB() *gorm.DB {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println("DB Connected")
+	log.Println("🔌 Database connected")
 	return db
 }
 
@@ -39,4 +39,5 @@ func CloseDB(db *gorm.DB) {
 	if err := sqlDB.Close(); err != nil {
 		log.Fatalln(err)
 	}
+	log.Println("Database disconnected")
 }

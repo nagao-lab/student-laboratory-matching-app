@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 	"student-laboratory-matching-app/middleware/auth"
@@ -43,6 +44,7 @@ func (ls *laboratoryService) GetLaboratoryById(id string) (*model.Laboratory, er
 		return nil, err
 	}
 	laboratory.NumLikes = int(numLikes)
+	log.Println("Success: Get laboratory by laboratoryID")
 
 	return laboratory, nil
 }
@@ -56,7 +58,7 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 	// Check whether the email is already used.
 	result := ls.db.Where("Email = ?", record.Email).Find(&record)
 	if result.RowsAffected != 0 {
-		return nil, fmt.Errorf("signup: the account already exist")
+		return nil, fmt.Errorf("Error: Signup new laboratory account: The account already exist")
 	}
 
 	record.UID = tools.GeneratePrefixedUUID(model.UserTypeLaboratory.String())
@@ -70,7 +72,7 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 	CA := auth.GetCookieAccess(ctx)
 	CA.Login(laboratory.ID)
 
-	fmt.Println("signup: Success!")
+	log.Println("Success: Signup new laboratory account")
 	return laboratory, nil
 }
 
@@ -82,7 +84,7 @@ func (ls *laboratoryService) LoginLaboratory(ctx context.Context, email, passwor
 	}
 
 	if ok := tools.CheckPassword(record.Password, password); !ok {
-		return nil, fmt.Errorf("Login failed: the email or password is incorrect")
+		return nil, fmt.Errorf("Error: Login laboratory account: The email or password is incorrect")
 	}
 
 	laboratory := model.ConvertLaboratory(&record)
@@ -90,7 +92,7 @@ func (ls *laboratoryService) LoginLaboratory(ctx context.Context, email, passwor
 	CA := auth.GetCookieAccess(ctx)
 	CA.Login(laboratory.ID)
 
-	fmt.Println("Login success")
+	log.Println("Success: Login laboratory account")
 	return laboratory, nil
 }
 
@@ -98,7 +100,7 @@ func (ls *laboratoryService) LogoutLaboratory(ctx context.Context) (bool, error)
 	CA := auth.GetCookieAccess(ctx)
 	CA.Logout()
 
-	fmt.Println("Logout success")
+	log.Println("Success: Logout laboratory account")
 	return true, nil
 }
 
@@ -121,7 +123,7 @@ func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*mode
 		Order("created_at DESC").
 		Find(&records).Error
 	if err != nil {
-		return nil, fmt.Errorf("GetMatchableLaboratories failed: cannot get laboratories")
+		return nil, fmt.Errorf("Error: Get matchable laboratories: Cannot get laboratories")
 	}
 
 	laboratories := []*model.Laboratory{}
@@ -135,6 +137,7 @@ func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*mode
 		}
 		laboratories = append(laboratories, laboratory)
 	}
+	log.Println("Success: Get matchable laboratories")
 	return laboratories, nil
 }
 
@@ -200,7 +203,7 @@ func (ls *laboratoryService) UpdateLaboratory(newLaboratory model.NewLaboratoryF
 			fmt.Println("UpdateLaboratory failed: cannot create laboratory_majors")
 		}
 	}
-
+	log.Println("Success: Update profile of laboratory account")
 	return model.ConvertLaboratory(&laboratory), nil
 }
 

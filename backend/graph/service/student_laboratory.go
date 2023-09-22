@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
@@ -39,6 +40,7 @@ func (sls *studentLaboratoryService) GetLikeStatusByIds(newLikeIds model.NewLike
 		return "", err
 	}
 
+	log.Println("Success: Get likestatus by IDs")
 	return model.ConvertStudentLaboratory(&record).Status, nil
 }
 
@@ -74,6 +76,7 @@ func (sls *studentLaboratoryService) FavoriteLaboratory(newLikeIds model.NewLike
 		return "", err
 	}
 
+	log.Println("Success: Get favorite laboratory")
 	return likeStatus, nil
 }
 
@@ -109,6 +112,7 @@ func (sls *studentLaboratoryService) FavoriteStudent(newLikeIds model.NewLike) (
 		return "", err
 	}
 
+	log.Println("Success: Get favorite student")
 	return likeStatus, nil
 }
 
@@ -141,6 +145,7 @@ func (sls *studentLaboratoryService) UnfavoriteLaboratory(newLikeIds model.NewLi
 		return "", err
 	}
 
+	log.Println("Success: Get unfavorite laboratory")
 	return likeStatus, nil
 }
 
@@ -173,6 +178,7 @@ func (sls *studentLaboratoryService) UnfavoriteStudent(newLikeIds model.NewLike)
 		return "", err
 	}
 
+	log.Println("Success: Get unfavorite Student")
 	return likeStatus, nil
 }
 
@@ -184,6 +190,7 @@ func (sls *studentLaboratoryService) GetStudentLaboratoriesById(id string) (*mod
 	if err != nil {
 		return nil, err
 	}
+	log.Println("Success: Get student-laboratory by ID")
 	return model.ConvertStudentLaboratory(&record), nil
 }
 
@@ -220,6 +227,7 @@ func (sls *studentLaboratoryService) GetStudentLaboratoriesByStudentId(ctx conte
 		studentLaboratories = append(studentLaboratories, studentLaboratory)
 	}
 
+	log.Println("Success: Get student-laboratory by studentID")
 	return studentLaboratories, nil
 }
 
@@ -256,5 +264,6 @@ func (sls *studentLaboratoryService) GetStudentLaboratoriesByLaboratoryId(ctx co
 		studentLaboratories = append(studentLaboratories, studentLaboratory)
 	}
 
+	log.Println("Success: Get student-laboratory by laboratoryID")
 	return studentLaboratories, nil
 }

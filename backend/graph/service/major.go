@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 
@@ -26,6 +27,7 @@ func (ms *majorService) CreateMajor(name string) (*model.Major, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Println("Success: Create major")
 	return model.ConvertMajor(&major), nil
 }
 
@@ -44,6 +46,7 @@ func (ms *majorService) GetMajorByStudent(studentId string) ([]*model.Major, err
 	for _, record := range records {
 		majors = append(majors, model.ConvertMajor(&record))
 	}
+	log.Println("Success: Get major by studentID")
 	return majors, nil
 }
 
@@ -62,6 +65,7 @@ func (ms *majorService) GetMajorByLaboratory(laboratoryId string) ([]*model.Majo
 	for _, record := range records {
 		majors = append(majors, model.ConvertMajor(&record))
 	}
+	log.Println("Success: Get major by laboratoryID")
 	return majors, nil
 }
 
@@ -79,5 +83,6 @@ func (ms *majorService) GetAllMajors() ([]*model.Major, error) {
 		major := model.ConvertMajor(&record)
 		majors = append(majors, major)
 	}
+	log.Println("Success: Get all majors")
 	return majors, nil
 }

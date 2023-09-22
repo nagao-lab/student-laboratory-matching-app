@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 	"student-laboratory-matching-app/tools"
@@ -35,6 +36,7 @@ func (ms messageService) CreateMessage(newMessage model.NewMessage) (*model.Mess
 		return nil, err
 	}
 
+	log.Println("Success: Creat message")
 	return model.ConvertMessage(&message), nil
 }
 
@@ -52,6 +54,7 @@ func (ms messageService) GetMessages(messageRoomId string) ([]*model.Message, er
 		messages = append(messages, model.ConvertMessage(&record))
 	}
 
+	log.Println("Success: Get massage by messageRoom ID")
 	return messages, nil
 }
 
@@ -71,5 +74,6 @@ func (ms messageService) GetMessagesByIds(matchingIds model.NewLike) ([]*model.M
 		return nil, fmt.Errorf("GetMessageByIds failed: they can't exchange messages (either studentId or laboratoryId may be wrong)")
 	}
 
+	log.Println("Success: Get massages by matchingID")
 	return ms.GetMessages(studentLaboratory.ID)
 }

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 
@@ -22,6 +23,7 @@ func (ps *prefectureService) GetPrefectureById(id string) (*model.Prefecture, er
 	if err != nil {
 		return nil, err
 	}
+	log.Println("Success: Get prefecture by prefectureID")
 	return model.ConvertPrefecture(&prefecture), nil
 }
 
@@ -40,5 +42,6 @@ func (ps *prefectureService) GetAllPrefectures() ([]*model.Prefecture, error) {
 		prefectures = append(prefectures, prefecture)
 	}
 
+	log.Println("Success: Get all prefectures")
 	return prefectures, nil
 }
