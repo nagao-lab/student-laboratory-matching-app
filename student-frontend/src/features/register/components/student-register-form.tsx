@@ -40,18 +40,24 @@ export const StudentRegisterForm = () => {
 
   const {
     genderOptions,
-    majorOptions,
     gradeOptions,
-    prefectureOptions,
     statusOptions,
   } = getOptions();
 
-  const { universities, loading } = useRegisterContext();
+  const { universities, prefectures, majors, loading } = useRegisterContext();
 
   const MuiDatePicker = DatePicker<Date>;
   const [newFile, setNewFile] = useState<File | null>(null);
 
   if (loading || universities === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  if (loading || prefectures === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  if (loading || majors === undefined) {
     return <div>Loading...</div>;
   }
 
@@ -132,11 +138,12 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={majorOptions}
+                  options={majors}
                   id="major"
+                  getOptionLabel={(option) => (option ? option.name : "")}
                   renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
                     </Box>
                   )}
                   renderInput={(params) => (
@@ -148,7 +155,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.value)
+                    setUniversity(selectedOption?.id)
                   }
                 />
               </Grid>
@@ -206,11 +213,12 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={prefectureOptions}
+                  options={prefectures}
                   id="prefecture"
+                  getOptionLabel={(option) => (option ? option.name : "")}
                   renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
                     </Box>
                   )}
                   renderInput={(params) => (
@@ -222,7 +230,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setPrefecture(selectedOption?.value)
+                    setPrefecture(selectedOption?.id)
                   }
                 />
               </Grid>

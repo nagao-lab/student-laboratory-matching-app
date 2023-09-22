@@ -287,10 +287,10 @@ export type LoginStudentMutationVariables = Exact<{
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
 
-export type UniversitiesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UniversitiesQuery = { getAllUniversities?: Array<{ id: string, name: string }> };
+export type GetOptionsQuery = { getAllUniversities?: Array<{ id: string, name: string }>, getAllPrefectures?: Array<{ id: string, name: string }>, getAllMajors?: Array<{ id: string, name: string }> };
 
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -429,9 +429,17 @@ export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions
 export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
 export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
 export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
-export const UniversitiesDocument = gql`
-    query Universities {
+export const GetOptionsDocument = gql`
+    query GetOptions {
   getAllUniversities {
+    id
+    name
+  }
+  getAllPrefectures {
+    id
+    name
+  }
+  getAllMajors {
     id
     name
   }
@@ -439,31 +447,31 @@ export const UniversitiesDocument = gql`
     `;
 
 /**
- * __useUniversitiesQuery__
+ * __useGetOptionsQuery__
  *
- * To run a query within a React component, call `useUniversitiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useUniversitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUniversitiesQuery({
+ * const { data, loading, error } = useGetOptionsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useUniversitiesQuery(baseOptions?: Apollo.QueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+export function useGetOptionsQuery(baseOptions?: Apollo.QueryHookOptions<GetOptionsQuery, GetOptionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+        return Apollo.useQuery<GetOptionsQuery, GetOptionsQueryVariables>(GetOptionsDocument, options);
       }
-export function useUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+export function useGetOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOptionsQuery, GetOptionsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+          return Apollo.useLazyQuery<GetOptionsQuery, GetOptionsQueryVariables>(GetOptionsDocument, options);
         }
-export type UniversitiesQueryHookResult = ReturnType<typeof useUniversitiesQuery>;
-export type UniversitiesLazyQueryHookResult = ReturnType<typeof useUniversitiesLazyQuery>;
-export type UniversitiesQueryResult = Apollo.QueryResult<UniversitiesQuery, UniversitiesQueryVariables>;
+export type GetOptionsQueryHookResult = ReturnType<typeof useGetOptionsQuery>;
+export type GetOptionsLazyQueryHookResult = ReturnType<typeof useGetOptionsLazyQuery>;
+export type GetOptionsQueryResult = Apollo.QueryResult<GetOptionsQuery, GetOptionsQueryVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
