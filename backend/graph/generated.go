@@ -2314,9 +2314,9 @@ func (ec *executionContext) _Message_from(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(model.MessageFrom)
+	res := resTmp.(model.UserType)
 	fc.Result = res
-	return ec.marshalNMessageFrom2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMessageFrom(ctx, field.Selections, res)
+	return ec.marshalNUserType2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUserType(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Message_from(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -2326,7 +2326,7 @@ func (ec *executionContext) fieldContext_Message_from(ctx context.Context, field
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type MessageFrom does not have child fields")
+			return nil, errors.New("field of type UserType does not have child fields")
 		},
 	}
 	return fc, nil
@@ -7873,7 +7873,7 @@ func (ec *executionContext) unmarshalInputNewMessage(ctx context.Context, obj in
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("from"))
-			data, err := ec.unmarshalNMessageFrom2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMessageFrom(ctx, v)
+			data, err := ec.unmarshalNUserType2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUserType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -9828,16 +9828,6 @@ func (ec *executionContext) marshalNMatchStatus2studentᚑlaboratoryᚑmatching�
 	return v
 }
 
-func (ec *executionContext) unmarshalNMessageFrom2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMessageFrom(ctx context.Context, v interface{}) (model.MessageFrom, error) {
-	var res model.MessageFrom
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNMessageFrom2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMessageFrom(ctx context.Context, sel ast.SelectionSet, v model.MessageFrom) graphql.Marshaler {
-	return v
-}
-
 func (ec *executionContext) unmarshalNNewLaboratory2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐNewLaboratory(ctx context.Context, v interface{}) (model.NewLaboratory, error) {
 	res, err := ec.unmarshalInputNewLaboratory(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -9943,6 +9933,16 @@ func (ec *executionContext) marshalNUniversity2ᚖstudentᚑlaboratoryᚑmatchin
 		return graphql.Null
 	}
 	return ec._University(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNUserType2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUserType(ctx context.Context, v interface{}) (model.UserType, error) {
+	var res model.UserType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNUserType2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐUserType(ctx context.Context, sel ast.SelectionSet, v model.UserType) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
