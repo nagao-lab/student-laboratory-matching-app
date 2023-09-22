@@ -18,6 +18,7 @@ type IStudentLaboratoryService interface {
 	FavoriteStudent(model.NewLike) (model.LikeStatus, error)
 	UnfavoriteLaboratory(model.NewLike) (model.LikeStatus, error)
 	UnfavoriteStudent(model.NewLike) (model.LikeStatus, error)
+	GetStudentLaboratoriesById(string) (*model.StudentLaboratory, error)
 	GetStudentLaboratoriesByStudentId(context.Context, *string, *model.LikeStatus) ([]*model.StudentLaboratory, error)
 	GetStudentLaboratoriesByLaboratoryId(context.Context, *string, *model.LikeStatus) ([]*model.StudentLaboratory, error)
 }
@@ -173,6 +174,17 @@ func (sls *studentLaboratoryService) UnfavoriteStudent(newLikeIds model.NewLike)
 	}
 
 	return likeStatus, nil
+}
+
+func (sls *studentLaboratoryService) GetStudentLaboratoriesById(id string) (*model.StudentLaboratory, error) {
+	var record db.StudentLaboratory
+	err := sls.db.Select("id", "student_id", "laboratory_id", "status").
+		Order("updated_at desc").
+		Find(&record, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return model.ConvertStudentLaboratory(&record), nil
 }
 
 func (sls *studentLaboratoryService) GetStudentLaboratoriesByStudentId(ctx context.Context, studentId *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {

@@ -103,10 +103,11 @@ type Query {
   getAllPrefectures: [Prefecture]
   getAllUniversities: [University]
   getLikeStatus(input: NewLike!): LikeStatus!
-  getMessages(messageRoomId: ID!): [Message]
-  getMessagesByIds(input: NewLike!): [Message]
+  getStudentLaboratoriesById(id: ID!): StudentLaboratory
   getStudentLaboratoriesByStudentId(id: ID, filter: LikeStatus): [StudentLaboratory]
   getStudentLaboratoriesByLaboratoryId(id: ID, filter: LikeStatus): [StudentLaboratory]
+  getMessages(messageRoomId: ID!): [Message]
+  getMessagesByIds(input: NewLike!): [Message]
 }
 
 input NewStudent {
