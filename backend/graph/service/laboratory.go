@@ -20,6 +20,7 @@ type ILaboratoryService interface {
 	LogoutLaboratory(context.Context) (bool, error)
 	SignupLaboratory(context.Context, model.NewLaboratory) (*model.Laboratory, error)
 	UpdateLaboratory(model.NewLaboratoryFields) (*model.Laboratory, error)
+	DeleteLaboratory(string) (bool, error)
 }
 
 type laboratoryService struct {
@@ -52,7 +53,6 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 	record := db.Laboratory{
 		Email:    newLaboratory.Email,
 		Password: tools.HashPassword(newLaboratory.Password),
-		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
 	}
 
 	// Check whether the email is already used.
@@ -61,18 +61,19 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 		return nil, fmt.Errorf("Error: Signup new laboratory account: The account already exist")
 	}
 
-	err := ls.db.Select("Email", "Password").Create(&record).Error
+	record.UID = tools.GeneratePrefixedUUID(model.UserTypeLaboratory.String())
+	err := ls.db.Select("Email", "Password", "UID").Create(&record).Error
 	if err != nil {
 		return nil, err
 	}
 
-	Laboratory := model.ConvertLaboratory(&record)
+	laboratory := model.ConvertLaboratory(&record)
 
 	CA := auth.GetCookieAccess(ctx)
-	CA.Login(Laboratory.ID)
+	CA.Login(laboratory.ID)
 
 	log.Println("Success: Signup new laboratory account")
-	return Laboratory, nil
+	return laboratory, nil
 }
 
 func (ls *laboratoryService) LoginLaboratory(ctx context.Context, email, password string) (*model.Laboratory, error) {
@@ -204,4 +205,15 @@ func (ls *laboratoryService) UpdateLaboratory(newLaboratory model.NewLaboratoryF
 	}
 	log.Println("Success: Update profile of laboratory account")
 	return model.ConvertLaboratory(&laboratory), nil
+}
+
+func (ls *laboratoryService) DeleteLaboratory(id string) (bool, error) {
+	var laboratory db.Laboratory
+	if err := ls.db.First(&laboratory, id).Error; err != nil {
+		return false, err
+	}
+	if err := ls.db.Delete(&laboratory, id).Error; err != nil {
+		return false, err
+	}
+	return true, nil
 }

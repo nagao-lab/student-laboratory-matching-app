@@ -18,7 +18,7 @@ enum LikeStatus {
 	LIKE_FROM_BOTH
 }
 
-enum MessageFrom {
+enum UserType {
 	STUDNET
 	LABORATORY
 }
@@ -88,7 +88,7 @@ type University {
 type Message {
 	messageId: ID! # id
 	messageRoomId: ID! # student_laboratory_id
-	from: MessageFrom!
+	from: UserType!
 	content: String!
 	createdAt: Time!
 	updatedAt: Time!
@@ -167,17 +167,19 @@ input NewLike { # TODO: rename
 
 input NewMessage {
 	messageRoomId: ID! # student_laboratory_id
-	from: MessageFrom!
+	from: UserType!
 	content: String!
 }
 
 type Mutation {
   signupStudent(input: NewStudent!): Student!
+  signupLaboratory(input: NewLaboratory!): Laboratory!
   loginStudent(email: String!, password: String!): Student!
   loginLaboratory(email: String!, password: String!): Laboratory!
   logoutStudent: Boolean!
   logoutLaboratory: Boolean!
-  signupLaboratory(input: NewLaboratory!): Laboratory!
+  deleteStudent(id: ID!): Boolean!
+  deleteLaboratory(id: ID!): Boolean!
   favoriteLaboratory(input: NewLike!): LikeStatus!
   favoriteStudent(input: NewLike!): LikeStatus!
   unfavoriteLaboratory(input: NewLike!): LikeStatus!

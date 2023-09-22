@@ -22,7 +22,7 @@ type messageService struct {
 
 func (ms messageService) CreateMessage(newMessage model.NewMessage) (*model.Message, error) {
 	studentLaboratoryId := tools.ParseStringToUint(newMessage.MessageRoomID)
-	from, _ := model.ConvertMessageFromToInt(newMessage.From)
+	from, _ := model.GetUserTypeIndex(newMessage.From)
 
 	message := db.Message{
 		StudentLaboratoryID: studentLaboratoryId,

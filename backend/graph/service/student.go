@@ -20,6 +20,7 @@ type IStudentService interface {
 	LogoutStudent(context.Context) (bool, error)
 	GetMatchableStudents(string) ([]*model.Student, error)
 	UpdateStudent(model.NewStudentFields) (*model.Student, error)
+	DeleteStudent(string) (bool, error)
 }
 
 type studentService struct {
@@ -52,7 +53,6 @@ func (ss *studentService) SignupStudent(ctx context.Context, newStudent model.Ne
 	record := db.Student{
 		Email:    newStudent.Email,
 		Password: tools.HashPassword(newStudent.Password),
-		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
 	}
 
 	// Check whether the email is already used.
@@ -61,7 +61,8 @@ func (ss *studentService) SignupStudent(ctx context.Context, newStudent model.Ne
 		return nil, fmt.Errorf("signup: the account already exist")
 	}
 
-	err := ss.db.Select("Email", "Password").Create(&record).Error
+	record.UID = tools.GeneratePrefixedUUID(model.UserTypeStudnet.String())
+	err := ss.db.Select("Email", "Password", "UID").Create(&record).Error
 	if err != nil {
 		return nil, err
 	}
@@ -217,4 +218,15 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 
 	log.Println("Success: Update profile of student account")
 	return model.ConvertStudent(&student), nil
+}
+
+func (ss *studentService) DeleteStudent(id string) (bool, error) {
+	var student db.Student
+	if err := ss.db.First(&student, id).Error; err != nil {
+		return false, err
+	}
+	if err := ss.db.Delete(&student).Error; err != nil {
+		return false, err
+	}
+	return true, nil
 }

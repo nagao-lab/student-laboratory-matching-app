@@ -24,6 +24,11 @@ func (r *mutationResolver) SignupStudent(ctx context.Context, input model.NewStu
 	return r.Srv.SignupStudent(ctx, input)
 }
 
+// SignupLaboratory is the resolver for the signupLaboratory field.
+func (r *mutationResolver) SignupLaboratory(ctx context.Context, input model.NewLaboratory) (*model.Laboratory, error) {
+	return r.Srv.SignupLaboratory(ctx, input)
+}
+
 // LoginStudent is the resolver for the loginStudent field.
 func (r *mutationResolver) LoginStudent(ctx context.Context, email string, password string) (*model.Student, error) {
 	return r.Srv.LoginStudent(ctx, email, password)
@@ -44,9 +49,14 @@ func (r *mutationResolver) LogoutLaboratory(ctx context.Context) (bool, error) {
 	return r.Srv.LogoutLaboratory(ctx)
 }
 
-// SignupLaboratory is the resolver for the signupLaboratory field.
-func (r *mutationResolver) SignupLaboratory(ctx context.Context, input model.NewLaboratory) (*model.Laboratory, error) {
-	return r.Srv.SignupLaboratory(ctx, input)
+// DeleteStudent is the resolver for the deleteStudent field.
+func (r *mutationResolver) DeleteStudent(ctx context.Context, id string) (bool, error) {
+	return r.Srv.DeleteStudent(id)
+}
+
+// DeleteLaboratory is the resolver for the deleteLaboratory field.
+func (r *mutationResolver) DeleteLaboratory(ctx context.Context, id string) (bool, error) {
+	return r.Srv.DeleteLaboratory(id)
 }
 
 // FavoriteLaboratory is the resolver for the favoriteLaboratory field.
