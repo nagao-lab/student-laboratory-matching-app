@@ -27,7 +27,7 @@ const Page: NextPage<Props> = ({ params }: Props) => {
             messageId={params.messageId}
           />
         </Box>
-        <MessageFooter />
+        <MessageFooter messageID={params.messageId}/>
       </Box>
     </MessageContentProvider>
   );

@@ -31,7 +31,7 @@ type Student {
 	password: String!
 	imageUrl: String!
 	gender: Gender!
-	birthday: Time!
+	birthday: Time
 	university: University!
 	grade: Int!
 	gpa: Float!
@@ -58,6 +58,13 @@ type Laboratory {
 	password: String!
 	majors: [Major!]!
 	numLikes: Int!
+}
+
+type StudentLaboratory {
+	id: ID!
+	student: Student!
+	laboratory: Laboratory!
+	status: LikeStatus!
 }
 
 type Major {
@@ -92,6 +99,12 @@ type Query {
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
+  getAllMajors: [Major]
+  getAllPrefectures: [Prefecture]
+  getAllUniversities: [University]
+  getLikeStatus(input: NewLike!): LikeStatus!
+  getMessages(messageRoomId: ID!): [Message]
+  getMessagesByIds(input: NewLike!): [Message]
 }
 
 input NewStudent {
@@ -124,7 +137,7 @@ input NewUniversity {
 	maxGpa: Float!
 }
 
-input NewLike {
+input NewLike { # TODO: rename
 	studentId: ID!
 	laboratoryId: ID!
 }

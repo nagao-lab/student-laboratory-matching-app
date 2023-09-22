@@ -4,8 +4,12 @@ import { TextField, Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { useMessageFooter } from "../hooks/message-footer";
 
-export const MessageFooter = () => {
-  const { message, setMessage, onSubmit } = useMessageFooter();
+type Props = {
+  messageID: string;
+}
+
+export const MessageFooter = ({messageID}: Props) => {
+  const { message, setMessage, onSubmit } = useMessageFooter()
 
     return (<footer style={{
         display: "grid",
@@ -35,7 +39,14 @@ export const MessageFooter = () => {
             // gridRow: 1,
             gridColumn: 3
           }}
-          onClick={onSubmit}>
+          onClick={(e) => {
+            const id = e.currentTarget.dataset.messageid
+            if(id == undefined){
+              return
+            }
+            onSubmit(id)
+          }}
+          data-messageid={messageID}>
           <SendIcon />
         </Button>
       </footer>)
