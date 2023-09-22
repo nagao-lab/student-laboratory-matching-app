@@ -67,6 +67,13 @@ type StudentLaboratory {
 	status: LikeStatus!
 }
 
+type StudentLaboratory {
+  id: ID!
+  student: Student!
+  laboratory: Laboratory!
+  status: LikeStatus!
+}
+
 type Major {
   id: ID!
   name: String!
@@ -86,12 +93,12 @@ type University {
 }
 
 type Message {
-	messageId: ID! # id
-	messageRoomId: ID! # student_laboratory_id
-	from: MessageFrom!
-	content: String!
-	createdAt: Time!
-	updatedAt: Time!
+  messageId: ID! # id
+  messageRoomId: ID! # student_laboratory_id
+  from: MessageFrom!
+  content: String!
+  createdAt: Time!
+  updatedAt: Time!
 }
 
 type Query {
@@ -146,6 +153,7 @@ input NewMessage {
 	messageRoomId: ID! # student_laboratory_id
 	from: MessageFrom!
 	content: String!
+  gpa: Float
 }
 
 type Mutation {

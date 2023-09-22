@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { S3 } from "aws-sdk";
 
 export const useRegisterForm = () => {
   const router = useRouter();
@@ -14,13 +15,39 @@ export const useRegisterForm = () => {
   const [birthday, setBirthday] = useState<Date | null>();
   const [prefecture, setPrefecture] = useState<string | null>();
   const [gpa, setGpa] = useState(3.0);
-  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<number | null>();
 
-  const handleSubmit = () => {
+  const s3 = new S3({
+    region: process.env.NEXT_PUBLIC_S3_REGION
+      ? process.env.NEXT_PUBLIC_S3_REGION
+      : "",
+    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID
+      ? process.env.NEXT_PUBLIC_ACCESS_KEY_ID
+      : "",
+    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
+      ? process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
+      : "",
+  });
+
+  const uploadImage = async (file: File) => {
+    const params: S3.PutObjectRequest = {
+      Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME
+        ? process.env.NEXT_PUBLIC_BUCKET_NAME
+        : "",
+      Key: `${Date.now()}-${file.name}`,
+      ContentType: file.type,
+      Body: file,
+    };
+
+    const res = await s3.upload(params).promise();
+    return res.Location;
+  };
+
+  const handleSubmit = async () => {
     if (
       !name ||
-      gender===null ||
+      gender === null ||
       !university ||
       !grade ||
       !comment ||
@@ -28,8 +55,8 @@ export const useRegisterForm = () => {
       !birthday ||
       !prefecture ||
       !gpa ||
-      !imageUrl ||
-      status===null
+      !file ||
+      status === null
     ) {
       window.alert("すべての項目を入力してください");
       console.log({
@@ -42,11 +69,19 @@ export const useRegisterForm = () => {
         birthday: birthday?.toString(),
         prefecture: prefecture,
         gpa: gpa,
-        image_url: imageUrl,
+        file: file,
         status: status,
-      });      
+      });
       return;
     }
+
+    const res = await uploadImage(file)
+      .then((url) => {
+        return url;
+      })
+      .catch((err) => {
+        return err;
+      });
 
     console.log({
       name: name,
@@ -58,9 +93,10 @@ export const useRegisterForm = () => {
       birthday: birthday?.toString(),
       prefecture: prefecture,
       gpa: gpa,
-      image_url: imageUrl,
+      file: res,
       status: status,
     });
+
     router.push("/");
   };
 
@@ -74,7 +110,8 @@ export const useRegisterForm = () => {
     setBirthday,
     setPrefecture,
     setGpa,
-    setImageUrl,
+    file,
+    setFile,
     setStatus,
     handleSubmit,
   };

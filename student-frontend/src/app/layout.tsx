@@ -3,14 +3,14 @@
 import { ReactNode } from "react";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "@/lib/apollo";
-import { AuthProvider } from "@/providers/auth";
+import { SessionProvider } from "@/providers/session";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="ja">
       <body>
         <ApolloProvider client={client}>
-          <AuthProvider>{children}</AuthProvider>
+          <SessionProvider>{children}</SessionProvider>
         </ApolloProvider>
       </body>
     </html>

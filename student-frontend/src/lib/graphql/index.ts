@@ -271,7 +271,6 @@ export type LaboratoriesQueryVariables = Exact<{
 
 
 export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
-
 export type GetLikeStatusQueryVariables = Exact<{
   studentId: Scalars['ID']['input'];
   laboratoryId: Scalars['ID']['input'];
@@ -287,7 +286,6 @@ export type FavoriteLaboratoryMutationVariables = Exact<{
 
 
 export type FavoriteLaboratoryMutation = { favoriteLaboratory: LikeStatus };
-
 export type LaboratoryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -302,7 +300,10 @@ export type LoginStudentMutationVariables = Exact<{
 
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
+export type UniversitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type UniversitiesQuery = { getAllUniversities?: Array<{ id: string, name: string }> };
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -506,6 +507,41 @@ export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions
 export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
 export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
 export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
+export const UniversitiesDocument = gql`
+    query Universities {
+  getAllUniversities {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useUniversitiesQuery__
+ *
+ * To run a query within a React component, call `useUniversitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUniversitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUniversitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUniversitiesQuery(baseOptions?: Apollo.QueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+      }
+export function useUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+        }
+export type UniversitiesQueryHookResult = ReturnType<typeof useUniversitiesQuery>;
+export type UniversitiesLazyQueryHookResult = ReturnType<typeof useUniversitiesLazyQuery>;
+export type UniversitiesQueryResult = Apollo.QueryResult<UniversitiesQuery, UniversitiesQueryVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {

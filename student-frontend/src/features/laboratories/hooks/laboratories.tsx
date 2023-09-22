@@ -1,5 +1,6 @@
 import { useLaboratoriesQuery, useFavoriteLaboratoryMutation} from "@/lib/graphql";
 
+
  //TODO: IDをフェッチしてくる
 export const useLaboratories = () => {
     const {data, loading, error} = useLaboratoriesQuery(

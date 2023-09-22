@@ -15,7 +15,6 @@ import { useLaboratories } from "../hooks/laboratories";
 
 type Props = {
   filterVal: string;
-  toggle: boolean;
 };
 
 export const LaboratoryCards = ({ filterVal, toggle }: Props) => {

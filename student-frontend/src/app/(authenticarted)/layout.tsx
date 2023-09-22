@@ -1,14 +1,13 @@
 "use client";
 
 import { ReactNode } from "react";
-import { HeadrForm } from "@/features/header/header-form";
+import { HeaderForm } from "@/features/header/header-form";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      
-        <HeadrForm />
-        {children}
+      <HeaderForm />
+      {children}
     </>
   );
 };
