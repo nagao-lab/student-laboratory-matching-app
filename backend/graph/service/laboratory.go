@@ -19,6 +19,7 @@ type ILaboratoryService interface {
 	LogoutLaboratory(context.Context) (bool, error)
 	SignupLaboratory(context.Context, model.NewLaboratory) (*model.Laboratory, error)
 	UpdateLaboratory(model.NewLaboratoryFields) (*model.Laboratory, error)
+	DeleteLaboratory(string) (bool, error)
 }
 
 type laboratoryService struct {
@@ -201,4 +202,16 @@ func (ls *laboratoryService) UpdateLaboratory(newLaboratory model.NewLaboratoryF
 	}
 
 	return model.ConvertLaboratory(&laboratory), nil
+}
+
+func (ls *laboratoryService) DeleteLaboratory(id string) (bool, error) {
+	var laboratory db.Laboratory
+	err := ls.db.First(&laboratory, id).Error
+	if err != nil {
+		return false, err
+	}
+	if err := ls.db.Delete(&laboratory).Error; err != nil {
+		return false, err
+	}
+	return true, nil
 }

@@ -177,6 +177,7 @@ type Mutation {
   logoutStudent: Boolean!
   logoutLaboratory: Boolean!
   deleteStudent(id: ID!): Boolean!
+  deleteLaboratory(id: ID!): Boolean!
   favoriteLaboratory(input: NewLike!): LikeStatus!
   favoriteStudent(input: NewLike!): LikeStatus!
   unfavoriteLaboratory(input: NewLike!): LikeStatus!

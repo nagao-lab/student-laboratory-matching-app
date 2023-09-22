@@ -54,6 +54,11 @@ func (r *mutationResolver) DeleteStudent(ctx context.Context, id string) (bool, 
 	return r.Srv.DeleteStudent(id)
 }
 
+// DeleteLaboratory is the resolver for the deleteLaboratory field.
+func (r *mutationResolver) DeleteLaboratory(ctx context.Context, id string) (bool, error) {
+	return r.Srv.DeleteLaboratory(id)
+}
+
 // FavoriteLaboratory is the resolver for the favoriteLaboratory field.
 func (r *mutationResolver) FavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
 	return r.Srv.FavoriteLaboratory(input)
