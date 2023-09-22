@@ -986,6 +986,18 @@
             "deprecationReason": null
           },
           {
+            "name": "gpa",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messageRoomId",
             "description": null,
             "type": {

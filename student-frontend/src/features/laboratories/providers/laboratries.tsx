@@ -21,12 +21,15 @@ export const LaboratoriesProvider = ({
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { // TODO: userIDで認証する
+  // TODO : get userId from cookie
+  useEffect(() => {
     if (userId === "") {
-      // router.push("/login");
+      router.push("/login");
     } else {
+      console.log("userId", userId);
       setLoading(false);
     }
+    console.log("userId", userId);
   }, [userId, router]);
 
   return (

@@ -47,12 +47,10 @@ export const RegisterProvider = ({
   const { data, loading, error } = useGetOptionsQuery();
   // const [loading, setLoading] = useState(true);
 
+  // TODO : get userId from cookie
   useEffect(() => {
-    // TODO: userIDで認証する
     if (userId === "") {
-      // router.push("/login");
-    } else {
-      // setLoading(false);
+      router.push("/login");
     }
   }, [userId, router]);
 

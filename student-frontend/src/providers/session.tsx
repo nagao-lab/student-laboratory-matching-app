@@ -27,13 +27,6 @@ export const SessionProvider = ({
   children: React.ReactNode;
 }) => {
   const [userId, setUserId] = useState("");
-  // const router = useRouter();
-  //   const cookieStore = cookies();
-  //   const userId = cookieStore.get("userId");
-
-  // if (!userId) {
-  //   router.push("/login");
-  // }
 
   return (
     <SessionContext.Provider value={{ userId, setUserId }}>

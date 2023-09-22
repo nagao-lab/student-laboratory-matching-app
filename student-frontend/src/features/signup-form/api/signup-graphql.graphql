@@ -1,0 +1,10 @@
+input NewStudent {
+  email: String!
+  password: String!
+}
+
+mutation signupStudent($input: NewStudent!){
+    signupStudent(input: $input){
+        id
+    }
+}

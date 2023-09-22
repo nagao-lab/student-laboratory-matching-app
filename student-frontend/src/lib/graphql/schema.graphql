@@ -12,52 +12,59 @@ enum MatchStatus {
 }
 
 enum LikeStatus {
-  BLANK
-  LIKE_FROM_STUDENT
-  LIKE_FROM_LABORATORY
-  LIKE_FROM_BOTH
+	BLANK
+	LIKE_FROM_STUDENT
+	LIKE_FROM_LABORATORY
+	LIKE_FROM_BOTH
 }
 
 enum MessageFrom {
-  STUDNET
-  LABORATORY
+	STUDNET
+	LABORATORY
 }
 
 type Student {
-  id: ID!
-  uid: String!
-  name: String!
-  email: String!
-  password: String!
-  imageUrl: String!
-  gender: Gender!
-  birthday: Time
-  university: University!
-  grade: Int!
-  gpa: Float!
-  prefecture: Prefecture!
-  comment: String!
-  interest: String!
-  status: MatchStatus!
-  majors: [Major!]!
-  numLikes: Int!
+	id: ID!
+	uid: String!
+	name: String!
+	email: String!
+	password: String!
+	imageUrl: String!
+	gender: Gender!
+	birthday: Time
+	university: University!
+	grade: Int!
+	gpa: Float!
+	prefecture: Prefecture!
+	comment: String!
+	interest: String!
+	status: MatchStatus!
+	majors: [Major!]!
+	numLikes: Int!
 }
 
 type Laboratory {
-  id: ID!
-  uid: String!
-  university: University!
-  name: String!
-  professor: String!
-  numStudents: Int!
-  comment: String!
-  status: MatchStatus!
-  imageUrl: String!
-  laboratoryUrl: String!
-  email: String!
-  password: String!
-  majors: [Major!]!
-  numLikes: Int!
+	id: ID!
+	uid: String!
+	university: University!
+	name: String!
+	professor: String!
+	numStudents: Int!
+	comment: String!
+	status: MatchStatus!
+	imageUrl: String!
+	laboratoryUrl: String!
+	email: String!
+	password: String!
+	majors: [Major!]!
+	numLikes: Int!
+}
+
+type StudentLaboratory {
+	id: ID!
+	student: Student!
+	laboratory: Laboratory!
+	status: LikeStatus!
 }
 
 type StudentLaboratory {
@@ -113,39 +120,40 @@ input NewStudent {
 }
 
 input NewStudentFields {
-  id: ID!
-  name: String
-  email: String
-  password: String
-  imageUrl: String
-  gender: Gender
-  birthday: Time
-  universityId: ID
-  grade: Int
-  gpa: Float
-  prefectureId: ID
-  comment: String
-  interest: String
-  status: MatchStatus
-  majorIds: [ID]
+	id: ID!
+	name: String
+	email: String
+	password: String
+	imageUrl: String
+	gender: Gender
+	birthday: Time
+	universityId: ID
+	grade: Int
+	gpa: Float
+	prefectureId: ID
+	comment: String
+	interest: String
+	status: MatchStatus
+	majorIds: [ID]
 }
 
 input NewUniversity {
-  prefectureId: ID!
-  name: String!
-  address: String!
-  maxGpa: Float!
+	prefectureId: ID!
+	name: String!
+	address: String!
+	maxGpa: Float!
 }
 
 input NewLike { # TODO: rename
-  studentId: ID!
-  laboratoryId: ID!
+	studentId: ID!
+	laboratoryId: ID!
 }
 
 input NewMessage {
-  messageRoomId: ID! # student_laboratory_id
-  from: MessageFrom!
-  content: String!
+	messageRoomId: ID! # student_laboratory_id
+	from: MessageFrom!
+	content: String!
+  gpa: Float
 }
 
 type Mutation {

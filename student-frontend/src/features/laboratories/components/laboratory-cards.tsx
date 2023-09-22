@@ -75,7 +75,7 @@ export const LaboratoryCards = ({ filterVal }: Props) => {
               </Button>
             </CardActions>
             <CardContent>
-              <ChangeStatusToIconButton status={laboratory.status} />
+              <ChangeStatusToIconButton laboratoryId={laboratory.id} />
             </CardContent>
           </Card>
         ))}

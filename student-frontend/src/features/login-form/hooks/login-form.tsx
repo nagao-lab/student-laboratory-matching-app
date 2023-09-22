@@ -19,11 +19,12 @@ export const useLoginForm = () => {
     });
 
     loginStudentMutation({
-      // context: {
-      //   headers: {
-      //     withCredentials: "true",
-      //   },
-      // },
+      context: {
+        headers: {
+          mode: "cors",
+          credentials: "include",
+        },
+      },
       variables: {
         email: email,
         password: password,
@@ -35,7 +36,6 @@ export const useLoginForm = () => {
           return;
         }
         setUserId(result.data?.loginStudent.id);
-        console.log(result);
         router.push("/");
       })
       .catch((error) => {
