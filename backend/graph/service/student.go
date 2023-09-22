@@ -218,6 +218,8 @@ func (ss *studentService) DeleteStudent(id string) (bool, error) {
 	if err := ss.db.First(&student, id).Error; err != nil {
 		return false, err
 	}
-	ss.db.Delete(&student)
+	if err := ss.db.Delete(&student).Error; err != nil {
+		return false, err
+	}
 	return true, nil
 }
