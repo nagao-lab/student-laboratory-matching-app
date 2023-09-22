@@ -21,9 +21,10 @@ export const MessageContentProvider = ({
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { // TODO: userIDで認証する
+  // TODO: userIDをcookieから取得する
+  useEffect(() => {
     if (userId === "") {
-      // router.push("/login");
+      router.push("/login");
     } else {
       setLoading(false);
     }
