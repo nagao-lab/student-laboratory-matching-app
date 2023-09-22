@@ -21,12 +21,12 @@ func (r *laboratoryResolver) Majors(ctx context.Context, obj *model.Laboratory) 
 
 // SignupStudent is the resolver for the signupStudent field.
 func (r *mutationResolver) SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error) {
-	return r.Srv.Signup(ctx, input)
+	return r.Srv.SignupStudent(ctx, input)
 }
 
 // LoginStudent is the resolver for the loginStudent field.
 func (r *mutationResolver) LoginStudent(ctx context.Context, email string, password string) (*model.Student, error) {
-	return r.Srv.Login(ctx, email, password)
+	return r.Srv.LoginStudent(ctx, email, password)
 }
 
 // LogoutStudent is the resolver for the logoutStudent field.
