@@ -19,6 +19,7 @@ import { MuiFileInput } from "mui-file-input";
 import React, { useState } from "react";
 import { checkUploadable } from "@/utils/check-uploadable";
 import { uploadedFileToComment } from "@/utils/uploaded-file-to-comment";
+import { useRegisterContext } from "../providers/register";
 
 export const StudentRegisterForm = () => {
   const {
@@ -39,15 +40,20 @@ export const StudentRegisterForm = () => {
 
   const {
     genderOptions,
-    universityOptions,
     majorOptions,
     gradeOptions,
     prefectureOptions,
     statusOptions,
   } = getOptions();
 
+  const { universities, loading } = useRegisterContext();
+
   const MuiDatePicker = DatePicker<Date>;
   const [newFile, setNewFile] = useState<File | null>(null);
+
+  if (loading || universities === undefined) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -103,11 +109,12 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={universityOptions}
+                  options={universities}
                   id="university"
+                  getOptionLabel={(option) => (option ? option.name : "")}
                   renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
                     </Box>
                   )}
                   renderInput={(params) => (
@@ -119,7 +126,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.value)
+                    setUniversity(selectedOption?.id)
                   }
                 />
               </Grid>

@@ -1,0 +1,6 @@
+query Universities {
+  getAllUniversities {
+    id
+    name
+  }
+}
