@@ -3,3 +3,36 @@ mutation createMessage($input: NewMessage!){
         messageRoomId
     }
 }
+
+query getMessages($messageRoomId: ID!){
+    getMessages(messageRoomId: $messageRoomId){
+        messageId
+        from
+        content
+        createdAt
+        updatedAt
+    }
+}
+
+query getMessagesByIds($input: NewLike!){
+    getMessagesByIds(input: $input){
+        messageId
+        messageRoomId
+        from
+        content
+        createdAt
+        updatedAt
+    }
+}
+
+query getStudentLaboratoriesById($id: ID!){
+    getStudentLaboratoriesById(id: $id){
+        id
+        student{
+            name
+        }
+        laboratory{
+            name
+        }
+    }
+}

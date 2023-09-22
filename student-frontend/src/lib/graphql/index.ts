@@ -78,10 +78,15 @@ export type Mutation = {
   createUniversity: University;
   favoriteLaboratory: LikeStatus;
   favoriteStudent: LikeStatus;
+  loginLaboratory: Laboratory;
   loginStudent: Student;
+  logoutLaboratory: Scalars['Boolean']['output'];
+  logoutStudent: Scalars['Boolean']['output'];
+  signupLaboratory: Laboratory;
   signupStudent: Student;
   unfavoriteLaboratory: LikeStatus;
   unfavoriteStudent: LikeStatus;
+  updateLaboratory: Laboratory;
   updateStudent: Student;
 };
 
@@ -111,9 +116,20 @@ export type MutationFavoriteStudentArgs = {
 };
 
 
+export type MutationLoginLaboratoryArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
 export type MutationLoginStudentArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationSignupLaboratoryArgs = {
+  input: NewLaboratory;
 };
 
 
@@ -132,8 +148,33 @@ export type MutationUnfavoriteStudentArgs = {
 };
 
 
+export type MutationUpdateLaboratoryArgs = {
+  input: NewLaboratoryFields;
+};
+
+
 export type MutationUpdateStudentArgs = {
   input: NewStudentFields;
+};
+
+export type NewLaboratory = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type NewLaboratoryFields = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  laboratoryUrl?: InputMaybe<Scalars['String']['input']>;
+  majorIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  numStudents?: InputMaybe<Scalars['Int']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  professor?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<MatchStatus>;
+  universityId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type NewLike = {
@@ -153,7 +194,6 @@ export type NewStudent = {
 };
 
 export type NewStudentFields = {
-  birthday?: InputMaybe<Scalars['Time']['input']>;
   comment?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Gender>;
@@ -183,10 +223,24 @@ export type Prefecture = {
 };
 
 export type Query = {
+  getAllMajors?: Maybe<Array<Maybe<Major>>>;
+  getAllPrefectures?: Maybe<Array<Maybe<Prefecture>>>;
+  getAllUniversities?: Maybe<Array<Maybe<University>>>;
+  getLikeStatus: LikeStatus;
   getMatchableLaboratories?: Maybe<Array<Maybe<Laboratory>>>;
   getMatchableStudents?: Maybe<Array<Maybe<Student>>>;
+  getMessages?: Maybe<Array<Maybe<Message>>>;
+  getMessagesByIds?: Maybe<Array<Maybe<Message>>>;
+  getStudentLaboratoriesById?: Maybe<StudentLaboratory>;
+  getStudentLaboratoriesByLaboratoryId?: Maybe<Array<Maybe<StudentLaboratory>>>;
+  getStudentLaboratoriesByStudentId?: Maybe<Array<Maybe<StudentLaboratory>>>;
   laboratory: Laboratory;
   student: Student;
+};
+
+
+export type QueryGetLikeStatusArgs = {
+  input: NewLike;
 };
 
 
@@ -200,6 +254,33 @@ export type QueryGetMatchableStudentsArgs = {
 };
 
 
+export type QueryGetMessagesArgs = {
+  messageRoomId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetMessagesByIdsArgs = {
+  input: NewLike;
+};
+
+
+export type QueryGetStudentLaboratoriesByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetStudentLaboratoriesByLaboratoryIdArgs = {
+  filter?: InputMaybe<LikeStatus>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryGetStudentLaboratoriesByStudentIdArgs = {
+  filter?: InputMaybe<LikeStatus>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
 export type QueryLaboratoryArgs = {
   id: Scalars['ID']['input'];
 };
@@ -210,7 +291,7 @@ export type QueryStudentArgs = {
 };
 
 export type Student = {
-  birthday: Scalars['Time']['output'];
+  birthday?: Maybe<Scalars['Time']['output']>;
   comment: Scalars['String']['output'];
   email: Scalars['String']['output'];
   gender: Gender;
@@ -227,6 +308,13 @@ export type Student = {
   status: MatchStatus;
   uid: Scalars['String']['output'];
   university: University;
+};
+
+export type StudentLaboratory = {
+  id: Scalars['ID']['output'];
+  laboratory: Laboratory;
+  status: LikeStatus;
+  student: Student;
 };
 
 export type University = {
@@ -265,6 +353,27 @@ export type CreateMessageMutationVariables = Exact<{
 
 
 export type CreateMessageMutation = { createMessage?: { messageRoomId: string } };
+
+export type GetMessagesQueryVariables = Exact<{
+  messageRoomId: Scalars['ID']['input'];
+}>;
+
+
+export type GetMessagesQuery = { getMessages?: Array<{ messageId: string, from: MessageFrom, content: string, createdAt: any, updatedAt: any }> };
+
+export type GetMessagesByIdsQueryVariables = Exact<{
+  input: NewLike;
+}>;
+
+
+export type GetMessagesByIdsQuery = { getMessagesByIds?: Array<{ messageId: string, messageRoomId: string, from: MessageFrom, content: string, createdAt: any, updatedAt: any }> };
+
+export type GetStudentLaboratoriesByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetStudentLaboratoriesByIdQuery = { getStudentLaboratoriesById?: { id: string, student: { name: string }, laboratory: { name: string } } };
 
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -436,6 +545,126 @@ export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
 export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
 export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
+export const GetMessagesDocument = gql`
+    query getMessages($messageRoomId: ID!) {
+  getMessages(messageRoomId: $messageRoomId) {
+    messageId
+    from
+    content
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesQuery({
+ *   variables: {
+ *      messageRoomId: // value for 'messageRoomId'
+ *   },
+ * });
+ */
+export function useGetMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+      }
+export function useGetMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, options);
+        }
+export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
+export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
+export type GetMessagesQueryResult = Apollo.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export const GetMessagesByIdsDocument = gql`
+    query getMessagesByIds($input: NewLike!) {
+  getMessagesByIds(input: $input) {
+    messageId
+    messageRoomId
+    from
+    content
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetMessagesByIdsQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesByIdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesByIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesByIdsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetMessagesByIdsQuery(baseOptions: Apollo.QueryHookOptions<GetMessagesByIdsQuery, GetMessagesByIdsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMessagesByIdsQuery, GetMessagesByIdsQueryVariables>(GetMessagesByIdsDocument, options);
+      }
+export function useGetMessagesByIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMessagesByIdsQuery, GetMessagesByIdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMessagesByIdsQuery, GetMessagesByIdsQueryVariables>(GetMessagesByIdsDocument, options);
+        }
+export type GetMessagesByIdsQueryHookResult = ReturnType<typeof useGetMessagesByIdsQuery>;
+export type GetMessagesByIdsLazyQueryHookResult = ReturnType<typeof useGetMessagesByIdsLazyQuery>;
+export type GetMessagesByIdsQueryResult = Apollo.QueryResult<GetMessagesByIdsQuery, GetMessagesByIdsQueryVariables>;
+export const GetStudentLaboratoriesByIdDocument = gql`
+    query getStudentLaboratoriesById($id: ID!) {
+  getStudentLaboratoriesById(id: $id) {
+    id
+    student {
+      name
+    }
+    laboratory {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetStudentLaboratoriesByIdQuery__
+ *
+ * To run a query within a React component, call `useGetStudentLaboratoriesByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStudentLaboratoriesByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStudentLaboratoriesByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetStudentLaboratoriesByIdQuery(baseOptions: Apollo.QueryHookOptions<GetStudentLaboratoriesByIdQuery, GetStudentLaboratoriesByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStudentLaboratoriesByIdQuery, GetStudentLaboratoriesByIdQueryVariables>(GetStudentLaboratoriesByIdDocument, options);
+      }
+export function useGetStudentLaboratoriesByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStudentLaboratoriesByIdQuery, GetStudentLaboratoriesByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStudentLaboratoriesByIdQuery, GetStudentLaboratoriesByIdQueryVariables>(GetStudentLaboratoriesByIdDocument, options);
+        }
+export type GetStudentLaboratoriesByIdQueryHookResult = ReturnType<typeof useGetStudentLaboratoriesByIdQuery>;
+export type GetStudentLaboratoriesByIdLazyQueryHookResult = ReturnType<typeof useGetStudentLaboratoriesByIdLazyQuery>;
+export type GetStudentLaboratoriesByIdQueryResult = Apollo.QueryResult<GetStudentLaboratoriesByIdQuery, GetStudentLaboratoriesByIdQueryVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {

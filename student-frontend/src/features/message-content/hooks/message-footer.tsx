@@ -8,11 +8,11 @@ export const useMessageFooter = () => {
     const [ createMessageMutation ] = useCreateMessageMutation();
     const [message, setMessage] = useState("");
 
-    const onSubmit = (messageID: string) => {
+    const onSubmit = (messageRoomID: string) => {
         createMessageMutation({
             variables: {
                 input: {
-                    messageRoomId: messageID,
+                    messageRoomId: messageRoomID,
                     from: MessageFrom.Studnet, // TODO: スペルミスなおす
                     content: message
                 }

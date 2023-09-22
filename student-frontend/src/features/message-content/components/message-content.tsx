@@ -6,28 +6,44 @@
 // TODO メッセージ詳細ページ（mock） : MessageDetail内ではBoxを利用する
 
 import { Box, CardContent, Typography } from "@mui/material";
-import { Message } from "../mock/message-content";
+import { useGetMessages, useGetStudentLaboratory } from "../hooks/message-content";
+import { MessageFrom } from "@/lib/graphql";
 
 type Props = {
-
-    messageId: string;
-    messages: Message[];
+    messageRoomId: string;
 };
 
-export const MessageContent = ({ messages, messageId }: Props) => {
+export const MessageContent = ({ messageRoomId }: Props) => {
+    const {data: messageData, loading: messageLoading, error: messageError} = useGetMessages({
+        messageRoomID: messageRoomId
+    })
 
-    const messageContents = messages.filter(
-    (messageContent) => {
-        return messageContent.studentLaboratory.id === +messageId
+    const {data: slData, loading: slLoading, error: slError} = useGetStudentLaboratory({
+        messageRoomID: messageRoomId
+    })
+    
+    if (messageLoading) {
+        return <Box>loading...</Box>;
     }
-    );
+    
+    if (messageError) {
+        return <Box>404</Box>;
+    }
+
+    if(slLoading){
+        return <Box>loading...</Box>;
+    }
+
+    if(slError){
+        return <Box>404</Box>;
+    }
     
     return (
         <Box style={{whiteSpace: "pre-line"}}>
             {
-                messageContents.map((message, i) => (
+                messageData?.getMessages?.map((message, i) => (
                     <Box key={i} style={
-                        message.from == 0 ? {
+                        message.from == MessageFrom.Studnet ? {
                             display: "flex",
                             justifyContent: "flex-end",
                         } : {
@@ -37,20 +53,20 @@ export const MessageContent = ({ messages, messageId }: Props) => {
                     }>
                         <CardContent style={{maxWidth: "50%"}}>
                             {
-                                message.from == 0 ? (
+                                message.from == MessageFrom.Studnet ? (
                                     <Typography 
                                         variant="body2"
                                         component="p"
                                         style={{textAlign:"right"}}
                                     >
-                                        {message.studentLaboratory.student.name}
+                                        {slData?.getStudentLaboratoriesById?.student.name}
                                     </Typography>
                                 ) : (
                                     <Typography
                                         variant="body2"
                                         component="p"
                                     >
-                                        {message.studentLaboratory.laboratory.name}
+                                        {slData?.getStudentLaboratoriesById?.laboratory.name}
                                     </Typography>
                                 )
                             }<Box style={{
@@ -58,7 +74,7 @@ export const MessageContent = ({ messages, messageId }: Props) => {
                                 justifyContent: "flex-end"
                             }}>
                                 <Typography variant="h5" component="h2" style={
-                                    message.from == 0 ? {
+                                    message.from == MessageFrom.Studnet ? {
                                         backgroundColor: "#8EB8FF",
                                         borderRadius: 10,
                                         padding: 10,
@@ -73,7 +89,7 @@ export const MessageContent = ({ messages, messageId }: Props) => {
                             </Box>
                             
                             <Typography variant="body2" component="p" style={
-                                message.from == 0 ? {
+                                message.from == MessageFrom.Studnet ? {
                                     textAlign: "right",
                                 } : undefined
                             }>
