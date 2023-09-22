@@ -215,13 +215,9 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 
 func (ss *studentService) DeleteStudent(id string) (bool, error) {
 	var student db.Student
-	err := ss.db.First(&student, id).Error
-	if err != nil {
+	if err := ss.db.First(&student, id).Error; err != nil {
 		return false, err
 	}
-	if err := ss.db.Delete(&student).Error; err != nil {
-		return false, err
-	}
-	fmt.Println("KO")
+	ss.db.Delete(&student)
 	return true, nil
 }
