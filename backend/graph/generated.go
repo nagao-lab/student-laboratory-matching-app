@@ -89,6 +89,7 @@ type ComplexityRoot struct {
 		FavoriteStudent      func(childComplexity int, input model.NewLike) int
 		LoginStudent         func(childComplexity int, email string, password string) int
 		LogoutStudent        func(childComplexity int) int
+		SignupLaboratory     func(childComplexity int, input model.NewLaboratory) int
 		SignupStudent        func(childComplexity int, input model.NewStudent) int
 		UnfavoriteLaboratory func(childComplexity int, input model.NewLike) int
 		UnfavoriteStudent    func(childComplexity int, input model.NewLike) int
@@ -160,6 +161,7 @@ type MutationResolver interface {
 	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
 	LoginStudent(ctx context.Context, email string, password string) (*model.Student, error)
 	LogoutStudent(ctx context.Context) (bool, error)
+	SignupLaboratory(ctx context.Context, input model.NewLaboratory) (*model.Laboratory, error)
 	FavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error)
 	FavoriteStudent(ctx context.Context, input model.NewLike) (model.LikeStatus, error)
 	UnfavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error)
@@ -445,6 +447,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.LogoutStudent(childComplexity), true
+
+	case "Mutation.signupLaboratory":
+		if e.complexity.Mutation.SignupLaboratory == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_signupLaboratory_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.SignupLaboratory(childComplexity, args["input"].(model.NewLaboratory)), true
 
 	case "Mutation.signupStudent":
 		if e.complexity.Mutation.SignupStudent == nil {
@@ -827,6 +841,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	rc := graphql.GetOperationContext(ctx)
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputNewLaboratory,
 		ec.unmarshalInputNewLike,
 		ec.unmarshalInputNewMessage,
 		ec.unmarshalInputNewStudent,
@@ -1044,6 +1059,21 @@ func (ec *executionContext) field_Mutation_loginStudent_args(ctx context.Context
 		}
 	}
 	args["password"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_signupLaboratory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewLaboratory
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewLaboratory2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐNewLaboratory(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -2521,6 +2551,91 @@ func (ec *executionContext) fieldContext_Mutation_logoutStudent(ctx context.Cont
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Boolean does not have child fields")
 		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_signupLaboratory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_signupLaboratory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().SignupLaboratory(rctx, fc.Args["input"].(model.NewLaboratory))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Laboratory)
+	fc.Result = res
+	return ec.marshalNLaboratory2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLaboratory(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_signupLaboratory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Laboratory_id(ctx, field)
+			case "uid":
+				return ec.fieldContext_Laboratory_uid(ctx, field)
+			case "university":
+				return ec.fieldContext_Laboratory_university(ctx, field)
+			case "name":
+				return ec.fieldContext_Laboratory_name(ctx, field)
+			case "professor":
+				return ec.fieldContext_Laboratory_professor(ctx, field)
+			case "numStudents":
+				return ec.fieldContext_Laboratory_numStudents(ctx, field)
+			case "comment":
+				return ec.fieldContext_Laboratory_comment(ctx, field)
+			case "status":
+				return ec.fieldContext_Laboratory_status(ctx, field)
+			case "imageUrl":
+				return ec.fieldContext_Laboratory_imageUrl(ctx, field)
+			case "laboratoryUrl":
+				return ec.fieldContext_Laboratory_laboratoryUrl(ctx, field)
+			case "email":
+				return ec.fieldContext_Laboratory_email(ctx, field)
+			case "password":
+				return ec.fieldContext_Laboratory_password(ctx, field)
+			case "majors":
+				return ec.fieldContext_Laboratory_majors(ctx, field)
+			case "numLikes":
+				return ec.fieldContext_Laboratory_numLikes(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Laboratory", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_signupLaboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
 	}
 	return fc, nil
 }
@@ -7061,6 +7176,44 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(ctx context.Conte
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputNewLaboratory(ctx context.Context, obj interface{}) (model.NewLaboratory, error) {
+	var it model.NewLaboratory
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"email", "password"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "email":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Email = data
+		case "password":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("password"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Password = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputNewLike(ctx context.Context, obj interface{}) (model.NewLike, error) {
 	var it model.NewLike
 	asMap := map[string]interface{}{}
@@ -7713,6 +7866,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		case "logoutStudent":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_logoutStudent(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "signupLaboratory":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_signupLaboratory(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -9035,6 +9195,11 @@ func (ec *executionContext) unmarshalNMessageFrom2studentᚑlaboratoryᚑmatchin
 
 func (ec *executionContext) marshalNMessageFrom2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐMessageFrom(ctx context.Context, sel ast.SelectionSet, v model.MessageFrom) graphql.Marshaler {
 	return v
+}
+
+func (ec *executionContext) unmarshalNNewLaboratory2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐNewLaboratory(ctx context.Context, v interface{}) (model.NewLaboratory, error) {
+	res, err := ec.unmarshalInputNewLaboratory(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNNewLike2studentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐNewLike(ctx context.Context, v interface{}) (model.NewLike, error) {

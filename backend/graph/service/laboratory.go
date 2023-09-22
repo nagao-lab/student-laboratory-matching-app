@@ -1,9 +1,12 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
+	"student-laboratory-matching-app/middleware/auth"
+	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
 )
@@ -11,6 +14,7 @@ import (
 type ILaboratoryService interface {
 	GetLaboratoryById(id string) (*model.Laboratory, error)
 	GetMatchableLaboratories(string) ([]*model.Laboratory, error)
+	SignupLaboratory(context.Context, model.NewLaboratory) (*model.Laboratory, error)
 }
 
 type laboratoryService struct {
@@ -36,6 +40,33 @@ func (ls *laboratoryService) GetLaboratoryById(id string) (*model.Laboratory, er
 	laboratory.NumLikes = int(numLikes)
 
 	return laboratory, nil
+}
+
+func (ss *studentService) SignupLaboratory(ctx context.Context, newLaboratory model.NewLaboratory) (*model.Laboratory, error) {
+	record := db.Laboratory{
+		Email:    newLaboratory.Email,
+		Password: tools.HashPassword(newLaboratory.Password),
+		// UID: uuid.New().String(), // TODO: Change the UID column to TEXT and create UID
+	}
+
+	// Check whether the email is already used.
+	result := ss.db.Where("Email = ?", record.Email).Find(&record)
+	if result.RowsAffected != 0 {
+		return nil, fmt.Errorf("signup: the account already exist")
+	}
+
+	err := ss.db.Select("Email", "Password").Create(&record).Error
+	if err != nil {
+		return nil, err
+	}
+
+	Laboratory := model.ConvertLaboratory(&record)
+
+	CA := auth.GetCookieAccess(ctx)
+	CA.Login(Laboratory.ID)
+
+	fmt.Println("signup: Success!")
+	return Laboratory, nil
 }
 
 func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*model.Laboratory, error) {

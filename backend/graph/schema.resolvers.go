@@ -34,6 +34,11 @@ func (r *mutationResolver) LogoutStudent(ctx context.Context) (bool, error) {
 	return r.Srv.LogoutStudent(ctx)
 }
 
+// SignupLaboratory is the resolver for the signupLaboratory field.
+func (r *mutationResolver) SignupLaboratory(ctx context.Context, input model.NewLaboratory) (*model.Laboratory, error) {
+	return r.Srv.SignupLaboratory(ctx, input)
+}
+
 // FavoriteLaboratory is the resolver for the favoriteLaboratory field.
 func (r *mutationResolver) FavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error) {
 	return r.Srv.FavoriteLaboratory(input)

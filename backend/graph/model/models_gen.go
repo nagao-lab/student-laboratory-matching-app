@@ -40,6 +40,11 @@ type Message struct {
 	UpdatedAt     time.Time   `json:"updatedAt"`
 }
 
+type NewLaboratory struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type NewLike struct {
 	StudentID    string `json:"studentId"`
 	LaboratoryID string `json:"laboratoryId"`
