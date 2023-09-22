@@ -83,6 +83,7 @@ type NewStudentFields struct {
 	Password     *string      `json:"password,omitempty"`
 	ImageURL     *string      `json:"imageUrl,omitempty"`
 	Gender       *Gender      `json:"gender,omitempty"`
+	Birthday     *time.Time   `json:"birthday,omitempty"`
 	UniversityID *string      `json:"universityId,omitempty"`
 	Grade        *int         `json:"grade,omitempty"`
 	Gpa          *float64     `json:"gpa,omitempty"`

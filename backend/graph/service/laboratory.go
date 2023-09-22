@@ -102,12 +102,12 @@ func (ls *laboratoryService) LogoutLaboratory(ctx context.Context) (bool, error)
 	return true, nil
 }
 
-func (ls *laboratoryService) GetMatchableLaboratories(laboratoryId string) ([]*model.Laboratory, error) {
+func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*model.Laboratory, error) {
 	// すでにいいねのアクションがある(非NULLかつBLANKでない)研究室は除く
 	var excludedLaboratoryIds []int
-	err := ls.db.Table("laboratory_laboratories").
+	err := ls.db.Table("student_laboratories").
 		Select("DISTINCT laboratory_id").
-		Where("laboratory_id = ?", laboratoryId).
+		Where("student_id = ?", studentId).
 		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBlank).
 		Pluck("laboratory_id", &excludedLaboratoryIds).Error
 	if err != nil {
@@ -128,7 +128,7 @@ func (ls *laboratoryService) GetMatchableLaboratories(laboratoryId string) ([]*m
 	for _, record := range records {
 		laboratory := model.ConvertLaboratory(&record)
 		if laboratory.IsNotActive() {
-			// laboratorys.status はsignup時 NULL であることを考慮して上のSQLクエリで絞らず、
+			// laboratories.status はsignup時 NULL であることを考慮して上のSQLクエリで絞らず、
 			// ここで INACTIVE でないかを判定する
 			// TODO: signup時に ACTIVE で挿入するか要検討
 			continue

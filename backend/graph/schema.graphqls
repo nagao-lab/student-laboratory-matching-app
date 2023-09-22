@@ -103,10 +103,11 @@ type Query {
   getAllPrefectures: [Prefecture]
   getAllUniversities: [University]
   getLikeStatus(input: NewLike!): LikeStatus!
-  getMessages(messageRoomId: ID!): [Message]
-  getMessagesByIds(input: NewLike!): [Message]
+  getStudentLaboratoriesById(id: ID!): StudentLaboratory
   getStudentLaboratoriesByStudentId(id: ID, filter: LikeStatus): [StudentLaboratory]
   getStudentLaboratoriesByLaboratoryId(id: ID, filter: LikeStatus): [StudentLaboratory]
+  getMessages(messageRoomId: ID!): [Message]
+  getMessagesByIds(input: NewLike!): [Message]
 }
 
 input NewStudent {
@@ -126,6 +127,7 @@ input NewStudentFields {
 	password: String
 	imageUrl: String
 	gender: Gender
+	birthday: Time  # Specify RFC3339 format string (e.g. "2001-01-01T00:00:00Z")
 	universityId: ID
 	grade: Int
 	gpa: Float
@@ -171,11 +173,11 @@ input NewMessage {
 
 type Mutation {
   signupStudent(input: NewStudent!): Student!
+  signupLaboratory(input: NewLaboratory!): Laboratory!
   loginStudent(email: String!, password: String!): Student!
   loginLaboratory(email: String!, password: String!): Laboratory!
   logoutStudent: Boolean!
   logoutLaboratory: Boolean!
-  signupLaboratory(input: NewLaboratory!): Laboratory!
   deleteStudent(id: ID!): Boolean!
   deleteLaboratory(id: ID!): Boolean!
   favoriteLaboratory(input: NewLike!): LikeStatus!

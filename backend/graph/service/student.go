@@ -19,6 +19,7 @@ type IStudentService interface {
 	LogoutStudent(context.Context) (bool, error)
 	GetMatchableStudents(string) ([]*model.Student, error)
 	UpdateStudent(model.NewStudentFields) (*model.Student, error)
+	DeleteStudent(string) (bool, error)
 }
 
 type studentService struct {
@@ -160,9 +161,12 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 	if newStudent.Gender != nil {
 		student.Gender = model.GenderIndex[*newStudent.Gender]
 	}
-	// if newStudent.Birthday != nil {
-	// 	student.Birthday = newStudent.Birthday
-	// }
+	if newStudent.Birthday != nil {
+		// Specify RFC3339 or RFC3339Nano format string
+		// e.g. 1999/02/26 → "1999-02-26T00:00:00Z"
+		// ref. https://pkg.go.dev/time#pkg-constants
+		student.Birthday = newStudent.Birthday
+	}
 	if newStudent.UniversityID != nil {
 		student.UniversityID = tools.ParseStringToUint(*newStudent.UniversityID)
 	}
