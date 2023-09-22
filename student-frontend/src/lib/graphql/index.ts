@@ -559,9 +559,9 @@ export function useGetOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetOptionsQuery, GetOptionsQueryVariables>(GetOptionsDocument, options);
         }
-export type UniversitiesQueryHookResult = ReturnType<typeof useUniversitiesQuery>;
-export type UniversitiesLazyQueryHookResult = ReturnType<typeof useUniversitiesLazyQuery>;
-export type UniversitiesQueryResult = Apollo.QueryResult<UniversitiesQuery, UniversitiesQueryVariables>;
+export type GetOptionsQueryHookResult = ReturnType<typeof useGetOptionsQuery>;
+export type GetOptionsLazyQueryHookResult = ReturnType<typeof useGetOptionsLazyQuery>;
+export type GetOptionsQueryResult = Apollo.QueryResult<GetOptionsQuery, GetOptionsQueryVariables>;
 export const SignupStudentDocument = gql`
     mutation signupStudent($input: NewStudent!) {
   signupStudent(input: $input) {
