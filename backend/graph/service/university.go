@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"strconv"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
@@ -30,6 +31,7 @@ func (us *universityService) CreateUniversity(newUniversity model.NewUniversity)
 	if err != nil {
 		return nil, err
 	}
+	log.Println("Success: Create university")
 	return model.ConvertUniversity(&university), nil
 }
 
@@ -39,6 +41,7 @@ func (us *universityService) GetUniversityById(id string) (*model.University, er
 	if err != nil {
 		return nil, err
 	}
+	log.Println("Success: Get university by universityID")
 	return model.ConvertUniversity(&university), nil
 }
 
@@ -56,5 +59,6 @@ func (us *universityService) GetAllUniversities() ([]*model.University, error) {
 		university := model.ConvertUniversity(&record)
 		universities = append(universities, university)
 	}
+	log.Println("Success: Get all universities")
 	return universities, nil
 }

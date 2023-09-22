@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"student-laboratory-matching-app/db"
 	"student-laboratory-matching-app/graph/model"
 	"student-laboratory-matching-app/middleware/auth"
@@ -43,6 +44,7 @@ func (ss *studentService) GetStudentById(id string) (*model.Student, error) {
 	}
 	student.NumLikes = int(numLikes)
 
+	log.Println("Success: Get student by studentID")
 	return student, nil
 }
 
@@ -69,7 +71,7 @@ func (ss *studentService) SignupStudent(ctx context.Context, newStudent model.Ne
 	CA := auth.GetCookieAccess(ctx)
 	CA.Login(student.ID)
 
-	fmt.Println("signup: Success!")
+	log.Println("Success: Signup new student account")
 	return student, nil
 }
 
@@ -89,7 +91,7 @@ func (ss *studentService) LoginStudent(ctx context.Context, email, password stri
 	CA := auth.GetCookieAccess(ctx)
 	CA.Login(student.ID)
 
-	fmt.Println("Login success")
+	log.Println("Success: Login student account")
 	return student, nil
 }
 
@@ -97,7 +99,7 @@ func (ss *studentService) LogoutStudent(ctx context.Context) (bool, error) {
 	CA := auth.GetCookieAccess(ctx)
 	CA.Logout()
 
-	fmt.Println("Logout success")
+	log.Println("Success: Logout student account")
 	return true, nil
 }
 
@@ -134,6 +136,7 @@ func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.St
 		}
 		students = append(students, student)
 	}
+	log.Println("Success: Get matchable Students")
 	return students, nil
 }
 
@@ -212,5 +215,6 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 		}
 	}
 
+	log.Println("Success: Update profile of student account")
 	return model.ConvertStudent(&student), nil
 }

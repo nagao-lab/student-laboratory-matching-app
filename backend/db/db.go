@@ -39,4 +39,5 @@ func CloseDB(db *gorm.DB) {
 	if err := sqlDB.Close(); err != nil {
 		log.Fatalln(err)
 	}
+	log.Println("Database disconnected")
 }
