@@ -19,7 +19,7 @@ type Prefecture = {
 type Major = {
   id: string;
   name: string;
-}
+};
 
 type RegisterContext = {
   universities: University[] | undefined;
@@ -45,7 +45,6 @@ export const RegisterProvider = ({
   const { userId } = useSessionContext();
   const router = useRouter();
   const { data, loading, error } = useGetOptionsQuery();
-  // const [loading, setLoading] = useState(true);
 
   // TODO : get userId from cookie
   useEffect(() => {
@@ -59,7 +58,9 @@ export const RegisterProvider = ({
   const majors = data?.getAllMajors;
 
   return (
-    <RegisterContext.Provider value={{ universities, prefectures, majors, loading, error }}>
+    <RegisterContext.Provider
+      value={{ universities, prefectures, majors, loading, error }}
+    >
       {children}
     </RegisterContext.Provider>
   );

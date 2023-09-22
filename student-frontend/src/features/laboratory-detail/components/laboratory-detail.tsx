@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Stack, Typography } from "@mui/material";
-import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
+// import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
 import { useLaboratoryDetail } from "../hooks/laboratory-detail";
 
 type Props = {
@@ -39,7 +39,7 @@ export const LaboratoryDetail = ({ laboratoryId }: Props) => {
         {data?.laboratory.comment}
       </Box>
 
-      <ChangeStatusToIconButton status={data?.laboratory.status} />
+      {/* <ChangeStatusToIconButton status={data?.laboratory.status} /> */}
     </>
   );
 };

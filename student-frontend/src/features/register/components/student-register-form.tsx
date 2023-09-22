@@ -38,27 +38,19 @@ export const StudentRegisterForm = () => {
     handleSubmit,
   } = useRegisterForm();
 
-  const {
-    genderOptions,
-    gradeOptions,
-    statusOptions,
-  } = getOptions();
+  const { genderOptions, gradeOptions, statusOptions } = getOptions();
 
   const { universities, prefectures, majors, loading } = useRegisterContext();
 
   const MuiDatePicker = DatePicker<Date>;
   const [newFile, setNewFile] = useState<File | null>(null);
 
-  if (loading || universities === undefined) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (loading || prefectures === undefined) {
-    return <div>Loading...</div>;
-  }
-
-  if (loading || majors === undefined) {
-    return <div>Loading...</div>;
+  if (!universities || !prefectures || !majors) {
+    return <div>Failed to load.</div>;
   }
 
   return (

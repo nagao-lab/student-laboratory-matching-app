@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const ChangeStatusToIconButton = ({ laboratoryId }: Props) => {
-  const {clickHandler} = useFavoriteLaboratory(laboratoryId);
+  const { clickHandler } = useFavoriteLaboratory(laboratoryId);
 
   return (
     <Button
@@ -19,6 +19,6 @@ export const ChangeStatusToIconButton = ({ laboratoryId }: Props) => {
       onClick={clickHandler}
     >
       興味あり
-    </Button>    
+    </Button>
   );
 };
