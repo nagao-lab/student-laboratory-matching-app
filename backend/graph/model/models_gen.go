@@ -32,12 +32,12 @@ type Major struct {
 }
 
 type Message struct {
-	MessageID     string      `json:"messageId"`
-	MessageRoomID string      `json:"messageRoomId"`
-	From          MessageFrom `json:"from"`
-	Content       string      `json:"content"`
-	CreatedAt     time.Time   `json:"createdAt"`
-	UpdatedAt     time.Time   `json:"updatedAt"`
+	MessageID     string    `json:"messageId"`
+	MessageRoomID string    `json:"messageRoomId"`
+	From          UserType  `json:"from"`
+	Content       string    `json:"content"`
+	CreatedAt     time.Time `json:"createdAt"`
+	UpdatedAt     time.Time `json:"updatedAt"`
 }
 
 type NewLaboratory struct {
@@ -66,9 +66,9 @@ type NewLike struct {
 }
 
 type NewMessage struct {
-	MessageRoomID string      `json:"messageRoomId"`
-	From          MessageFrom `json:"from"`
-	Content       string      `json:"content"`
+	MessageRoomID string   `json:"messageRoomId"`
+	From          UserType `json:"from"`
+	Content       string   `json:"content"`
 }
 
 type NewStudent struct {
@@ -270,43 +270,43 @@ func (e MatchStatus) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
-type MessageFrom string
+type UserType string
 
 const (
-	MessageFromStudnet    MessageFrom = "STUDNET"
-	MessageFromLaboratory MessageFrom = "LABORATORY"
+	UserTypeStudnet    UserType = "STUDNET"
+	UserTypeLaboratory UserType = "LABORATORY"
 )
 
-var AllMessageFrom = []MessageFrom{
-	MessageFromStudnet,
-	MessageFromLaboratory,
+var AllUserType = []UserType{
+	UserTypeStudnet,
+	UserTypeLaboratory,
 }
 
-func (e MessageFrom) IsValid() bool {
+func (e UserType) IsValid() bool {
 	switch e {
-	case MessageFromStudnet, MessageFromLaboratory:
+	case UserTypeStudnet, UserTypeLaboratory:
 		return true
 	}
 	return false
 }
 
-func (e MessageFrom) String() string {
+func (e UserType) String() string {
 	return string(e)
 }
 
-func (e *MessageFrom) UnmarshalGQL(v interface{}) error {
+func (e *UserType) UnmarshalGQL(v interface{}) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
 	}
 
-	*e = MessageFrom(str)
+	*e = UserType(str)
 	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid MessageFrom", str)
+		return fmt.Errorf("%s is not a valid UserType", str)
 	}
 	return nil
 }
 
-func (e MessageFrom) MarshalGQL(w io.Writer) {
+func (e UserType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

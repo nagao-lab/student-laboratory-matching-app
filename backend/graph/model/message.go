@@ -11,19 +11,19 @@ const (
 	LABORATORY            // 1
 )
 
-var messageFromToName = map[int]MessageFrom{
-	STUDNET:    MessageFromStudnet,
-	LABORATORY: MessageFromLaboratory,
+var userTypeName = map[int]UserType{
+	STUDNET:    UserTypeStudnet,
+	LABORATORY: UserTypeLaboratory,
 }
 
-func ConvertMessageFromToInt(mf MessageFrom) (int, error) {
-	switch mf {
-	case MessageFromStudnet:
+func GetUserTypeIndex(ut UserType) (int, error) {
+	switch ut {
+	case UserTypeStudnet:
 		return STUDNET, nil
-	case MessageFromLaboratory:
+	case UserTypeLaboratory:
 		return LABORATORY, nil
 	default:
-		return -1, fmt.Errorf("unsupported MessageFrom")
+		return -1, fmt.Errorf("unsupported UserType")
 	}
 
 }
@@ -32,7 +32,7 @@ func ConvertMessage(message *db.Message) *Message {
 	return &Message{
 		MessageID:     tools.ParseUintToString(message.ID),
 		MessageRoomID: tools.ParseUintToString(message.StudentLaboratoryID),
-		From:          messageFromToName[message.From],
+		From:          userTypeName[message.From],
 		Content:       message.Content,
 		CreatedAt:     message.CreatedAt,
 		UpdatedAt:     message.UpdatedAt,

@@ -18,7 +18,7 @@ enum LikeStatus {
 	LIKE_FROM_BOTH
 }
 
-enum MessageFrom {
+enum UserType {
 	STUDNET
 	LABORATORY
 }
@@ -88,7 +88,7 @@ type University {
 type Message {
 	messageId: ID! # id
 	messageRoomId: ID! # student_laboratory_id
-	from: MessageFrom!
+	from: UserType!
 	content: String!
 	createdAt: Time!
 	updatedAt: Time!
@@ -167,7 +167,7 @@ input NewLike { # TODO: rename
 
 input NewMessage {
 	messageRoomId: ID! # student_laboratory_id
-	from: MessageFrom!
+	from: UserType!
 	content: String!
 }
 
