@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { S3 } from "aws-sdk";
+import { formatRFC3339 } from 'date-fns'
 
 export const useRegisterForm = () => {
   const router = useRouter();
@@ -91,6 +92,7 @@ export const useRegisterForm = () => {
       comment: comment,
       interest: interest,
       birthday: birthday?.toString(),
+      // birthday: formatRFC3339(birthday),
       prefecture: prefecture,
       gpa: gpa,
       file: res,
