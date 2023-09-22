@@ -210,8 +210,6 @@ func (ls *laboratoryService) DeleteLaboratory(id string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if err := ls.db.Delete(&laboratory).Error; err != nil {
-		return false, err
-	}
+	ls.db.Delete(&laboratory)
 	return true, nil
 }
