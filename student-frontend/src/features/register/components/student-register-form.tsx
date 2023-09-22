@@ -1,6 +1,10 @@
 "use client";
 
-import { useRegisterForm } from "../hooks/student-register-form";
+import { 
+  useGetAllPrefectures,
+  useRegisterForm,
+  useGetAllUniversities,
+  useGetAllMajors, } from "../hooks/student-register-form";
 import {
   Container,
   Typography,
@@ -36,16 +40,39 @@ export const StudentRegisterForm = () => {
 
   const {
     genderOptions,
-    universityOptions,
-    majorOptions,
     gradeOptions,
-    prefectureOptions,
     statusOptions,
   } = getOptions();
 
   const MuiDatePicker = DatePicker<Date>;
 
   const [file, setFile] = React.useState(null);
+
+  const {data: prefecturesData, loading: prefecturesLoading, error: prefecturesError} = useGetAllPrefectures();
+
+  const {data: universitiesData, loading: universitiesLoading, error: universitiesError} = useGetAllUniversities();
+
+  const {data: majorsData, loading: majorsLoading, error: majorsError} = useGetAllMajors();
+
+  if(prefecturesLoading){
+    return <Box>loading...</Box>;
+  }
+  if(prefecturesError){
+    return <Box>404</Box>;
+  }
+  if(universitiesLoading){
+    return <Box>loading...</Box>;
+  }
+  if(universitiesError){
+    return <Box>404</Box>;
+  }
+  if(majorsLoading){
+    return <Box>loading...</Box>;
+  }
+  if(majorsError){
+    return <Box>404</Box>;
+  }
+
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -100,11 +127,11 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={universityOptions}
+                  options={(universitiesData?.getAllUniversities) ?? []}
                   id="university"
                   renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
+                    <Box component="li" {...props} key={option.id}>
+                      {option.name}
                     </Box>
                   )} 
                   renderInput={(params) => (
@@ -116,17 +143,17 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.value)
+                    setUniversity(selectedOption?.id)
                   }
                 />
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={majorOptions}
+                  options={(majorsData?.getAllMajors) ?? []}
                   id="major"
                   renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
+                    <Box component="li" {...props} key={option.id}>
+                      {option.name}
                     </Box>
                   )} 
                   renderInput={(params) => (
@@ -138,7 +165,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.value)
+                    setUniversity(selectedOption?.id)
                   }
                 />
               </Grid>
@@ -196,11 +223,11 @@ export const StudentRegisterForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Autocomplete
-                  options={prefectureOptions}
+                  options={(prefecturesData?.getAllPrefectures) ?? []}
                   id="prefecture"
                   renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
+                    <Box component="li" {...props} key={option.id}>
+                      {option.name}
                     </Box>
                   )} 
                   renderInput={(params) => (
@@ -212,7 +239,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setPrefecture(selectedOption?.value)
+                    setPrefecture(selectedOption?.id)
                   }
                 />
               </Grid>

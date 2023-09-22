@@ -84,3 +84,21 @@ export const useRegisterForm = () => {
     handleSubmit,
   };
 };
+
+export const useGetAllPrefectures = () => {
+  const {data, loading, error} = useGetAllPrefecturesQuery();
+
+  return {data, loading, error};
+}
+
+export const useGetAllUniversities = () => {
+  const {data, loading, error} = useGetAllUniversitiesQuery();
+
+  return {data, loading, error};
+}
+
+export const useGetAllMajors = () => {
+  const {data, loading, error} = useGetAllMajorsQuery();
+
+  return {data, loading, error};
+}
