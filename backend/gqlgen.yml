@@ -103,3 +103,9 @@ models:
     fields:
       prefecture:
         resolver: true
+  StudentLaboratory:
+    fields:
+      student:
+        resolver: true
+      laboratory:
+        resolver: true

@@ -105,6 +105,8 @@ type Query {
   getLikeStatus(input: NewLike!): LikeStatus!
   getMessages(messageRoomId: ID!): [Message]
   getMessagesByIds(input: NewLike!): [Message]
+  getStudentLaboratoriesByStudentId(id: ID, filter: LikeStatus): [StudentLaboratory]
+  getStudentLaboratoriesByLaboratoryId(id: ID, filter: LikeStatus): [StudentLaboratory]
 }
 
 input NewStudent {
