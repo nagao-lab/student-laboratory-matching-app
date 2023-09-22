@@ -211,3 +211,15 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 
 	return model.ConvertStudent(&student), nil
 }
+
+func (ss *studentService) DeleteStudent(id string) (bool, error) {
+	var student db.Student
+	err := ss.db.First(&student, id).Error
+	if err != nil {
+		return false, err
+	}
+	if err := ss.db.Delete(&student).Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}
