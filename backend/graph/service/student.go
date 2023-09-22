@@ -222,5 +222,6 @@ func (ss *studentService) DeleteStudent(id string) (bool, error) {
 	if err := ss.db.Delete(&student).Error; err != nil {
 		return false, err
 	}
+	fmt.Println("KO")
 	return true, nil
 }
