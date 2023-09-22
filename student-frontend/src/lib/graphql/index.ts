@@ -375,6 +375,28 @@ export type GetStudentLaboratoriesByIdQueryVariables = Exact<{
 
 export type GetStudentLaboratoriesByIdQuery = { getStudentLaboratoriesById?: { id: string, student: { name: string }, laboratory: { name: string } } };
 
+export type GetAllPrefecturesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPrefecturesQuery = { getAllPrefectures?: Array<{ id: string, name: string }> };
+
+export type GetAllUniversitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUniversitiesQuery = { getAllUniversities?: Array<{ id: string, name: string }> };
+
+export type GetAllMajorsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMajorsQuery = { getAllMajors?: Array<{ id: string, name: string }> };
+
+export type UpdateStudentMutationVariables = Exact<{
+  input: NewStudentFields;
+}>;
+
+
+export type UpdateStudentMutation = { updateStudent: { id: string } };
+
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -665,6 +687,144 @@ export function useGetStudentLaboratoriesByIdLazyQuery(baseOptions?: Apollo.Lazy
 export type GetStudentLaboratoriesByIdQueryHookResult = ReturnType<typeof useGetStudentLaboratoriesByIdQuery>;
 export type GetStudentLaboratoriesByIdLazyQueryHookResult = ReturnType<typeof useGetStudentLaboratoriesByIdLazyQuery>;
 export type GetStudentLaboratoriesByIdQueryResult = Apollo.QueryResult<GetStudentLaboratoriesByIdQuery, GetStudentLaboratoriesByIdQueryVariables>;
+export const GetAllPrefecturesDocument = gql`
+    query getAllPrefectures {
+  getAllPrefectures {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAllPrefecturesQuery__
+ *
+ * To run a query within a React component, call `useGetAllPrefecturesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllPrefecturesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllPrefecturesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllPrefecturesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPrefecturesQuery, GetAllPrefecturesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllPrefecturesQuery, GetAllPrefecturesQueryVariables>(GetAllPrefecturesDocument, options);
+      }
+export function useGetAllPrefecturesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPrefecturesQuery, GetAllPrefecturesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllPrefecturesQuery, GetAllPrefecturesQueryVariables>(GetAllPrefecturesDocument, options);
+        }
+export type GetAllPrefecturesQueryHookResult = ReturnType<typeof useGetAllPrefecturesQuery>;
+export type GetAllPrefecturesLazyQueryHookResult = ReturnType<typeof useGetAllPrefecturesLazyQuery>;
+export type GetAllPrefecturesQueryResult = Apollo.QueryResult<GetAllPrefecturesQuery, GetAllPrefecturesQueryVariables>;
+export const GetAllUniversitiesDocument = gql`
+    query getAllUniversities {
+  getAllUniversities {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAllUniversitiesQuery__
+ *
+ * To run a query within a React component, call `useGetAllUniversitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUniversitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUniversitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUniversitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllUniversitiesQuery, GetAllUniversitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllUniversitiesQuery, GetAllUniversitiesQueryVariables>(GetAllUniversitiesDocument, options);
+      }
+export function useGetAllUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllUniversitiesQuery, GetAllUniversitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllUniversitiesQuery, GetAllUniversitiesQueryVariables>(GetAllUniversitiesDocument, options);
+        }
+export type GetAllUniversitiesQueryHookResult = ReturnType<typeof useGetAllUniversitiesQuery>;
+export type GetAllUniversitiesLazyQueryHookResult = ReturnType<typeof useGetAllUniversitiesLazyQuery>;
+export type GetAllUniversitiesQueryResult = Apollo.QueryResult<GetAllUniversitiesQuery, GetAllUniversitiesQueryVariables>;
+export const GetAllMajorsDocument = gql`
+    query getAllMajors {
+  getAllMajors {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetAllMajorsQuery__
+ *
+ * To run a query within a React component, call `useGetAllMajorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMajorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMajorsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMajorsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMajorsQuery, GetAllMajorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMajorsQuery, GetAllMajorsQueryVariables>(GetAllMajorsDocument, options);
+      }
+export function useGetAllMajorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMajorsQuery, GetAllMajorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMajorsQuery, GetAllMajorsQueryVariables>(GetAllMajorsDocument, options);
+        }
+export type GetAllMajorsQueryHookResult = ReturnType<typeof useGetAllMajorsQuery>;
+export type GetAllMajorsLazyQueryHookResult = ReturnType<typeof useGetAllMajorsLazyQuery>;
+export type GetAllMajorsQueryResult = Apollo.QueryResult<GetAllMajorsQuery, GetAllMajorsQueryVariables>;
+export const UpdateStudentDocument = gql`
+    mutation updateStudent($input: NewStudentFields!) {
+  updateStudent(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateStudentMutationFn = Apollo.MutationFunction<UpdateStudentMutation, UpdateStudentMutationVariables>;
+
+/**
+ * __useUpdateStudentMutation__
+ *
+ * To run a mutation, you first call `useUpdateStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStudentMutation, { data, loading, error }] = useUpdateStudentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateStudentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStudentMutation, UpdateStudentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateStudentMutation, UpdateStudentMutationVariables>(UpdateStudentDocument, options);
+      }
+export type UpdateStudentMutationHookResult = ReturnType<typeof useUpdateStudentMutation>;
+export type UpdateStudentMutationResult = Apollo.MutationResult<UpdateStudentMutation>;
+export type UpdateStudentMutationOptions = Apollo.BaseMutationOptions<UpdateStudentMutation, UpdateStudentMutationVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
