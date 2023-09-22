@@ -1,46 +1,45 @@
+"use client";
 
-'use client';
-
-import { Box } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
-import { Laboratory } from "../mock/laboratory-detail";
+import { useLaboratoryDetail } from "../hooks/laboratory-detail";
 
 type Props = {
-    laboratories: Laboratory[];
-    laboratoryId: string;
-  };
+  laboratoryId: string;
+};
 
-// 研究室詳細ページ（mock）
-export const LaboratoryDetail = ({ laboratories, laboratoryId }: Props) => {
-  
-  console.log(laboratoryId);
+export const LaboratoryDetail = ({ laboratoryId }: Props) => {
+  const { data, loading, error } = useLaboratoryDetail({
+    laboratoryId: laboratoryId,
+  });
 
-  const laboratory = laboratories.filter(
-    (laboratory) => {
-      return laboratory.ID === +laboratoryId
-    }
-  )[0];
+  if (loading) {
+    return <Box>loading...</Box>;
+  }
 
-  return( 
+  if (error) {
+    return <Box>404</Box>;
+  }
+
+  return (
     <>
+      <Box sx={{ m: 5 }}>
+        <Typography variant="h3">
+          {data?.laboratory.name} @{data?.laboratory.university.name}
+        </Typography>
+        <Typography variant="h6">所在</Typography>
+        {data?.laboratory.university.prefecture.name}
+        <Typography variant="h6">専攻</Typography>
+        <Stack>{data?.laboratory.majors.map((major) => major.name)}</Stack>
+        <Typography variant="h6">教授</Typography>
+        {data?.laboratory.professor}
+        <Typography variant="h6">学生数</Typography>
+        {data?.laboratory.numStudents}
+        <Typography variant="h6">コメント</Typography>
+        {data?.laboratory.comment}
+      </Box>
 
-    <Box sx={{m: 5}}>
-      <h1>{laboratory.name} @{laboratory.university.name}</h1>
-      <h3>所在</h3>
-      {laboratory.prefecture.name}
-      <h3>専攻</h3>
-      {laboratory.major.name}
-      <h3>教授</h3>
-      {laboratory.professor}
-      <h3>学生数</h3>
-      {laboratory.num_students}
-      <h3>コメント</h3>
-      {laboratory.comment}
-    </Box>
-    
-    <ChangeStatusToIconButton status={laboratory.studentLaboratory.status}/>
-    
+      <ChangeStatusToIconButton status={data?.laboratory.status} />
     </>
   );
-  
-}
+};

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useIsLoginContext } from "@/features/login-form/providers/login-form";
+import { useSessionContext } from "@/providers/session";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -17,17 +17,19 @@ export const LaboratoriesProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { isLogin } = useIsLoginContext();
+  const { userId } = useSessionContext();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
+  // TODO : get userId from cookie
   useEffect(() => {
-    if (!isLogin) {
-      router.push("/login");
+    if (userId === "") {
+      // router.push("/login");
     } else {
+      console.log("userId", userId);
       setLoading(false);
     }
-  }, [isLogin, router]);
+  }, [userId, router]);
 
   return (
     <LaboratoriesContext.Provider value={{ loading }}>

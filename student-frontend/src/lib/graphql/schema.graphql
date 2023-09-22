@@ -11,6 +11,18 @@ enum MatchStatus {
   INACTIVE
 }
 
+enum LikeStatus {
+  BLANK
+  LIKE_FROM_STUDENT
+  LIKE_FROM_LABORATORY
+  LIKE_FROM_BOTH
+}
+
+enum MessageFrom {
+  STUDNET
+  LABORATORY
+}
+
 type Student {
   id: ID!
   uid: String!
@@ -19,7 +31,7 @@ type Student {
   password: String!
   imageUrl: String!
   gender: Gender!
-  birthday: Time!
+  birthday: Time
   university: University!
   grade: Int!
   gpa: Float!
@@ -48,6 +60,13 @@ type Laboratory {
   numLikes: Int!
 }
 
+type StudentLaboratory {
+  id: ID!
+  student: Student!
+  laboratory: Laboratory!
+  status: LikeStatus!
+}
+
 type Major {
   id: ID!
   name: String!
@@ -66,11 +85,26 @@ type University {
   maxGpa: Float!
 }
 
+type Message {
+  messageId: ID! # id
+  messageRoomId: ID! # student_laboratory_id
+  from: MessageFrom!
+  content: String!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
 type Query {
   student(id: ID!): Student!
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
+  getAllMajors: [Major]
+  getAllPrefectures: [Prefecture]
+  getAllUniversities: [University]
+  getLikeStatus(input: NewLike!): LikeStatus!
+  getMessages(messageRoomId: ID!): [Message]
+  getMessagesByIds(input: NewLike!): [Message]
 }
 
 input NewStudent {
@@ -78,7 +112,51 @@ input NewStudent {
   password: String!
 }
 
+input NewStudentFields {
+  id: ID!
+  name: String
+  email: String
+  password: String
+  imageUrl: String
+  gender: Gender
+  birthday: Time
+  universityId: ID
+  grade: Int
+  gpa: Float
+  prefectureId: ID
+  comment: String
+  interest: String
+  status: MatchStatus
+  majorIds: [ID]
+}
+
+input NewUniversity {
+  prefectureId: ID!
+  name: String!
+  address: String!
+  maxGpa: Float!
+}
+
+input NewLike { # TODO: rename
+  studentId: ID!
+  laboratoryId: ID!
+}
+
+input NewMessage {
+  messageRoomId: ID! # student_laboratory_id
+  from: MessageFrom!
+  content: String!
+}
+
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
+  favoriteLaboratory(input: NewLike!): LikeStatus!
+  favoriteStudent(input: NewLike!): LikeStatus!
+  unfavoriteLaboratory(input: NewLike!): LikeStatus!
+  unfavoriteStudent(input: NewLike!): LikeStatus!
+  updateStudent(input: NewStudentFields!): Student!
+  createMajor(name: String!): Major!
+  createUniversity(input: NewUniversity!): University!
+  createMessage(input: NewMessage!): Message
 }

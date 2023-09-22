@@ -10,39 +10,46 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
-import { Laboratory } from "../mock/laboratories";
-
+import { useLaboratories } from "../hooks/laboratories";
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
 
 type Props = {
-  laboratories: Laboratory[];
   filterVal: string;
-  toggle: boolean;
 };
 
-export const LaboratoryCards = ({ laboratories, filterVal, toggle }: Props) => {
+export const LaboratoryCards = ({ filterVal }: Props) => {
   const router = useRouter();
+  const { data, loading, error } = useLaboratories();
+
+  if (loading) {
+    return <Box>loading...</Box>;
+  }
+
+  if (error) {
+    return <Box>404</Box>;
+  }
+
   return (
     <Box>
-      {laboratories
-        .filter((laboratory) => {
+      {data?.getMatchableLaboratories
+        ?.filter((laboratory) => {
           let isMatch =
             laboratory.name.indexOf(filterVal) !== -1 ||
             laboratory.university.name.indexOf(filterVal) !== -1;
           isMatch =
             isMatch ||
-            laboratory.major.some(
+            laboratory.majors.some(
               (major) => major.name.indexOf(filterVal) !== -1
             );
           return isMatch;
         })
-        .filter((laboratory) => {
-          const isDisp =
-            toggle === false ||
-            laboratory.studentLaboratory.status === "LIKE_FROM_STUDENT" ||
-            laboratory.studentLaboratory.status === "LIKE_FROM_BOTH";
-          return isDisp;
-        })
+        // .filter((laboratory) => {
+        //   const isDisp =
+        //     toggle === false ||
+        //     laboratory.status === "LIKE_FROM_STUDENT" ||
+        //     laboratory.status === "LIKE_FROM_BOTH";
+        //   return isDisp;
+        // })
         .map((laboratory, i) => (
           <Card key={i} sx={{ minWidth: 275, m: 5 }}>
             <CardContent>
@@ -53,24 +60,22 @@ export const LaboratoryCards = ({ laboratories, filterVal, toggle }: Props) => {
                 {laboratory.name}
               </Typography>
               <Typography sx={{ mb: 0.75 }} color="text.secondary">
-                {laboratory.major.map((item) => item.name + " ")}
+                {laboratory.majors.map((item) => item.name + " ")}
               </Typography>
             </CardContent>
             <CardActions>
               <Button
                 size="small"
                 onClick={() => {
-                  console.log(laboratory.studentLaboratory.status);
-                  router.push(`/laboratories/${laboratory.ID}`);
+                  console.log(laboratory.status);
+                  router.push(`/laboratories/${laboratory.id}`);
                 }}
               >
                 詳細を見る
               </Button>
             </CardActions>
             <CardContent>
-              <ChangeStatusToIconButton
-                status={laboratory.studentLaboratory.status}
-              />
+              <ChangeStatusToIconButton status={laboratory.status} />
             </CardContent>
           </Card>
         ))}
