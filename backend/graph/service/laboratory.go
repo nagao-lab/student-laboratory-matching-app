@@ -206,8 +206,7 @@ func (ls *laboratoryService) UpdateLaboratory(newLaboratory model.NewLaboratoryF
 
 func (ls *laboratoryService) DeleteLaboratory(id string) (bool, error) {
 	var laboratory db.Laboratory
-	err := ls.db.First(&laboratory, id).Error
-	if err != nil {
+	if err := ls.db.First(&laboratory, id).Error; err != nil {
 		return false, err
 	}
 	ls.db.Delete(&laboratory)
