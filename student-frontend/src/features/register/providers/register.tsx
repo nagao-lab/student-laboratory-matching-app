@@ -1,15 +1,26 @@
 "use client";
 
+import { useUniversitiesQuery } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
+import { ApolloError } from "@apollo/client";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
+
+type University = {
+  id: string;
+  name: string;
+};
 
 type RegisterContext = {
+  universities?: University[];
   loading: boolean;
+  error: ApolloError | undefined;
 };
 
 const RegisterContext = createContext<RegisterContext>({
+  universities: [],
   loading: true,
+  error: undefined,
 });
 
 export const RegisterProvider = ({
@@ -19,18 +30,19 @@ export const RegisterProvider = ({
 }) => {
   const { userId } = useSessionContext();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const { data, loading, error } = useUniversitiesQuery();
 
-  useEffect(() => { // TODO: userIDで認証する
+  // TODO : get userId from cookie
+  useEffect(() => {
     if (userId === "") {
-      // router.push("/login");
-    } else {
-      setLoading(false);
+      router.push("/login");
     }
   }, [userId, router]);
 
+  const universities = data?.getAllUniversities;
+
   return (
-    <RegisterContext.Provider value={{ loading }}>
+    <RegisterContext.Provider value={{ universities, loading, error }}>
       {children}
     </RegisterContext.Provider>
   );

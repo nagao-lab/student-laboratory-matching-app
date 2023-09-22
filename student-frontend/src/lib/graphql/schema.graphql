@@ -18,6 +18,11 @@ enum LikeStatus {
 	LIKE_FROM_BOTH
 }
 
+enum MessageFrom {
+	STUDNET
+	LABORATORY
+}
+
 type Student {
 	id: ID!
 	uid: String!
@@ -26,7 +31,7 @@ type Student {
 	password: String!
 	imageUrl: String!
 	gender: Gender!
-	birthday: Time!
+	birthday: Time
 	university: University!
 	grade: Int!
 	gpa: Float!
@@ -55,6 +60,20 @@ type Laboratory {
 	numLikes: Int!
 }
 
+type StudentLaboratory {
+	id: ID!
+	student: Student!
+	laboratory: Laboratory!
+	status: LikeStatus!
+}
+
+type StudentLaboratory {
+  id: ID!
+  student: Student!
+  laboratory: Laboratory!
+  status: LikeStatus!
+}
+
 type Major {
   id: ID!
   name: String!
@@ -73,11 +92,26 @@ type University {
   maxGpa: Float!
 }
 
+type Message {
+  messageId: ID! # id
+  messageRoomId: ID! # student_laboratory_id
+  from: MessageFrom!
+  content: String!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
 type Query {
   student(id: ID!): Student!
   getMatchableStudents(id: ID!): [Student]
   laboratory(id: ID!): Laboratory!
   getMatchableLaboratories(id: ID!): [Laboratory]
+  getAllMajors: [Major]
+  getAllPrefectures: [Prefecture]
+  getAllUniversities: [University]
+  getLikeStatus(input: NewLike!): LikeStatus!
+  getMessages(messageRoomId: ID!): [Message]
+  getMessagesByIds(input: NewLike!): [Message]
 }
 
 input NewStudent {
@@ -110,9 +144,16 @@ input NewUniversity {
 	maxGpa: Float!
 }
 
-input NewLike {
+input NewLike { # TODO: rename
 	studentId: ID!
 	laboratoryId: ID!
+}
+
+input NewMessage {
+	messageRoomId: ID! # student_laboratory_id
+	from: MessageFrom!
+	content: String!
+  gpa: Float
 }
 
 type Mutation {
@@ -120,7 +161,10 @@ type Mutation {
   loginStudent(email: String!, password: String!): Student!
   favoriteLaboratory(input: NewLike!): LikeStatus!
   favoriteStudent(input: NewLike!): LikeStatus!
+  unfavoriteLaboratory(input: NewLike!): LikeStatus!
+  unfavoriteStudent(input: NewLike!): LikeStatus!
   updateStudent(input: NewStudentFields!): Student!
   createMajor(name: String!): Major!
   createUniversity(input: NewUniversity!): University!
+  createMessage(input: NewMessage!): Message
 }

@@ -16,7 +16,7 @@ export const useRegisterForm = () => {
   const [birthday, setBirthday] = useState<Date | null>();
   const [prefecture, setPrefecture] = useState<string | null>();
   const [gpa, setGpa] = useState(3.0);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<number | null>();
 
   const region = process.env.NEXT_PUBLIC_REGION ? process.env.NEXT_PUBLIC_REGION : '';
@@ -53,11 +53,10 @@ export const useRegisterForm = () => {
       return "";
     }
    };
-    
   const handleSubmit = async () => {
     if (
       !name ||
-      gender===null ||
+      gender === null ||
       !university ||
       !grade ||
       !comment ||
@@ -66,7 +65,7 @@ export const useRegisterForm = () => {
       !prefecture ||
       !gpa ||
       !file ||
-      status===null
+      status === null
     ) {
       window.alert("すべての項目を入力してください")
       console.log(name, gender, university, grade, comment, interest, birthday, prefecture, gpa, file, status ); 

@@ -17,7 +17,7 @@ type Props = {
   filterVal: string;
 };
 
-export const LaboratoryCards = ({ filterVal }: Props) => {
+export const LaboratoryCards = ({ filterVal, toggle }: Props) => {
   const router = useRouter();
   const { data, loading, error } = useLaboratories();
 
@@ -31,8 +31,7 @@ export const LaboratoryCards = ({ filterVal }: Props) => {
 
   return (
     <Box>
-      {data?.getMatchableLaboratories
-        ?.filter((laboratory) => {
+      {data?.getMatchableLaboratories?.filter((laboratory) => {
           let isMatch =
             laboratory.name.indexOf(filterVal) !== -1 ||
             laboratory.university.name.indexOf(filterVal) !== -1;
@@ -75,7 +74,9 @@ export const LaboratoryCards = ({ filterVal }: Props) => {
               </Button>
             </CardActions>
             <CardContent>
-              <ChangeStatusToIconButton status={laboratory.status} />
+              <ChangeStatusToIconButton
+                laboratoryId={laboratory.id}
+              />
             </CardContent>
           </Card>
         ))}

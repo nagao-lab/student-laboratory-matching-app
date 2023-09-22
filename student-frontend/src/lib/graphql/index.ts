@@ -41,6 +41,13 @@ export type Laboratory = {
   university: University;
 };
 
+export enum LikeStatus {
+  Blank = 'BLANK',
+  LikeFromBoth = 'LIKE_FROM_BOTH',
+  LikeFromLaboratory = 'LIKE_FROM_LABORATORY',
+  LikeFromStudent = 'LIKE_FROM_STUDENT'
+}
+
 export type Major = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -51,9 +58,56 @@ export enum MatchStatus {
   Inactive = 'INACTIVE'
 }
 
+export type Message = {
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Time']['output'];
+  from: MessageFrom;
+  messageId: Scalars['ID']['output'];
+  messageRoomId: Scalars['ID']['output'];
+  updatedAt: Scalars['Time']['output'];
+};
+
+export enum MessageFrom {
+  Laboratory = 'LABORATORY',
+  Studnet = 'STUDNET'
+}
+
 export type Mutation = {
+  createMajor: Major;
+  createMessage?: Maybe<Message>;
+  createUniversity: University;
+  favoriteLaboratory: LikeStatus;
+  favoriteStudent: LikeStatus;
   loginStudent: Student;
   signupStudent: Student;
+  unfavoriteLaboratory: LikeStatus;
+  unfavoriteStudent: LikeStatus;
+  updateStudent: Student;
+};
+
+
+export type MutationCreateMajorArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateMessageArgs = {
+  input: NewMessage;
+};
+
+
+export type MutationCreateUniversityArgs = {
+  input: NewUniversity;
+};
+
+
+export type MutationFavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationFavoriteStudentArgs = {
+  input: NewLike;
 };
 
 
@@ -67,9 +121,60 @@ export type MutationSignupStudentArgs = {
   input: NewStudent;
 };
 
+
+export type MutationUnfavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationUnfavoriteStudentArgs = {
+  input: NewLike;
+};
+
+
+export type MutationUpdateStudentArgs = {
+  input: NewStudentFields;
+};
+
+export type NewLike = {
+  laboratoryId: Scalars['ID']['input'];
+  studentId: Scalars['ID']['input'];
+};
+
+export type NewMessage = {
+  content: Scalars['String']['input'];
+  from: MessageFrom;
+  messageRoomId: Scalars['ID']['input'];
+};
+
 export type NewStudent = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type NewStudentFields = {
+  birthday?: InputMaybe<Scalars['Time']['input']>;
+  comment?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Gender>;
+  gpa?: InputMaybe<Scalars['Float']['input']>;
+  grade?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  interest?: InputMaybe<Scalars['String']['input']>;
+  majorIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  prefectureId?: InputMaybe<Scalars['ID']['input']>;
+  status?: InputMaybe<MatchStatus>;
+  universityId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type NewUniversity = {
+  address: Scalars['String']['input'];
+  maxGpa: Scalars['Float']['input'];
+  name: Scalars['String']['input'];
+  prefectureId: Scalars['ID']['input'];
 };
 
 export type Prefecture = {
@@ -78,10 +183,21 @@ export type Prefecture = {
 };
 
 export type Query = {
+  getAllMajors?: Maybe<Array<Maybe<Major>>>;
+  getAllPrefectures?: Maybe<Array<Maybe<Prefecture>>>;
+  getAllUniversities?: Maybe<Array<Maybe<University>>>;
+  getLikeStatus: LikeStatus;
   getMatchableLaboratories?: Maybe<Array<Maybe<Laboratory>>>;
   getMatchableStudents?: Maybe<Array<Maybe<Student>>>;
+  getMessages?: Maybe<Array<Maybe<Message>>>;
+  getMessagesByIds?: Maybe<Array<Maybe<Message>>>;
   laboratory: Laboratory;
   student: Student;
+};
+
+
+export type QueryGetLikeStatusArgs = {
+  input: NewLike;
 };
 
 
@@ -95,6 +211,16 @@ export type QueryGetMatchableStudentsArgs = {
 };
 
 
+export type QueryGetMessagesArgs = {
+  messageRoomId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetMessagesByIdsArgs = {
+  input: NewLike;
+};
+
+
 export type QueryLaboratoryArgs = {
   id: Scalars['ID']['input'];
 };
@@ -105,7 +231,7 @@ export type QueryStudentArgs = {
 };
 
 export type Student = {
-  birthday: Scalars['Time']['output'];
+  birthday?: Maybe<Scalars['Time']['output']>;
   comment: Scalars['String']['output'];
   email: Scalars['String']['output'];
   gender: Gender;
@@ -124,6 +250,13 @@ export type Student = {
   university: University;
 };
 
+export type StudentLaboratory = {
+  id: Scalars['ID']['output'];
+  laboratory: Laboratory;
+  status: LikeStatus;
+  student: Student;
+};
+
 export type University = {
   address: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -138,7 +271,21 @@ export type LaboratoriesQueryVariables = Exact<{
 
 
 export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
+export type GetLikeStatusQueryVariables = Exact<{
+  studentId: Scalars['ID']['input'];
+  laboratoryId: Scalars['ID']['input'];
+}>;
 
+
+export type GetLikeStatusQuery = { getLikeStatus: LikeStatus };
+
+export type FavoriteLaboratoryMutationVariables = Exact<{
+  studentId: Scalars['ID']['input'];
+  laboratoryId: Scalars['ID']['input'];
+}>;
+
+
+export type FavoriteLaboratoryMutation = { favoriteLaboratory: LikeStatus };
 export type LaboratoryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -153,7 +300,10 @@ export type LoginStudentMutationVariables = Exact<{
 
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
+export type UniversitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type UniversitiesQuery = { getAllUniversities?: Array<{ id: string, name: string }> };
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -206,6 +356,72 @@ export function useLaboratoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type LaboratoriesQueryHookResult = ReturnType<typeof useLaboratoriesQuery>;
 export type LaboratoriesLazyQueryHookResult = ReturnType<typeof useLaboratoriesLazyQuery>;
 export type LaboratoriesQueryResult = Apollo.QueryResult<LaboratoriesQuery, LaboratoriesQueryVariables>;
+export const GetLikeStatusDocument = gql`
+    query getLikeStatus($studentId: ID!, $laboratoryId: ID!) {
+  getLikeStatus(input: {studentId: $studentId, laboratoryId: $laboratoryId})
+}
+    `;
+
+/**
+ * __useGetLikeStatusQuery__
+ *
+ * To run a query within a React component, call `useGetLikeStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLikeStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLikeStatusQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      laboratoryId: // value for 'laboratoryId'
+ *   },
+ * });
+ */
+export function useGetLikeStatusQuery(baseOptions: Apollo.QueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
+      }
+export function useGetLikeStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
+        }
+export type GetLikeStatusQueryHookResult = ReturnType<typeof useGetLikeStatusQuery>;
+export type GetLikeStatusLazyQueryHookResult = ReturnType<typeof useGetLikeStatusLazyQuery>;
+export type GetLikeStatusQueryResult = Apollo.QueryResult<GetLikeStatusQuery, GetLikeStatusQueryVariables>;
+export const FavoriteLaboratoryDocument = gql`
+    mutation favoriteLaboratory($studentId: ID!, $laboratoryId: ID!) {
+  favoriteLaboratory(input: {studentId: $studentId, laboratoryId: $laboratoryId})
+}
+    `;
+export type FavoriteLaboratoryMutationFn = Apollo.MutationFunction<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
+
+/**
+ * __useFavoriteLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useFavoriteLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavoriteLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favoriteLaboratoryMutation, { data, loading, error }] = useFavoriteLaboratoryMutation({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      laboratoryId: // value for 'laboratoryId'
+ *   },
+ * });
+ */
+export function useFavoriteLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>(FavoriteLaboratoryDocument, options);
+      }
+export type FavoriteLaboratoryMutationHookResult = ReturnType<typeof useFavoriteLaboratoryMutation>;
+export type FavoriteLaboratoryMutationResult = Apollo.MutationResult<FavoriteLaboratoryMutation>;
+export type FavoriteLaboratoryMutationOptions = Apollo.BaseMutationOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
 export const LaboratoryDocument = gql`
     query Laboratory($id: ID!) {
   laboratory(id: $id) {
@@ -291,6 +507,41 @@ export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions
 export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
 export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
 export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
+export const UniversitiesDocument = gql`
+    query Universities {
+  getAllUniversities {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useUniversitiesQuery__
+ *
+ * To run a query within a React component, call `useUniversitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUniversitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUniversitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUniversitiesQuery(baseOptions?: Apollo.QueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+      }
+export function useUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+        }
+export type UniversitiesQueryHookResult = ReturnType<typeof useUniversitiesQuery>;
+export type UniversitiesLazyQueryHookResult = ReturnType<typeof useUniversitiesLazyQuery>;
+export type UniversitiesQueryResult = Apollo.QueryResult<UniversitiesQuery, UniversitiesQueryVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
