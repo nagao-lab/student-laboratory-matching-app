@@ -286,12 +286,10 @@ export type LoginStudentMutationVariables = Exact<{
 
 
 export type LoginStudentMutation = { loginStudent: { id: string } };
-
 export type UniversitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UniversitiesQuery = { getAllUniversities?: Array<{ id: string, name: string }> };
-
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
