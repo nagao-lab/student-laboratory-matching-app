@@ -19,6 +19,7 @@ type IStudentService interface {
 	LogoutStudent(context.Context) (bool, error)
 	GetMatchableStudents(string) ([]*model.Student, error)
 	UpdateStudent(model.NewStudentFields) (*model.Student, error)
+	DeleteStudent(string) (bool, error)
 }
 
 type studentService struct {
@@ -210,4 +211,17 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 	}
 
 	return model.ConvertStudent(&student), nil
+}
+
+func (ss *studentService) DeleteStudent(id string) (bool, error) {
+	var student db.Student
+	err := ss.db.First(&student, id).Error
+	if err != nil {
+		return false, err
+	}
+	if err := ss.db.Delete(&student).Error; err != nil {
+		return false, err
+	}
+	fmt.Println("KO")
+	return true, nil
 }
