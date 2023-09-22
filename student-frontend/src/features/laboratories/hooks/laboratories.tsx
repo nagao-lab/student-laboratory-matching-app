@@ -1,24 +1,22 @@
-import { useLaboratoriesQuery, useFavoriteLaboratoryMutation } from "@/lib/graphql";
-import { useState } from "react";
+import { useLaboratoriesQuery, useFavoriteLaboratoryMutation} from "@/lib/graphql";
 
  //TODO: IDをフェッチしてくる
 export const useLaboratories = () => {
     const {data, loading, error} = useLaboratoriesQuery(
-        {variables: {id: "1"}}
+        {variables: {id: "3"}}
     );
 
     return {data, loading, error};
 }
 
- //TODO: IDをフェッチしてくる
+ //TODO: studentIDをフェッチしてくる
 export const useFavoriteLaboratory = (laboratoryId:string) => {
-    const [state, setState] = useState("");
     const [favoriteLaboratory] = useFavoriteLaboratoryMutation();
 
     const clickHandler = () => {
         favoriteLaboratory({
             variables: {
-                studentId: "1",
+                studentId: "3",
                 laboratoryId: laboratoryId
              },
         })
@@ -27,13 +25,15 @@ export const useFavoriteLaboratory = (laboratoryId:string) => {
               window.alert("通信に失敗しました。");
               return;
             }
-            setState(String(result.data?.favoriteLaboratory));
             console.log(result);
           })
           .catch((error) => {
             console.log("error:", error);
           });
+        
+        window.location.reload();
+        console.log(laboratoryId);
     }
       
-      return {state, clickHandler}
+    return {clickHandler}
 }

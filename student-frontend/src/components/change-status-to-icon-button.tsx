@@ -9,9 +9,9 @@ type Props = {
 };
 
 export const ChangeStatusToIconButton = ({ laboratoryId }: Props) => {
-  const {state, clickHandler} = useFavoriteLaboratory(laboratoryId);
+  const {clickHandler} = useFavoriteLaboratory(laboratoryId);
 
-  return state === "" || state === "LIKE_FROM_LABORATORY" ? (
+  return (
     <Button
       variant="contained"
       sx={{ backgroundColor: "#ff00ff", ":hover": { background: "#ff88ff" } }}
@@ -19,19 +19,6 @@ export const ChangeStatusToIconButton = ({ laboratoryId }: Props) => {
       onClick={clickHandler}
     >
       興味あり
-    </Button>
-  ) : (
-    <Button
-      variant="contained"
-      sx={{
-        color: "#888888",
-        backgroundColor: "#cccccc",
-        ":hover": { background: "#aaaaaa" },
-      }}
-      startIcon={<Favorite />}
-      onClick={clickHandler}
-    >
-      興味あり
-    </Button>
+    </Button>    
   );
 };

@@ -13,6 +13,15 @@ query Laboratories($id: ID!) {
     }
 }
 
+query getLikeStatus($studentId: ID! $laboratoryId: ID!) {
+    getLikeStatus(
+        input: {
+            studentId: $studentId
+            laboratoryId: $laboratoryId
+        }
+    ) 
+}
+
 mutation favoriteLaboratory ($studentId: ID! $laboratoryId: ID!) {
     favoriteLaboratory(
         input: {

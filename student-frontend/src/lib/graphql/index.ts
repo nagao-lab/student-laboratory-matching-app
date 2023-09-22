@@ -58,19 +58,41 @@ export enum MatchStatus {
   Inactive = 'INACTIVE'
 }
 
+export type Message = {
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Time']['output'];
+  from: MessageFrom;
+  messageId: Scalars['ID']['output'];
+  messageRoomId: Scalars['ID']['output'];
+  updatedAt: Scalars['Time']['output'];
+};
+
+export enum MessageFrom {
+  Laboratory = 'LABORATORY',
+  Studnet = 'STUDNET'
+}
+
 export type Mutation = {
   createMajor: Major;
+  createMessage?: Maybe<Message>;
   createUniversity: University;
   favoriteLaboratory: LikeStatus;
   favoriteStudent: LikeStatus;
   loginStudent: Student;
   signupStudent: Student;
+  unfavoriteLaboratory: LikeStatus;
+  unfavoriteStudent: LikeStatus;
   updateStudent: Student;
 };
 
 
 export type MutationCreateMajorArgs = {
   name: Scalars['String']['input'];
+};
+
+
+export type MutationCreateMessageArgs = {
+  input: NewMessage;
 };
 
 
@@ -100,6 +122,16 @@ export type MutationSignupStudentArgs = {
 };
 
 
+export type MutationUnfavoriteLaboratoryArgs = {
+  input: NewLike;
+};
+
+
+export type MutationUnfavoriteStudentArgs = {
+  input: NewLike;
+};
+
+
 export type MutationUpdateStudentArgs = {
   input: NewStudentFields;
 };
@@ -107,6 +139,12 @@ export type MutationUpdateStudentArgs = {
 export type NewLike = {
   laboratoryId: Scalars['ID']['input'];
   studentId: Scalars['ID']['input'];
+};
+
+export type NewMessage = {
+  content: Scalars['String']['input'];
+  from: MessageFrom;
+  messageRoomId: Scalars['ID']['input'];
 };
 
 export type NewStudent = {
@@ -145,10 +183,21 @@ export type Prefecture = {
 };
 
 export type Query = {
+  getAllMajors?: Maybe<Array<Maybe<Major>>>;
+  getAllPrefectures?: Maybe<Array<Maybe<Prefecture>>>;
+  getAllUniversities?: Maybe<Array<Maybe<University>>>;
+  getLikeStatus: LikeStatus;
   getMatchableLaboratories?: Maybe<Array<Maybe<Laboratory>>>;
   getMatchableStudents?: Maybe<Array<Maybe<Student>>>;
+  getMessages?: Maybe<Array<Maybe<Message>>>;
+  getMessagesByIds?: Maybe<Array<Maybe<Message>>>;
   laboratory: Laboratory;
   student: Student;
+};
+
+
+export type QueryGetLikeStatusArgs = {
+  input: NewLike;
 };
 
 
@@ -162,6 +211,16 @@ export type QueryGetMatchableStudentsArgs = {
 };
 
 
+export type QueryGetMessagesArgs = {
+  messageRoomId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetMessagesByIdsArgs = {
+  input: NewLike;
+};
+
+
 export type QueryLaboratoryArgs = {
   id: Scalars['ID']['input'];
 };
@@ -172,7 +231,7 @@ export type QueryStudentArgs = {
 };
 
 export type Student = {
-  birthday: Scalars['Time']['output'];
+  birthday?: Maybe<Scalars['Time']['output']>;
   comment: Scalars['String']['output'];
   email: Scalars['String']['output'];
   gender: Gender;
@@ -191,6 +250,13 @@ export type Student = {
   university: University;
 };
 
+export type StudentLaboratory = {
+  id: Scalars['ID']['output'];
+  laboratory: Laboratory;
+  status: LikeStatus;
+  student: Student;
+};
+
 export type University = {
   address: Scalars['String']['output'];
   id: Scalars['ID']['output'];
@@ -205,6 +271,14 @@ export type LaboratoriesQueryVariables = Exact<{
 
 
 export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
+
+export type GetLikeStatusQueryVariables = Exact<{
+  studentId: Scalars['ID']['input'];
+  laboratoryId: Scalars['ID']['input'];
+}>;
+
+
+export type GetLikeStatusQuery = { getLikeStatus: LikeStatus };
 
 export type FavoriteLaboratoryMutationVariables = Exact<{
   studentId: Scalars['ID']['input'];
@@ -281,6 +355,40 @@ export function useLaboratoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type LaboratoriesQueryHookResult = ReturnType<typeof useLaboratoriesQuery>;
 export type LaboratoriesLazyQueryHookResult = ReturnType<typeof useLaboratoriesLazyQuery>;
 export type LaboratoriesQueryResult = Apollo.QueryResult<LaboratoriesQuery, LaboratoriesQueryVariables>;
+export const GetLikeStatusDocument = gql`
+    query getLikeStatus($studentId: ID!, $laboratoryId: ID!) {
+  getLikeStatus(input: {studentId: $studentId, laboratoryId: $laboratoryId})
+}
+    `;
+
+/**
+ * __useGetLikeStatusQuery__
+ *
+ * To run a query within a React component, call `useGetLikeStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLikeStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLikeStatusQuery({
+ *   variables: {
+ *      studentId: // value for 'studentId'
+ *      laboratoryId: // value for 'laboratoryId'
+ *   },
+ * });
+ */
+export function useGetLikeStatusQuery(baseOptions: Apollo.QueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
+      }
+export function useGetLikeStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
+        }
+export type GetLikeStatusQueryHookResult = ReturnType<typeof useGetLikeStatusQuery>;
+export type GetLikeStatusLazyQueryHookResult = ReturnType<typeof useGetLikeStatusLazyQuery>;
+export type GetLikeStatusQueryResult = Apollo.QueryResult<GetLikeStatusQuery, GetLikeStatusQueryVariables>;
 export const FavoriteLaboratoryDocument = gql`
     mutation favoriteLaboratory($studentId: ID!, $laboratoryId: ID!) {
   favoriteLaboratory(input: {studentId: $studentId, laboratoryId: $laboratoryId})
