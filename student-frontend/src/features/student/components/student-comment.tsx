@@ -1,11 +1,11 @@
 import {
   Box,
+  Stack,
+  Divider,
   Card,
   CardContent,
-  Stack,
-  Typography,
   IconButton,
-  Divider,
+  Typography,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { Student } from "../mock/student";
