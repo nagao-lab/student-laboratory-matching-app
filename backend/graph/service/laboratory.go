@@ -65,13 +65,13 @@ func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory
 		return nil, err
 	}
 
-	Laboratory := model.ConvertLaboratory(&record)
+	laboratory := model.ConvertLaboratory(&record)
 
 	CA := auth.GetCookieAccess(ctx)
-	CA.Login(Laboratory.ID)
+	CA.Login(laboratory.ID)
 
 	fmt.Println("signup: Success!")
-	return Laboratory, nil
+	return laboratory, nil
 }
 
 func (ls *laboratoryService) LoginLaboratory(ctx context.Context, email, password string) (*model.Laboratory, error) {
