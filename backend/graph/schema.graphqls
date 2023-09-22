@@ -153,6 +153,7 @@ input NewMessage {
 type Mutation {
   signupStudent(input: NewStudent!): Student!
   loginStudent(email: String!, password: String!): Student!
+  logoutStudent: Boolean!
   favoriteLaboratory(input: NewLike!): LikeStatus!
   favoriteStudent(input: NewLike!): LikeStatus!
   unfavoriteLaboratory(input: NewLike!): LikeStatus!

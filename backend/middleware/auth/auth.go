@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -22,10 +23,31 @@ func (ca *CookieAccess) Login(userId string) {
 	ca.IsLoggedIn = true
 
 	cookie := &http.Cookie{
-		Name:    cookieNameUserId,
-		Value:   userId,
-		Path:    "/",
-		Expires: time.Now().Add(7 * 24 * time.Hour),
+		Name:     cookieNameUserId,
+		Value:    userId,
+		Path:     "/",
+		Expires:  time.Now().Add(7 * 24 * time.Hour),
+		Domain:   os.Getenv("API_DOMAIN"),
+		Secure:   false,
+		HttpOnly: false,
+		SameSite: http.SameSiteNoneMode,
+	}
+	http.SetCookie(ca.Writer, cookie)
+}
+
+func (ca *CookieAccess) Logout() {
+	ca.UserId = ""
+	ca.IsLoggedIn = false
+
+	cookie := &http.Cookie{
+		Name:     cookieNameUserId,
+		Value:    "",
+		Path:     "/",
+		Expires:  time.Now(),
+		Domain:   os.Getenv("API_DOMAIN"),
+		Secure:   false,
+		HttpOnly: false,
+		SameSite: http.SameSiteNoneMode,
 	}
 	http.SetCookie(ca.Writer, cookie)
 }
