@@ -14,6 +14,8 @@ import (
 type ILaboratoryService interface {
 	GetLaboratoryById(id string) (*model.Laboratory, error)
 	GetMatchableLaboratories(string) ([]*model.Laboratory, error)
+	LoginLaboratory(context.Context, string, string) (*model.Laboratory, error)
+	LogoutLaboratory(context.Context) (bool, error)
 	SignupLaboratory(context.Context, model.NewLaboratory) (*model.Laboratory, error)
 }
 
@@ -42,7 +44,7 @@ func (ls *laboratoryService) GetLaboratoryById(id string) (*model.Laboratory, er
 	return laboratory, nil
 }
 
-func (ss *studentService) SignupLaboratory(ctx context.Context, newLaboratory model.NewLaboratory) (*model.Laboratory, error) {
+func (ls *laboratoryService) SignupLaboratory(ctx context.Context, newLaboratory model.NewLaboratory) (*model.Laboratory, error) {
 	record := db.Laboratory{
 		Email:    newLaboratory.Email,
 		Password: tools.HashPassword(newLaboratory.Password),
@@ -50,12 +52,12 @@ func (ss *studentService) SignupLaboratory(ctx context.Context, newLaboratory mo
 	}
 
 	// Check whether the email is already used.
-	result := ss.db.Where("Email = ?", record.Email).Find(&record)
+	result := ls.db.Where("Email = ?", record.Email).Find(&record)
 	if result.RowsAffected != 0 {
 		return nil, fmt.Errorf("signup: the account already exist")
 	}
 
-	err := ss.db.Select("Email", "Password").Create(&record).Error
+	err := ls.db.Select("Email", "Password").Create(&record).Error
 	if err != nil {
 		return nil, err
 	}
@@ -69,12 +71,40 @@ func (ss *studentService) SignupLaboratory(ctx context.Context, newLaboratory mo
 	return Laboratory, nil
 }
 
-func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*model.Laboratory, error) {
+func (ls *laboratoryService) LoginLaboratory(ctx context.Context, email, password string) (*model.Laboratory, error) {
+	var record db.Laboratory
+	err := ls.db.Where("Email LIKE ?", email).Find(&record).Error
+	if err != nil {
+		return nil, fmt.Errorf("Login failed: the email or password is incorrect")
+	}
+
+	if ok := tools.CheckPassword(record.Password, password); !ok {
+		return nil, fmt.Errorf("Login failed: the email or password is incorrect")
+	}
+
+	laboratory := model.ConvertLaboratory(&record)
+
+	CA := auth.GetCookieAccess(ctx)
+	CA.Login(laboratory.ID)
+
+	fmt.Println("Login success")
+	return laboratory, nil
+}
+
+func (ls *laboratoryService) LogoutLaboratory(ctx context.Context) (bool, error) {
+	CA := auth.GetCookieAccess(ctx)
+	CA.Logout()
+
+	fmt.Println("Logout success")
+	return true, nil
+}
+
+func (ls *laboratoryService) GetMatchableLaboratories(laboratoryId string) ([]*model.Laboratory, error) {
 	// すでにいいねのアクションがある(非NULLかつBLANKでない)研究室は除く
 	var excludedLaboratoryIds []int
-	err := ls.db.Table("student_laboratories").
+	err := ls.db.Table("laboratory_laboratories").
 		Select("DISTINCT laboratory_id").
-		Where("student_id = ?", studentId).
+		Where("laboratory_id = ?", laboratoryId).
 		Where("status IS NOT NULL AND status <> ?", model.LikeStatusBlank).
 		Pluck("laboratory_id", &excludedLaboratoryIds).Error
 	if err != nil {
@@ -95,7 +125,7 @@ func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*mode
 	for _, record := range records {
 		laboratory := model.ConvertLaboratory(&record)
 		if laboratory.IsNotActive() {
-			// students.status はsignup時 NULL であることを考慮して上のSQLクエリで絞らず、
+			// laboratorys.status はsignup時 NULL であることを考慮して上のSQLクエリで絞らず、
 			// ここで INACTIVE でないかを判定する
 			// TODO: signup時に ACTIVE で挿入するか要検討
 			continue

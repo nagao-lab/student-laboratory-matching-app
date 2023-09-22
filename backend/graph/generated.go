@@ -87,7 +87,9 @@ type ComplexityRoot struct {
 		CreateUniversity     func(childComplexity int, input model.NewUniversity) int
 		FavoriteLaboratory   func(childComplexity int, input model.NewLike) int
 		FavoriteStudent      func(childComplexity int, input model.NewLike) int
+		LoginLaboratory      func(childComplexity int, email string, password string) int
 		LoginStudent         func(childComplexity int, email string, password string) int
+		LogoutLaboratory     func(childComplexity int) int
 		LogoutStudent        func(childComplexity int) int
 		SignupLaboratory     func(childComplexity int, input model.NewLaboratory) int
 		SignupStudent        func(childComplexity int, input model.NewStudent) int
@@ -160,7 +162,9 @@ type LaboratoryResolver interface {
 type MutationResolver interface {
 	SignupStudent(ctx context.Context, input model.NewStudent) (*model.Student, error)
 	LoginStudent(ctx context.Context, email string, password string) (*model.Student, error)
+	LoginLaboratory(ctx context.Context, email string, password string) (*model.Laboratory, error)
 	LogoutStudent(ctx context.Context) (bool, error)
+	LogoutLaboratory(ctx context.Context) (bool, error)
 	SignupLaboratory(ctx context.Context, input model.NewLaboratory) (*model.Laboratory, error)
 	FavoriteLaboratory(ctx context.Context, input model.NewLike) (model.LikeStatus, error)
 	FavoriteStudent(ctx context.Context, input model.NewLike) (model.LikeStatus, error)
@@ -429,6 +433,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.FavoriteStudent(childComplexity, args["input"].(model.NewLike)), true
 
+	case "Mutation.loginLaboratory":
+		if e.complexity.Mutation.LoginLaboratory == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_loginLaboratory_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.LoginLaboratory(childComplexity, args["email"].(string), args["password"].(string)), true
+
 	case "Mutation.loginStudent":
 		if e.complexity.Mutation.LoginStudent == nil {
 			break
@@ -440,6 +456,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.LoginStudent(childComplexity, args["email"].(string), args["password"].(string)), true
+
+	case "Mutation.logoutLaboratory":
+		if e.complexity.Mutation.LogoutLaboratory == nil {
+			break
+		}
+
+		return e.complexity.Mutation.LogoutLaboratory(childComplexity), true
 
 	case "Mutation.logoutStudent":
 		if e.complexity.Mutation.LogoutStudent == nil {
@@ -1035,6 +1058,30 @@ func (ec *executionContext) field_Mutation_favoriteStudent_args(ctx context.Cont
 		}
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_loginLaboratory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["email"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["email"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["password"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("password"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["password"] = arg1
 	return args, nil
 }
 
@@ -2511,6 +2558,91 @@ func (ec *executionContext) fieldContext_Mutation_loginStudent(ctx context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_loginLaboratory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_loginLaboratory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().LoginLaboratory(rctx, fc.Args["email"].(string), fc.Args["password"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Laboratory)
+	fc.Result = res
+	return ec.marshalNLaboratory2ᚖstudentᚑlaboratoryᚑmatchingᚑappᚋgraphᚋmodelᚐLaboratory(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_loginLaboratory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Laboratory_id(ctx, field)
+			case "uid":
+				return ec.fieldContext_Laboratory_uid(ctx, field)
+			case "university":
+				return ec.fieldContext_Laboratory_university(ctx, field)
+			case "name":
+				return ec.fieldContext_Laboratory_name(ctx, field)
+			case "professor":
+				return ec.fieldContext_Laboratory_professor(ctx, field)
+			case "numStudents":
+				return ec.fieldContext_Laboratory_numStudents(ctx, field)
+			case "comment":
+				return ec.fieldContext_Laboratory_comment(ctx, field)
+			case "status":
+				return ec.fieldContext_Laboratory_status(ctx, field)
+			case "imageUrl":
+				return ec.fieldContext_Laboratory_imageUrl(ctx, field)
+			case "laboratoryUrl":
+				return ec.fieldContext_Laboratory_laboratoryUrl(ctx, field)
+			case "email":
+				return ec.fieldContext_Laboratory_email(ctx, field)
+			case "password":
+				return ec.fieldContext_Laboratory_password(ctx, field)
+			case "majors":
+				return ec.fieldContext_Laboratory_majors(ctx, field)
+			case "numLikes":
+				return ec.fieldContext_Laboratory_numLikes(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Laboratory", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_loginLaboratory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_logoutStudent(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_logoutStudent(ctx, field)
 	if err != nil {
@@ -2543,6 +2675,50 @@ func (ec *executionContext) _Mutation_logoutStudent(ctx context.Context, field g
 }
 
 func (ec *executionContext) fieldContext_Mutation_logoutStudent(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_logoutLaboratory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_logoutLaboratory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().LogoutLaboratory(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_logoutLaboratory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -7863,9 +8039,23 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "loginLaboratory":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_loginLaboratory(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		case "logoutStudent":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_logoutStudent(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "logoutLaboratory":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_logoutLaboratory(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
