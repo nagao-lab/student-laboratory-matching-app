@@ -18,19 +18,23 @@ export const useRegisterForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<number | null>();
 
-  // upload image to s3
-  // if success, return url of image
-  // if fail, return empty string
-
   const s3 = new S3({
-    region: process.env.NEXT_PUBLIC_S3_REGION ? process.env.NEXT_PUBLIC_S3_REGION : '',
-    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID ? process.env.NEXT_PUBLIC_ACCESS_KEY_ID : '',
-    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY ? process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY : '',
+    region: process.env.NEXT_PUBLIC_S3_REGION
+      ? process.env.NEXT_PUBLIC_S3_REGION
+      : "",
+    accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID
+      ? process.env.NEXT_PUBLIC_ACCESS_KEY_ID
+      : "",
+    secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
+      ? process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
+      : "",
   });
 
   const uploadImage = async (file: File) => {
-    const params : S3.PutObjectRequest = {
-      Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME ? process.env.NEXT_PUBLIC_BUCKET_NAME : '',
+    const params: S3.PutObjectRequest = {
+      Bucket: process.env.NEXT_PUBLIC_BUCKET_NAME
+        ? process.env.NEXT_PUBLIC_BUCKET_NAME
+        : "",
       Key: `${Date.now()}-${file.name}`,
       ContentType: file.type,
       Body: file,
@@ -39,11 +43,11 @@ export const useRegisterForm = () => {
     const res = await s3.upload(params).promise();
     return res.Location;
   };
-    
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
     if (
       !name ||
-      gender===null ||
+      gender === null ||
       !university ||
       !grade ||
       !comment ||
@@ -52,7 +56,7 @@ export const useRegisterForm = () => {
       !prefecture ||
       !gpa ||
       !file ||
-      status===null
+      status === null
     ) {
       window.alert("すべての項目を入力してください");
       console.log({
@@ -67,17 +71,16 @@ export const useRegisterForm = () => {
         gpa: gpa,
         file: file,
         status: status,
-      });      
+      });
       return;
     }
 
-    const res = uploadImage(file).then((url) => {
-      console.log(url);
-      return url;
+    const res = await uploadImage(file)
+      .then((url) => {
+        return url;
       })
       .catch((err) => {
-        console.log(err);
-        return "";
+        return err;
       });
 
     console.log({
@@ -94,7 +97,6 @@ export const useRegisterForm = () => {
       status: status,
     });
 
-    console.log(res)
     router.push("/");
   };
 
