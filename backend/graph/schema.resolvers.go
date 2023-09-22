@@ -134,14 +134,9 @@ func (r *queryResolver) GetLikeStatus(ctx context.Context, input model.NewLike) 
 	return r.Srv.GetLikeStatusByIds(input)
 }
 
-// GetMessages is the resolver for the getMessages field.
-func (r *queryResolver) GetMessages(ctx context.Context, messageRoomID string) ([]*model.Message, error) {
-	return r.Srv.GetMessages(messageRoomID)
-}
-
-// GetMessagesByIds is the resolver for the getMessagesByIds field.
-func (r *queryResolver) GetMessagesByIds(ctx context.Context, input model.NewLike) ([]*model.Message, error) {
-	return r.Srv.GetMessagesByIds(input)
+// GetStudentLaboratoriesByID is the resolver for the getStudentLaboratoriesById field.
+func (r *queryResolver) GetStudentLaboratoriesByID(ctx context.Context, id string) (*model.StudentLaboratory, error) {
+	return r.Srv.GetStudentLaboratoriesById(id)
 }
 
 // GetStudentLaboratoriesByStudentID is the resolver for the getStudentLaboratoriesByStudentId field.
@@ -152,6 +147,16 @@ func (r *queryResolver) GetStudentLaboratoriesByStudentID(ctx context.Context, i
 // GetStudentLaboratoriesByLaboratoryID is the resolver for the getStudentLaboratoriesByLaboratoryId field.
 func (r *queryResolver) GetStudentLaboratoriesByLaboratoryID(ctx context.Context, id *string, filter *model.LikeStatus) ([]*model.StudentLaboratory, error) {
 	return r.Srv.GetStudentLaboratoriesByLaboratoryId(ctx, id, filter)
+}
+
+// GetMessages is the resolver for the getMessages field.
+func (r *queryResolver) GetMessages(ctx context.Context, messageRoomID string) ([]*model.Message, error) {
+	return r.Srv.GetMessages(messageRoomID)
+}
+
+// GetMessagesByIds is the resolver for the getMessagesByIds field.
+func (r *queryResolver) GetMessagesByIds(ctx context.Context, input model.NewLike) ([]*model.Message, error) {
+	return r.Srv.GetMessagesByIds(input)
 }
 
 // University is the resolver for the university field.
