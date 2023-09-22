@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"student-laboratory-matching-app/graph/service"
 	"student-laboratory-matching-app/middleware/auth"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi/v5"
@@ -40,6 +42,12 @@ func main() {
 	server := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		Srv: service,
 	}}))
+	server.AroundOperations(func(ctx context.Context, next graphql.OperationHandler) graphql.ResponseHandler {
+		// ref. https://github.com/99designs/gqlgen/issues/1357#issuecomment-829007489
+		oc := graphql.GetOperationContext(ctx)
+		log.Printf("GraphQL: %s", oc.RawQuery)
+		return next(ctx)
+	})
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", auth.UserIdMiddleware(server))
