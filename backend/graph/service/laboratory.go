@@ -9,6 +9,7 @@ import (
 	"student-laboratory-matching-app/tools"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type ILaboratoryService interface {
@@ -17,6 +18,7 @@ type ILaboratoryService interface {
 	LoginLaboratory(context.Context, string, string) (*model.Laboratory, error)
 	LogoutLaboratory(context.Context) (bool, error)
 	SignupLaboratory(context.Context, model.NewLaboratory) (*model.Laboratory, error)
+	UpdateLaboratory(model.NewLaboratoryFields) (*model.Laboratory, error)
 }
 
 type laboratoryService struct {
@@ -133,4 +135,70 @@ func (ls *laboratoryService) GetMatchableLaboratories(laboratoryId string) ([]*m
 		laboratories = append(laboratories, laboratory)
 	}
 	return laboratories, nil
+}
+
+func (ls *laboratoryService) UpdateLaboratory(newLaboratory model.NewLaboratoryFields) (*model.Laboratory, error) {
+	var laboratory db.Laboratory
+	err := ls.db.First(&laboratory, newLaboratory.ID).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// 変更のあるカラムは上書きする (冗長だからどうにかしたい)
+	if newLaboratory.Name != nil {
+		laboratory.Name = *newLaboratory.Name
+	}
+	if newLaboratory.Professor != nil {
+		laboratory.Professor = *newLaboratory.Professor
+	}
+	if newLaboratory.NumStudents != nil {
+		laboratory.NumStudents = *newLaboratory.NumStudents
+	}
+	if newLaboratory.Email != nil {
+		laboratory.Email = *newLaboratory.Email
+	}
+	if newLaboratory.Password != nil {
+		laboratory.Password = tools.HashPassword(*newLaboratory.Password)
+	}
+	if newLaboratory.ImageURL != nil {
+		laboratory.ImageUrl = *newLaboratory.ImageURL
+	}
+	if newLaboratory.LaboratoryURL != nil {
+		laboratory.LaboratoryUrl = *newLaboratory.LaboratoryURL
+	}
+	if newLaboratory.UniversityID != nil {
+		laboratory.UniversityID = tools.ParseStringToUint(*newLaboratory.UniversityID)
+	}
+	if newLaboratory.Comment != nil {
+		laboratory.Comment = *newLaboratory.Comment
+	}
+	if newLaboratory.Status != nil {
+		laboratory.Status = model.MatchStatusIndex[*newLaboratory.Status]
+	}
+
+	err = ls.db.Save(&laboratory).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if newLaboratory.MajorIds != nil {
+		// 現設計では初回設定のみ(つまりinsertのみ)をサポート
+		// TODO: updateするように変更
+		var laboratoryMajors []*db.LaboratoryMajor
+		for _, majorId := range newLaboratory.MajorIds {
+			laboratoryMajors = append(laboratoryMajors, &db.LaboratoryMajor{
+				LaboratoryID: laboratory.ID,
+				MajorID:      tools.ParseStringToUint(*majorId),
+			})
+		}
+		err = ls.db.Clauses(clause.OnConflict{DoNothing: true}).
+			// 主キー(studentId, majorId)の衝突時は既にレコードが存在するため無視する
+			Create(laboratoryMajors).
+			Error
+		if err != nil {
+			fmt.Println("UpdateLaboratory failed: cannot create laboratory_majors")
+		}
+	}
+
+	return model.ConvertLaboratory(&laboratory), nil
 }

@@ -160,9 +160,9 @@ func (ss *studentService) UpdateStudent(newStudent model.NewStudentFields) (*mod
 	if newStudent.Gender != nil {
 		student.Gender = model.GenderIndex[*newStudent.Gender]
 	}
-	if newStudent.Birthday != nil {
-		student.Birthday = newStudent.Birthday
-	}
+	// if newStudent.Birthday != nil {
+	// 	student.Birthday = newStudent.Birthday
+	// }
 	if newStudent.UniversityID != nil {
 		student.UniversityID = tools.ParseStringToUint(*newStudent.UniversityID)
 	}

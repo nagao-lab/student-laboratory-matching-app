@@ -126,7 +126,6 @@ input NewStudentFields {
 	password: String
 	imageUrl: String
 	gender: Gender
-	birthday: Time
 	universityId: ID
 	grade: Int
 	gpa: Float
@@ -134,6 +133,21 @@ input NewStudentFields {
 	comment: String
 	interest: String
 	status: MatchStatus
+	majorIds: [ID]
+}
+
+input NewLaboratoryFields {
+	id: ID!
+	universityId: ID
+	name: String
+	professor: String
+	numStudents: Int
+	comment: String
+	status: MatchStatus
+	imageUrl: String
+	laboratoryUrl: String
+	email: String
+	password: String
 	majorIds: [ID]
 }
 
@@ -167,6 +181,7 @@ type Mutation {
   unfavoriteLaboratory(input: NewLike!): LikeStatus!
   unfavoriteStudent(input: NewLike!): LikeStatus!
   updateStudent(input: NewStudentFields!): Student!
+  updateLaboratory(input: NewLaboratoryFields!): Laboratory!
   createMajor(name: String!): Major!
   createUniversity(input: NewUniversity!): University!
   createMessage(input: NewMessage!): Message

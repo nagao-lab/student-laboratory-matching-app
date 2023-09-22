@@ -45,6 +45,21 @@ type NewLaboratory struct {
 	Password string `json:"password"`
 }
 
+type NewLaboratoryFields struct {
+	ID            string       `json:"id"`
+	UniversityID  *string      `json:"universityId,omitempty"`
+	Name          *string      `json:"name,omitempty"`
+	Professor     *string      `json:"professor,omitempty"`
+	NumStudents   *int         `json:"numStudents,omitempty"`
+	Comment       *string      `json:"comment,omitempty"`
+	Status        *MatchStatus `json:"status,omitempty"`
+	ImageURL      *string      `json:"imageUrl,omitempty"`
+	LaboratoryURL *string      `json:"laboratoryUrl,omitempty"`
+	Email         *string      `json:"email,omitempty"`
+	Password      *string      `json:"password,omitempty"`
+	MajorIds      []*string    `json:"majorIds,omitempty"`
+}
+
 type NewLike struct {
 	StudentID    string `json:"studentId"`
 	LaboratoryID string `json:"laboratoryId"`
@@ -68,7 +83,6 @@ type NewStudentFields struct {
 	Password     *string      `json:"password,omitempty"`
 	ImageURL     *string      `json:"imageUrl,omitempty"`
 	Gender       *Gender      `json:"gender,omitempty"`
-	Birthday     *time.Time   `json:"birthday,omitempty"`
 	UniversityID *string      `json:"universityId,omitempty"`
 	Grade        *int         `json:"grade,omitempty"`
 	Gpa          *float64     `json:"gpa,omitempty"`
