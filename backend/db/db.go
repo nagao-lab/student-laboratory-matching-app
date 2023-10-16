@@ -17,7 +17,7 @@ func NewDB() *gorm.DB {
 		}
 	}
 
-	DSN := os.Getenv("PLANET_SCALE_DSN")
+	DSN := os.Getenv("PLANET_SCALE_DSN") + "&charset=utf8mb4&parseTime=True&loc=Local"
 
 	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{})
 	if err != nil {
