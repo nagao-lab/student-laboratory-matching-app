@@ -14,15 +14,11 @@ DockerでGoの環境を整える (Dockerfile参照)
 API_DOMAIN=localhost
 FE_URL=http://localhost:3000
 PORT=8080
-MYSQL_USER=
-MYSQL_PW=
-MYSQL_HOST=
-MYSQL_PORT=
-MYSQL_DB=
+PLANET_SCALE_DSN=
 
 ```
 
-データベースは本番環境のをいじることにする。ので、MySQLの設定はrailwayのConnectタブを参照する。
+データベースは本番環境のをいじることにする。ので、MySQLの設定はplanet scaleのConnectを参照する。
 
 ### 開発
 
@@ -57,24 +53,28 @@ $ GO_ENV=dev go run migrate/migrate.go
 ```
 
 バッチ処理を走らせるときは、
- `batch/batch.go#main` で関数を呼び出すように実装して、
+ `batch/` に関数を実装して、`main()` の名前にして実行する
 
 ```bash
-$ GO_ENV=dev go run batch/batch.go
+$ GO_ENV=dev go run batch/{file.go}
 ```
 
 ## デプロイ
 
-いずれもrailwayにデプロイする。
-
 ### 1. データベース
 
-- https://railway.app/project/78d04cc8-00b7-4d7d-93ff-812de8062dc1
+- ~~https://railway.app/project/78d04cc8-00b7-4d7d-93ff-812de8062dc1~~
+
+Planet Scaleにデプロイする
+
+- https://app.planetscale.com/yoshida-yosei-vx/stu-lab-matching-app
 
 ### 2. サーバー
 
 
-- https://railway.app/project/18933570-dc6c-4741-afc7-0fa0d22ef03c
+- ~~https://railway.app/project/18933570-dc6c-4741-afc7-0fa0d22ef03c~~
+
+- TODO: Deploy先を探す
 
 masterにmergeしたら自動でデプロイが走る。
 デプロイが完了したら立ち上がるようにコマンドをDockerfileに定義しておく。
@@ -94,4 +94,4 @@ Variablesに環境変数を設定する（上記 `.env` ）。
 
 デプロイが完了したら以下のURLでプレイグラウンドできる。
 
-- https://student-laboratory-matching-app-production.up.railway.app/
+- ~~https://student-laboratory-matching-app-production.up.railway.app/~~
