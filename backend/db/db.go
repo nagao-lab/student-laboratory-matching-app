@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -18,13 +17,7 @@ func NewDB() *gorm.DB {
 		}
 	}
 
-	DSN := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		os.Getenv("MYSQL_USER"),
-		os.Getenv("MYSQL_PW"),
-		os.Getenv("MYSQL_HOST"),
-		os.Getenv("MYSQL_PORT"),
-		os.Getenv("MYSQL_DB"),
-	)
+	DSN := os.Getenv("PLANET_SCALE_DSN")
 
 	db, err := gorm.Open(mysql.Open(DSN), &gorm.Config{})
 	if err != nil {
