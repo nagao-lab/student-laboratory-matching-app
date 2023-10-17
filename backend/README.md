@@ -74,9 +74,11 @@ Planet Scaleにデプロイする
 
 - ~~https://railway.app/project/18933570-dc6c-4741-afc7-0fa0d22ef03c~~
 
-- TODO: Deploy先を探す
+Renderにデプロイする
 
-masterにmergeしたら自動でデプロイが走る。
+- https://dashboard.render.com/web/srv-ckn1o7iv7m0s739jhtb0
+
+masterにmergeしたら手動でデプロイを走らせる。
 デプロイが完了したら立ち上がるようにコマンドをDockerfileに定義しておく。
 
 ```Docker
@@ -95,3 +97,5 @@ Variablesに環境変数を設定する（上記 `.env` ）。
 デプロイが完了したら以下のURLでプレイグラウンドできる。
 
 - ~~https://student-laboratory-matching-app-production.up.railway.app/~~
+
+- https://stu-lab-matching-app.onrender.com
