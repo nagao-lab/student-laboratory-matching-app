@@ -1,6 +1,9 @@
+import { Gender } from "@/lib/graphql";
+
 const genderOptions = [
-  { label: "男性", value: 0 },
-  { label: "女性", value: 1 },
+  { label: "男性", value: Gender.Male },
+  { label: "女性", value: Gender.Female },
+  { label: "その他", value: Gender.Other },
 ];
 
 // TODO : 本当はAPIから取得する
