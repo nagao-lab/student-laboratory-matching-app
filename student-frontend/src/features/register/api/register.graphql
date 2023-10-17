@@ -14,3 +14,27 @@ query GetOptions {
     name
   }
 }
+
+input NewStudentFields {
+  id: ID!
+  name: String
+  email: String
+  password: String
+  imageUrl: String
+  gender: Gender
+  birthday: Time # Specify RFC3339 format string (e.g. "2001-01-01T00:00:00Z")
+  universityId: ID
+  grade: Int
+  gpa: Float
+  prefectureId: ID
+  comment: String
+  interest: String
+  status: MatchStatus
+  majorIds: [ID]
+}
+
+mutation updateStudent($input: NewStudentFields!) {
+  updateStudent(input: $input) {
+    id
+  }
+}

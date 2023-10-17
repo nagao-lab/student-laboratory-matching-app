@@ -2,26 +2,31 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { Gender, useUpdateStudentMutation } from "@/lib/graphql";
+import { useSessionContext } from "@/providers/session";
 
 export const useRegisterForm = () => {
+  const { userId } = useSessionContext();
+  const [updateStudentMutation] = useUpdateStudentMutation();
+
   const router = useRouter();
   const [name, setName] = useState("");
-  const [gender, setGender] = useState<number | null>();
-  const [university, setUniversity] = useState<string | null>();
-  const [grade, setGrade] = useState<number | null>();
+  const [gender, setGender] = useState<Gender>();
+  const [universityId, setUniversityId] = useState<string | undefined>(
+    undefined
+  );
+  const [grade, setGrade] = useState<number | undefined>(undefined);
   const [comment, setComment] = useState("");
   const [interest, setInterest] = useState("");
   const [birthday, setBirthday] = useState<Date | null>();
-  const [prefecture, setPrefecture] = useState<string | null>();
+  const [prefectureId, setPrefectureId] = useState<string | undefined>(
+    undefined
+  );
   const [gpa, setGpa] = useState(3.0);
   const [file, setFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<number | null>();
+  const [status, setStatus] = useState<number | undefined>(undefined);
+  const [majorIds, setMajorIds] = useState<string[] | undefined>(undefined);
 
   const region = process.env.NEXT_PUBLIC_REGION
     ? process.env.NEXT_PUBLIC_REGION
@@ -54,12 +59,7 @@ export const useRegisterForm = () => {
           Key: key,
         })
       );
-      const command = new GetObjectCommand({
-        Bucket: bucket,
-        Key: key,
-      });
-      const url = await getSignedUrl(s3, command);
-      return url;
+      return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
     } catch (error) {
       console.log(error);
       return "";
@@ -69,12 +69,12 @@ export const useRegisterForm = () => {
     if (
       !name ||
       gender === null ||
-      !university ||
+      !universityId ||
       !grade ||
       !comment ||
       !interest ||
       !birthday ||
-      !prefecture ||
+      !prefectureId ||
       !gpa ||
       !file ||
       status === null
@@ -83,15 +83,16 @@ export const useRegisterForm = () => {
       console.log(
         name,
         gender,
-        university,
+        universityId,
         grade,
         comment,
         interest,
         birthday,
-        prefecture,
+        prefectureId,
         gpa,
         file,
-        status
+        status,
+        majorIds
       );
       return;
     }
@@ -105,18 +106,47 @@ export const useRegisterForm = () => {
       });
 
     console.log(url);
-    router.push("/");
+    updateStudentMutation({
+      variables: {
+        input: {
+          id: userId,
+          imageUrl: url,
+          gender: gender,
+          birthday: birthday,
+          universityId: universityId,
+          grade: grade,
+          gpa: gpa,
+          prefectureId: prefectureId,
+          comment: comment,
+          interest: interest,
+          majorIds: majorIds,
+        },
+      },
+    })
+      .then((res) => {
+        if (res.data?.updateStudent?.id === undefined) {
+          console.log("updateStudent error");
+          return;
+        }
+        router.push("/");
+      })
+      .catch((err: Error) => {
+        alert("別のEmail Address・Passwordを入力してください");
+        console.log("updateStudent error");
+        console.log(err);
+      });
   };
 
   return {
     setName,
     setGender,
-    setUniversity,
+    setUniversityId,
     setGrade,
     setComment,
     setInterest,
     setBirthday,
-    setPrefecture,
+    setPrefectureId,
+    setMajorIds,
     setGpa,
     file,
     setFile,

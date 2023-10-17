@@ -25,16 +25,17 @@ export const StudentRegisterForm = () => {
   const {
     setName,
     setGender,
-    setUniversity,
+    setUniversityId,
     setGrade,
     setComment,
     setInterest,
     setBirthday,
-    setPrefecture,
+    setPrefectureId,
     setGpa,
     file,
     setFile,
     setStatus,
+    setMajorIds,
     handleSubmit,
   } = useRegisterForm();
 
@@ -124,7 +125,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.id)
+                    setUniversityId(selectedOption?.id)
                   }
                 />
               </Grid>
@@ -147,7 +148,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.id)
+                    setMajorIds([selectedOption?.id!])
                   }
                 />
               </Grid>
@@ -222,7 +223,7 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setPrefecture(selectedOption?.id)
+                    setPrefectureId(selectedOption?.id)
                   }
                 />
               </Grid>
