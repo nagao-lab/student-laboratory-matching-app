@@ -343,7 +343,7 @@ export type LaboratoriesQueryVariables = Exact<{
 }>;
 
 
-export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, university: { name: string }, majors: Array<{ name: string }> }> };
+export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, imageUrl: string, university: { name: string }, majors: Array<{ name: string }> }> };
 
 export type GetLikeStatusQueryVariables = Exact<{
   studentId: Scalars['ID']['input'];
@@ -416,6 +416,7 @@ export const LaboratoriesDocument = gql`
       name
     }
     status
+    imageUrl
   }
 }
     `;
