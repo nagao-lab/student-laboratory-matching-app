@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { Gender, useUpdateStudentMutation } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
+import { uploadImage } from "@/lib/s3";
 
 export const useRegisterForm = () => {
   const { userId } = useSessionContext();
@@ -28,43 +28,6 @@ export const useRegisterForm = () => {
   const [status, setStatus] = useState<number | undefined>(undefined);
   const [majorIds, setMajorIds] = useState<string[] | undefined>(undefined);
 
-  const region = process.env.NEXT_PUBLIC_REGION
-    ? process.env.NEXT_PUBLIC_REGION
-    : "";
-  const accessKeyId = process.env.NEXT_PUBLIC_ACCESS_KEY_ID
-    ? process.env.NEXT_PUBLIC_ACCESS_KEY_ID
-    : "";
-  const secretAccessKey = process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
-    ? process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY
-    : "";
-
-  const s3 = new S3Client({
-    region: region,
-    credentials: {
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretAccessKey,
-    },
-  });
-
-  async function uploadImage(file: File) {
-    try {
-      const key = `${Date.now()}-${file.name}`;
-      const bucket = process.env.NEXT_PUBLIC_BUCKET_NAME
-        ? process.env.NEXT_PUBLIC_BUCKET_NAME
-        : "";
-      await s3.send(
-        new PutObjectCommand({
-          Body: file,
-          Bucket: bucket,
-          Key: key,
-        })
-      );
-      return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
-    } catch (error) {
-      console.log(error);
-      return "";
-    }
-  }
   const handleSubmit = async () => {
     if (
       !name ||
