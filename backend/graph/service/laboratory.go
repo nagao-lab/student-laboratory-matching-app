@@ -118,10 +118,13 @@ func (ls *laboratoryService) GetMatchableLaboratories(studentId string) ([]*mode
 
 	// 研究室の一覧を新しい順に取得する
 	var records []db.Laboratory
-	err = ls.db.Table("laboratories").
-		Where("id NOT IN (?)", excludedLaboratoryIds).
-		Order("created_at DESC").
-		Find(&records).Error
+	query := ls.db.Table("laboratories").Order("created_at DESC")
+
+	if len(excludedLaboratoryIds) > 0 {
+		query = query.Where("id NOT IN (?)", excludedLaboratoryIds)
+	}
+
+	err = query.Find(&records).Error
 	if err != nil {
 		return nil, fmt.Errorf("Error: Get matchable laboratories: Cannot get laboratories")
 	}
