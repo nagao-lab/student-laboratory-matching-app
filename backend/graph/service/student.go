@@ -118,10 +118,13 @@ func (ss *studentService) GetMatchableStudents(laboratoryId string) ([]*model.St
 
 	// 学生の一覧を新しい順に取得する
 	var records []db.Student
-	err = ss.db.Table("students").
-		Where("id NOT IN (?)", excludedStudentIds).
-		Order("created_at DESC").
-		Find(&records).Error
+	query := ss.db.Table("students").Order("created_at DESC")
+
+	if len(excludedStudentIds) > 0 {
+		query = query.Where("id NOT IN (?)", excludedStudentIds)
+	}
+
+	err = query.Find(&records).Error
 	if err != nil {
 		return nil, fmt.Errorf("GetMatchableStudents failed: cannot get students")
 	}
