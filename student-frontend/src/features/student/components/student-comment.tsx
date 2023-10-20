@@ -8,10 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { Student } from "../mock/student";
+import { Student } from "@/lib/graphql";
 
 type Props = {
-  student: Student;
+  student?: Student;
 };
 
 export const StudentComment = ({ student }: Props) => {
@@ -29,7 +29,7 @@ export const StudentComment = ({ student }: Props) => {
               </IconButton>
             </Stack>
             <Divider />
-            {student.comment}
+            {student?.comment}
           </Stack>
         </CardContent>
       </Card>

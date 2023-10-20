@@ -61,27 +61,29 @@ export enum MatchStatus {
 export type Message = {
   content: Scalars['String']['output'];
   createdAt: Scalars['Time']['output'];
-  from: MessageFrom;
+  from: UserType;
   messageId: Scalars['ID']['output'];
   messageRoomId: Scalars['ID']['output'];
   updatedAt: Scalars['Time']['output'];
 };
 
-export enum MessageFrom {
-  Laboratory = 'LABORATORY',
-  Studnet = 'STUDNET'
-}
-
 export type Mutation = {
   createMajor: Major;
   createMessage?: Maybe<Message>;
   createUniversity: University;
+  deleteLaboratory: Scalars['Boolean']['output'];
+  deleteStudent: Scalars['Boolean']['output'];
   favoriteLaboratory: LikeStatus;
   favoriteStudent: LikeStatus;
+  loginLaboratory: Laboratory;
   loginStudent: Student;
+  logoutLaboratory: Scalars['Boolean']['output'];
+  logoutStudent: Scalars['Boolean']['output'];
+  signupLaboratory: Laboratory;
   signupStudent: Student;
   unfavoriteLaboratory: LikeStatus;
   unfavoriteStudent: LikeStatus;
+  updateLaboratory: Laboratory;
   updateStudent: Student;
 };
 
@@ -101,6 +103,16 @@ export type MutationCreateUniversityArgs = {
 };
 
 
+export type MutationDeleteLaboratoryArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteStudentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationFavoriteLaboratoryArgs = {
   input: NewLike;
 };
@@ -111,9 +123,20 @@ export type MutationFavoriteStudentArgs = {
 };
 
 
+export type MutationLoginLaboratoryArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+
 export type MutationLoginStudentArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationSignupLaboratoryArgs = {
+  input: NewLaboratory;
 };
 
 
@@ -132,8 +155,33 @@ export type MutationUnfavoriteStudentArgs = {
 };
 
 
+export type MutationUpdateLaboratoryArgs = {
+  input: NewLaboratoryFields;
+};
+
+
 export type MutationUpdateStudentArgs = {
   input: NewStudentFields;
+};
+
+export type NewLaboratory = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type NewLaboratoryFields = {
+  comment?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  laboratoryUrl?: InputMaybe<Scalars['String']['input']>;
+  majorIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  numStudents?: InputMaybe<Scalars['Int']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  professor?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<MatchStatus>;
+  universityId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type NewLike = {
@@ -143,8 +191,7 @@ export type NewLike = {
 
 export type NewMessage = {
   content: Scalars['String']['input'];
-  from: MessageFrom;
-  gpa?: InputMaybe<Scalars['Float']['input']>;
+  from: UserType;
   messageRoomId: Scalars['ID']['input'];
 };
 
@@ -192,6 +239,9 @@ export type Query = {
   getMatchableStudents?: Maybe<Array<Maybe<Student>>>;
   getMessages?: Maybe<Array<Maybe<Message>>>;
   getMessagesByIds?: Maybe<Array<Maybe<Message>>>;
+  getStudentLaboratoriesById?: Maybe<StudentLaboratory>;
+  getStudentLaboratoriesByLaboratoryId?: Maybe<Array<Maybe<StudentLaboratory>>>;
+  getStudentLaboratoriesByStudentId?: Maybe<Array<Maybe<StudentLaboratory>>>;
   laboratory: Laboratory;
   student: Student;
 };
@@ -219,6 +269,23 @@ export type QueryGetMessagesArgs = {
 
 export type QueryGetMessagesByIdsArgs = {
   input: NewLike;
+};
+
+
+export type QueryGetStudentLaboratoriesByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetStudentLaboratoriesByLaboratoryIdArgs = {
+  filter?: InputMaybe<LikeStatus>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type QueryGetStudentLaboratoriesByStudentIdArgs = {
+  filter?: InputMaybe<LikeStatus>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -265,6 +332,11 @@ export type University = {
   name: Scalars['String']['output'];
   prefecture: Prefecture;
 };
+
+export enum UserType {
+  Laboratory = 'LABORATORY',
+  Studnet = 'STUDNET'
+}
 
 export type LaboratoriesQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -328,7 +400,7 @@ export type StudentQueryVariables = Exact<{
 }>;
 
 
-export type StudentQuery = { student: { id: string, name: string } };
+export type StudentQuery = { student: { name: string, email: string, imageUrl: string, gender: Gender, birthday?: any, grade: number, gpa: number, comment: string, interest: string, status: MatchStatus, numLikes: number, prefecture: { name: string }, university: { maxGpa: number, name: string }, majors: Array<{ name: string }> } };
 
 
 export const LaboratoriesDocument = gql`
@@ -638,8 +710,27 @@ export type SignupStudentMutationOptions = Apollo.BaseMutationOptions<SignupStud
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
-    id
     name
+    email
+    prefecture {
+      name
+    }
+    imageUrl
+    gender
+    birthday
+    grade
+    gpa
+    comment
+    interest
+    status
+    university {
+      maxGpa
+      name
+    }
+    majors {
+      name
+    }
+    numLikes
   }
 }
     `;

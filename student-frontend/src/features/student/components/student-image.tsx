@@ -5,16 +5,17 @@ import {
   Stack,
   Typography,
   IconButton,
+  Avatar,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { Student } from "../mock/student";
-import Image from "next/image";
+import { Student } from "@/lib/graphql";
 
 type Props = {
-  student: Student;
+  student?: Student;
 };
 
 export const StudentImage = ({ student }: Props) => {
+  const img = student?.imageUrl ? student?.imageUrl : "";
   return (
     <Box>
       <Card>
@@ -25,15 +26,9 @@ export const StudentImage = ({ student }: Props) => {
               <Edit sx={{ fontSize: 14 }} />
             </IconButton>
           </Stack>
-          <Image
-            src={student.image_url}
-            width={100}
-            height={100}
-            style={{ objectFit: "contain" }}
-            alt="Picture of the author"
-          />
+          <Avatar src={img} sx={{ width: 120, height: 120 }} />
           <Typography align="center" fontSize={25}>
-            {student.name}
+            {student?.name}
           </Typography>
         </CardContent>
       </Card>

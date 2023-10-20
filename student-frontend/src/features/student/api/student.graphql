@@ -1,6 +1,25 @@
 query Student($id: ID!) {
   student(id: $id) {
-    id
     name
+    email
+    prefecture {
+      name
+    }
+    imageUrl
+    gender
+    birthday
+    grade
+    gpa
+    comment
+    interest
+    status
+    university {
+      maxGpa
+      name
+    }
+    majors {
+      name
+    }
+    numLikes
   }
 }
