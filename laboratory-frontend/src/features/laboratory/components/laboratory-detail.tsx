@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   Typography,
+  Skeleton,
   Stack,
   IconButton,
   Divider,
@@ -10,11 +11,84 @@ import {
 import { Edit } from "@mui/icons-material";
 import { MatchStatus, Laboratory } from "@/lib/graphql";
 
+const LaboratoryDetailSkeleton = () => {
+  return (
+    <Box>
+      <Card>
+        <CardContent>
+          <Stack spacing={3.0}>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography fontWeight="light" variant="h5">
+                <Skeleton variant="text" sx={{ height: 24, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Divider />
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}
+
 type Props = {
   laboratory?: Laboratory;
+  loading: boolean;
 };
 
-export const LaboratoryDetail = ({ laboratory }: Props) => {
+export const LaboratoryDetail = ({ laboratory, loading }: Props) => {
+  if (loading){
+    return <LaboratoryDetailSkeleton/>
+  }
+
   const nowStatus = 
   laboratory?.status === MatchStatus.Active 
     ? "学生探し中" 

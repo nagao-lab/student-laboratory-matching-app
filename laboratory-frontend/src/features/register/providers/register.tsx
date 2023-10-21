@@ -11,10 +11,6 @@ type University = {
   name: string;
 };
 
-type Prefecture = {
-  id: string;
-  name: string;
-};
 
 type Major = {
   id: string;
@@ -22,16 +18,14 @@ type Major = {
 };
 
 type RegisterContext = {
-  universities: University[] | undefined;
-  prefectures: Prefecture[] | undefined;
-  majors: Major[] | undefined;
+  universities: University[];
+  majors: Major[];
   loading: boolean;
   error: ApolloError | undefined;
 };
 
 const RegisterContext = createContext<RegisterContext>({
   universities: [],
-  prefectures: [],
   majors: [],
   loading: true,
   error: undefined,
@@ -53,13 +47,12 @@ export const RegisterProvider = ({
     }
   }, [userId, router]);
 
-  const universities = data?.getAllUniversities;
-  const prefectures = data?.getAllPrefectures;
-  const majors = data?.getAllMajors;
+  const universities = data?.getAllUniversities as University[];
+  const majors = data?.getAllMajors as Major[];
 
   return (
     <RegisterContext.Provider
-      value={{ universities, prefectures, majors, loading, error }}
+      value={{ universities, majors, loading, error }}
     >
       {children}
     </RegisterContext.Provider>

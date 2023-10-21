@@ -12,15 +12,14 @@ import { Laboratory } from "@/lib/graphql";
 const Page: NextPage = () => {
   const { data, loading } = useLaboratory();
   const laboratory = data?.laboratory as Laboratory;
-  if (loading) return <Box>loading...</Box>;
   return (
     <LaboratoryProvider>
       <Box>
         <Stack direction="row" spacing={1.0}>
-          <LaboratoryImage laboratory={laboratory} />
+          <LaboratoryImage laboratory={laboratory} loading={loading} />
           <Stack sx={{ width: 1 }} spacing={1.0}>
-            <LaboratoryDetail laboratory={laboratory} />
-            <LaboratoryComment laboratory={laboratory} />
+            <LaboratoryDetail laboratory={laboratory} loading={loading} />
+            <LaboratoryComment laboratory={laboratory} loading={loading} />
           </Stack>
         </Stack>
       </Box>

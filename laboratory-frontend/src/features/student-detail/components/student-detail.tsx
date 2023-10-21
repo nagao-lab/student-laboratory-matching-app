@@ -1,26 +1,60 @@
 "use client";
 
-import { Avatar, Box, Card, Grid, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Card, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { Chat, Dehaze, Equalizer, Person, Place, School, Visibility} from "@mui/icons-material";
 // import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
 import { useStudentDetail } from "../hooks/student-detail";
 import { Gender } from "@/lib/graphql";
+
+const StudentDetailSkeleton = () => {
+  return(
+    <Box sx={{ m: 2 }}>
+      <Card sx={{margin: 2, px: 2, py: 6}}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={2}>
+            <Skeleton variant="circular" sx={{ width: 120, height: 120 }}/>
+          </Grid>
+          <Grid item xs={12} md={10}>
+            <Typography sx={{ marginTop: 1 }}>
+              <Skeleton variant="text" sx={{ width: 400, height: 56 }}/>
+              <Skeleton variant="text" sx={{ width: 200, height: 32 }}/>
+            </Typography>
+          </Grid>
+        </Grid>
+      </Card>
+
+      <Card sx={{margin: 2, px: 4, py: 4}}>
+        <Typography variant="h6" ><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28  }}/></Typography>
+        <Typography variant="h6" sx={{ marginTop: 4 }}><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28 }}/></Typography>
+        <Typography variant="h6" sx={{ marginTop: 4, }}><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28 }}/></Typography>
+        <Typography variant="h6" sx={{ marginTop: 4  }}><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28 }}/></Typography>
+        <Typography variant="h6" sx={{ marginTop: 4 }}><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28 }}/></Typography>
+        <Typography variant="h6" sx={{ marginTop: 4 }}><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28 }}/></Typography>
+        <Typography variant="h6" sx={{ marginTop: 4 }}><Skeleton variant="text" sx={{ width: 200, height: 33 }}/></Typography>
+        <Typography variant="subtitle1"><Skeleton variant="text" sx={{ width: 400, height: 28 }}/></Typography>
+      </Card>
+
+  </Box>
+  )
+}
 
 type Props = {
   studentId: string;
 };
 
 export const StudentDetail = ({ studentId }: Props) => {
-  const { data, loading, error } = useStudentDetail({
+  const { data, loading } = useStudentDetail({
     studentId: studentId,
   });
 
   if (loading) {
-    return <Box>loading...</Box>;
-  }
-
-  if (error) {
-    return <Box>404</Box>;
+    return <StudentDetailSkeleton />;
   }
 
   const gender =
