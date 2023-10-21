@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   Typography,
+  Skeleton,
   Stack,
   IconButton,
   Divider,
@@ -10,11 +11,90 @@ import {
 import { Edit } from "@mui/icons-material";
 import { Gender, Student } from "@/lib/graphql";
 
+const StudentDetailSkeleton = () => {
+  return (
+    <Box>
+      <Card>
+        <CardContent>
+          <Stack spacing={3.0}>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography fontWeight="light" variant="h5">
+                <Skeleton variant="text" sx={{ height: 24, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Divider />
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light"><Skeleton variant="text" sx = {{height: 24, width: 100}}/></Typography>
+              <Typography variant="h6">
+                <Skeleton variant="text" sx={{ height: 32, width: 200 }} />
+              </Typography>
+            </Stack>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}
+
+
 type Props = {
   student?: Student;
+  loading: boolean;
 };
 
-export const StudentDetail = ({ student }: Props) => {
+export const StudentDetail = ({ student, loading }: Props) => {
+
+  if (loading){
+    return <StudentDetailSkeleton/>
+  }
   const gender =
     student?.gender === Gender.Male
       ? "男性"
