@@ -1,0 +1,33 @@
+query Students($id: ID!) {
+    getMatchableStudents(id: $id) {
+        id
+        university {
+            name
+        }
+        name
+        comment
+        majors {
+            name
+        }
+        status
+        imageUrl
+    }
+}
+
+query getLikeStatus($laboratoryId: ID! $studentId: ID!) {
+    getLikeStatus(
+        input: {
+            laboratoryId: $laboratoryId
+            studentId: $studentId
+        }
+    ) 
+}
+
+mutation favoriteStudent ($laboratoryId: ID! $studentId: ID!) {
+    favoriteStudent(
+        input: {
+            laboratoryId: $laboratoryId
+            studentId: $studentId
+        }
+    ) 
+}

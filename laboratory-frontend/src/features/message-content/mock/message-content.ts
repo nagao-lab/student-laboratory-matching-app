@@ -1,6 +1,3 @@
-// TODO メッセージ詳細ページ用mockデータ : Messageの型を定義し,exportする
-// TODO メッセージ詳細ページ用mockデータ : mockデータMessageContentを定義し,exportする
-
 export type Message = {
     studentLaboratory: StudentLaboratory;
     from: number;
@@ -9,6 +6,7 @@ export type Message = {
 }
 
 export type StudentLaboratory = {
+    id: number;
     student: Student;
     laboratory: Laboratory;
 }
@@ -25,6 +23,7 @@ export type Laboratory = {
 export const MockMessageContent: Message[] = [
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -38,6 +37,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -51,6 +51,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -64,6 +65,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -77,6 +79,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -90,6 +93,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -103,6 +107,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },
@@ -116,6 +121,7 @@ export const MockMessageContent: Message[] = [
     },
     {
         studentLaboratory: {
+            id: 1,
             student: {
                 name: '学生1'
             },

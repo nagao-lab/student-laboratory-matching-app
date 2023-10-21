@@ -1,5 +1,3 @@
-// TODO メッセージ詳細ページ（mock） : MessageContentコンポーントをレンダリングする
-
 import { Box, TextField, Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { NextPage } from "next";

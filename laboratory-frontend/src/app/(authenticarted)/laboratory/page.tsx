@@ -1,24 +1,31 @@
-// TODO 研究室ページ : LaboratoryInterestコンポーネントを利用する
-// TODO 研究室ページ : LaboratoryInterestにmockデータを渡す
-// TODO 研究室ページ : LaboratoryCommentコンポーネントを利用する
-// TODO 研究室ページ : LaboratoryCommentにmockデータを渡す
+"use client";
 
-import { MockLaboratories } from "@/features/laboratory";
+import { LaboratoryComment } from "@/features/laboratory/components/laboratory-comment";
+import { LaboratoryDetail } from "@/features/laboratory/components/laboratory-detail";
 import { LaboratoryImage } from "@/features/laboratory/components/laboratory-image";
-import { LaboratoryDetail } from "@/features/laboratory/components/student-interest";
-import { LaboratoryComment } from "@/features/laboratory/components/student-comment";
 import { Box, Stack } from "@mui/material";
 import { NextPage } from "next";
+import { LaboratoryProvider } from "@/features/laboratory/providers/laboratory";
+import { useLaboratory } from "@/features/laboratory/hooks/laboratory";
+import { Laboratory } from "@/lib/graphql";
 
 const Page: NextPage = () => {
-  return<Box>
-    <Stack direction="row" spacing={1.0}>
-      <LaboratoryImage laboratory={MockLaboratories[0]}/>
-      <Stack sx={{ width: 1 }}>
-        <LaboratoryDetail laboratory={MockLaboratories[0]}/>
-        <LaboratoryComment laboratory={MockLaboratories[0]}/>
-      </Stack>
-    </Stack>laboratory</Box>
-}
+  const { data, loading } = useLaboratory();
+  const laboratory = data?.laboratory as Laboratory;
+  if (loading) return <Box>loading...</Box>;
+  return (
+    <LaboratoryProvider>
+      <Box>
+        <Stack direction="row" spacing={1.0}>
+          <LaboratoryImage laboratory={laboratory} />
+          <Stack sx={{ width: 1 }} spacing={1.0}>
+            <LaboratoryDetail laboratory={laboratory} />
+            <LaboratoryComment laboratory={laboratory} />
+          </Stack>
+        </Stack>
+      </Box>
+    </LaboratoryProvider>
+  );
+};
 
 export default Page;

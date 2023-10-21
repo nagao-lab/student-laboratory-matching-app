@@ -1,0 +1,10 @@
+input NewLaboratory {
+  email: String!
+  password: String!
+}
+
+mutation signupLaboratory($input: NewLaboratory!){
+    signupLaboratory(input: $input){
+        id
+    }
+}

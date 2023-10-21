@@ -1,0 +1,5 @@
+mutation loginLaboratory($email: String!, $password: String!){
+    loginLaboratory(email: $email, password: $password){
+        id
+    }
+}

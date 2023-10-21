@@ -1,2 +1,2 @@
-// TODO メッセージ詳細ページ用mockデータ : mockデータをexportする
-// TODO メッセージ詳細ページ（mock） : MessageDetailをexportする
+export { MockMessageContent } from "./mock/message-content";
+export { useMessageContentContext } from "./providers/message-content";

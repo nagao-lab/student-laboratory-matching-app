@@ -1,10 +1,16 @@
-// TODO メッセージ一覧ページ : CommentCardsを使ってメッセージ一覧を表示する
-
-import { Box } from "@mui/material";
+import { MessageCards, MockMessages } from "@/features/messages";
+import { MessagesProvider } from "@/features/messages/providers/messages";
+import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
 const Page: NextPage = () => {
-  return <Box>messages</Box>;
+  return (
+    <MessagesProvider>
+      <Stack>
+        <MessageCards messages={MockMessages} />
+      </Stack>
+    </MessagesProvider>
+  );
 };
 
 export default Page;

@@ -1,0 +1,37 @@
+query GetOptions {
+  getAllUniversities {
+    id
+    name
+  }
+
+  getAllPrefectures {
+    id
+    name
+  }
+
+  getAllMajors {
+    id
+    name
+  }
+}
+
+input NewLaboratoryFields {
+	id: ID!
+	universityId: ID
+	name: String
+	professor: String
+	numStudents: Int
+	comment: String
+	status: MatchStatus
+	imageUrl: String
+	laboratoryUrl: String
+	email: String
+	password: String
+	majorIds: [ID]
+}
+
+mutation updateLaboratory($input: NewLaboratoryFields!) {
+  updateLaboratory(input: $input) {
+    id
+  }
+}

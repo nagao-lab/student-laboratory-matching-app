@@ -1,10 +1,24 @@
-// 学生詳細ページ（mock）
-
-import { Box } from "@mui/material";
+import {
+  StudentDetail,
+} from "@/features/student-detail";
+import { StudentDetailProvider } from "@/features/student-detail/providers/student-detail";
+import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
-const Page: NextPage = () => {
-  return <Box>student detail</Box>;
+type Props = {
+  params: { studentId: string };
+};
+
+const Page: NextPage<Props> = ({ params }: Props) => {
+  return (
+    <StudentDetailProvider>
+      <Stack>
+        <StudentDetail
+          studentId={params.studentId}
+        />
+      </Stack>
+    </StudentDetailProvider>
+  );
 };
 
 export default Page;
