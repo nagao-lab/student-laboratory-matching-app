@@ -51,7 +51,9 @@ export const StudentDetail = ({ student }: Props) => {
             </Stack>
             <Stack>
               <Typography fontWeight="light">専攻分野</Typography>
-              <Typography variant="h6">{student?.majors[0].name}</Typography>
+              {student?.majors.map((major) => (
+                <Typography variant="h6">{major.name}</Typography>
+              ))}
             </Stack>
             <Stack>
               <Typography fontWeight="light">ステータス</Typography>
