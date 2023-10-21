@@ -10,6 +10,7 @@ query Laboratories($id: ID!) {
             name
         }
         status
+        imageUrl
     }
 }
 
