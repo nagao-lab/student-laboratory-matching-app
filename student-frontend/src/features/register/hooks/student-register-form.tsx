@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Gender, useUpdateStudentMutation } from "@/lib/graphql";
+import { Gender, MatchStatus, useUpdateStudentMutation } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
 import { uploadImage } from "@/lib/s3";
 
@@ -25,7 +25,7 @@ export const useRegisterForm = () => {
   );
   const [gpa, setGpa] = useState(3.0);
   const [file, setFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<number | undefined>(undefined);
+  const [status, setStatus] = useState<MatchStatus | undefined>(undefined);
   const [majorIds, setMajorIds] = useState<string[] | undefined>(undefined);
 
   const handleSubmit = async () => {
@@ -71,6 +71,7 @@ export const useRegisterForm = () => {
           comment: comment,
           interest: interest,
           majorIds: majorIds,
+          status: status,
         },
       },
     })
