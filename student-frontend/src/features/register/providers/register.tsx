@@ -22,9 +22,9 @@ type Major = {
 };
 
 type RegisterContext = {
-  universities: University[] | undefined;
-  prefectures: Prefecture[] | undefined;
-  majors: Major[] | undefined;
+  universities: University[];
+  prefectures: Prefecture[];
+  majors: Major[];
   loading: boolean;
   error: ApolloError | undefined;
 };
@@ -53,9 +53,9 @@ export const RegisterProvider = ({
     }
   }, [userId, router]);
 
-  const universities = data?.getAllUniversities;
-  const prefectures = data?.getAllPrefectures;
-  const majors = data?.getAllMajors;
+  const universities = data?.getAllUniversities as University[];
+  const prefectures = data?.getAllPrefectures as Prefecture[];
+  const majors = data?.getAllMajors as Major[];
 
   return (
     <RegisterContext.Provider
