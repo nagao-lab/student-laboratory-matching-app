@@ -1,28 +1,37 @@
-import { Box, Card, CardContent, Stack, Typography, IconButton, Avatar} from "@mui/material";
-import { Edit } from '@mui/icons-material';
-import { Laboratory } from "../mock/laboratory";
+import {
+  Box,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+  IconButton,
+  Avatar,
+} from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { Student } from "@/lib/graphql";
 
 type Props = {
-    laboratory: Laboratory;
+  student?: Student;
 };
 
-export const LaboratoryImage = ({ laboratory }: Props) => {
-    return (
-        <Box>
-            <Card>
-                <CardContent>
-                <Stack direction="row" justifyContent="space-between">
-                        <Typography></Typography>
-                        <IconButton sx={{right: 'right'}}>
-                            <Edit sx={{ fontSize: 14 }} />
-                        </IconButton>
-                    </Stack>
-                    <Avatar src="image.jpg"
-                    sx={{ width: 150, height: 150 }}
-                    />
-                    <Typography align="center" fontSize={25}>{laboratory.name}</Typography>
-                </CardContent>
-            </Card>
-        </Box>
-    )
-}
+export const StudentImage = ({ student }: Props) => {
+  const img = student?.imageUrl ? student?.imageUrl : "";
+  return (
+    <Box>
+      <Card>
+        <CardContent>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography></Typography>
+            <IconButton sx={{ right: "right" }}>
+              <Edit sx={{ fontSize: 14 }} />
+            </IconButton>
+          </Stack>
+          <Avatar src={img} sx={{ width: 120, height: 120 }} />
+          <Typography align="center" fontSize={25}>
+            {student?.name}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+};

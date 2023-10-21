@@ -13,25 +13,46 @@ import {
   Avatar,
 } from "@mui/material";
 import { getOptions } from "../options/student-register-form";
-import EditIcon from '@mui/icons-material/Edit';
+import { DatePicker } from "@mui/x-date-pickers";
+import EditIcon from "@mui/icons-material/Edit";
+import { MuiFileInput } from "mui-file-input";
+import React, { useState } from "react";
+import { checkUploadable } from "@/utils/check-uploadable";
+import { uploadedFileToComment } from "@/utils/uploaded-file-to-comment";
+import { useRegisterContext } from "../providers/register";
 
 export const StudentRegisterForm = () => {
   const {
-    setUniversity,
     setName,
-    setProfessor,
-    setNumStudents,
+    setGender,
+    setUniversityId,
+    setGrade,
     setComment,
+    setInterest,
+    setBirthday,
+    setPrefectureId,
+    setGpa,
+    file,
+    setFile,
     setStatus,
-    setImageUrl,
-    setLaboratoryUrl,
+    setMajorIds,
     handleSubmit,
   } = useRegisterForm();
 
-  const {
-    universityOptions,
-    statusOptions,
-  } = getOptions();
+  const { genderOptions, gradeOptions, statusOptions } = getOptions();
+
+  const { universities, prefectures, majors, loading } = useRegisterContext();
+
+  const MuiDatePicker = DatePicker<Date>;
+  const [newFile, setNewFile] = useState<File | null>(null);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!universities || !prefectures || !majors) {
+    return <div>Failed to load.</div>;
+  }
 
   return (
     <>
@@ -45,21 +66,54 @@ export const StudentRegisterForm = () => {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "success.main" }}>
             <EditIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            研究室登録
+            学生登録
           </Typography>
           <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
+                <TextField
+                  label="名前"
+                  variant="outlined"
+                  fullWidth
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <Autocomplete
-                  options={universityOptions}
-                  id="university"
+                  options={genderOptions}
+                  id="gender"
                   renderOption={(props, option) => (
                     <Box component="li" {...props} key={option.value}>
                       {option.label}
+                    </Box>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="性別"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) =>
+                    setGender(selectedOption?.value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={universities}
+                  id="university"
+                  getOptionLabel={(option) => (option ? option.name : "")}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
                     </Box>
                   )}
                   renderInput={(params) => (
@@ -71,41 +125,58 @@ export const StudentRegisterForm = () => {
                     />
                   )}
                   onChange={(_, selectedOption) =>
-                    setUniversity(selectedOption?.value)
+                    setUniversityId(selectedOption?.id)
                   }
                 />
-              </Grid>                            
+              </Grid>
               <Grid item xs={12}>
-                <TextField
-                  label="研究室名"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(e) => {
-                    setName(e.target.value);
+                <Autocomplete
+                  options={majors}
+                  id="major"
+                  getOptionLabel={(option) => (option ? option.name : "")}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
+                    </Box>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="専攻"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) =>
+                    setMajorIds([selectedOption?.id!])
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Autocomplete
+                  options={gradeOptions}
+                  id="grade"
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.value}>
+                      {option.label}
+                    </Box>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="学年"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) => {
+                    setGrade(selectedOption?.value);
                   }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="指導教員"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(e) => {
-                    setProfessor(e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="学生数"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(e) => {
-                    setNumStudents(Number(e.target.value));
-                  }}
-                />
-              </Grid>                              
-              <Grid item xs={12}>
+
+              <Grid item xs={30}>
                 <TextField
                   label="ひとこと"
                   variant="outlined"
@@ -115,22 +186,93 @@ export const StudentRegisterForm = () => {
                   onChange={(e) => setComment(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={30}>
                 <TextField
-                  label="プロフィール画像のURL"
+                  label="興味"
                   variant="outlined"
                   fullWidth
-                  onChange={(e) => setImageUrl(e.target.value)}
+                  multiline
+                  rows={10}
+                  onChange={(e) => setInterest(e.target.value)}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <MuiDatePicker
+                  label="生年月日"
+                  onChange={(date) => setBirthday(date)}
+                  sx={{ width: "100%" }}
                 />
               </Grid>
               <Grid item xs={12}>
+                <Autocomplete
+                  options={prefectures}
+                  id="prefecture"
+                  getOptionLabel={(option) => (option ? option.name : "")}
+                  renderOption={(props, option) => (
+                    <Box component="li" {...props} key={option.name}>
+                      {option.name}
+                    </Box>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="都道府県"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  onChange={(_, selectedOption) =>
+                    setPrefectureId(selectedOption?.id)
+                  }
+                />
+              </Grid>
+
+              <Grid item xs={12}>
                 <TextField
-                  label="研究室のURL"
+                  label="GPA"
                   variant="outlined"
                   fullWidth
-                  onChange={(e) => setLaboratoryUrl(e.target.value)}
+                  onChange={(e) => setGpa(Number(e.target.value))}
                 />
-              </Grid>              
+              </Grid>
+
+              <Grid item xs={12}>
+                <MuiFileInput
+                  label="プロフィール画像"
+                  placeholder="Choose a file"
+                  value={newFile}
+                  onChange={(newFile) => {
+                    setNewFile(newFile);
+                    setFile(newFile);
+                  }}
+                />
+                <Typography variant="caption" component="div" gutterBottom>
+                  jpg/png ファイルのみ、ファイルサイズは2MB以内。
+                </Typography>
+                {file ? (
+                  checkUploadable(file) === 0 || checkUploadable(file) === 1 ? (
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="error.main"
+                      gutterBottom
+                    >
+                      {uploadedFileToComment(file)}
+                    </Typography>
+                  ) : (
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="green"
+                      gutterBottom
+                    >
+                      {uploadedFileToComment(file)}
+                    </Typography>
+                  )
+                ) : null}
+              </Grid>
+
               <Grid item xs={12}>
                 <Autocomplete
                   options={statusOptions}
@@ -139,7 +281,7 @@ export const StudentRegisterForm = () => {
                     <Box component="li" {...props} key={option.value}>
                       {option.label}
                     </Box>
-                  )}                  
+                  )}
                   renderInput={(params) => (
                     <TextField
                       {...params}
