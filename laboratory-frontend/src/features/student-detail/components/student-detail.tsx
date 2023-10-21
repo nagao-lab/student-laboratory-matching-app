@@ -57,13 +57,13 @@ export const StudentDetail = ({ studentId }: Props) => {
         <Card sx={{margin: 2, px: 4, py: 4}}>
           <Typography variant="h6" ><Person sx={{ color: 'success.main' }} /> 性別</Typography>
           <Typography variant="subtitle1">{gender}</Typography>
-          <Typography variant="h6" ><Dehaze sx={{ color: 'success.main' }} /> 学年</Typography>
+          <Typography variant="h6" sx={{ marginTop: 4 }}><Dehaze sx={{ color: 'success.main' }} /> 学年</Typography>
           <Typography variant="subtitle1">{data?.student.grade}</Typography>
           <Typography variant="h6" sx={{ marginTop: 4 }}><School sx={{ color: 'success.main' }} /> 専攻</Typography>
           <Typography variant="subtitle1"><Stack>{data?.student.majors.map((major) => major.name+" ")}</Stack></Typography>
           <Typography variant="h6" sx={{ marginTop: 4, }}><Equalizer sx={{ color: 'success.main' }} /> GPA</Typography>
           <Typography variant="subtitle1"> {data?.student.gpa} / {data?.student.university.maxGpa}</Typography>
-          <Typography variant="h6" ><Place sx={{ color: 'success.main' }} /> 居住地</Typography>
+          <Typography variant="h6" sx={{ marginTop: 4 }}><Place sx={{ color: 'success.main' }} /> 居住地</Typography>
           <Typography variant="subtitle1">{data?.student.prefecture.name}</Typography>
           <Typography variant="h6" sx={{ marginTop: 4 }}><Chat sx={{ color: 'success.main' }} /> コメント</Typography>
           <Typography variant="subtitle1">{data?.student.comment}</Typography>
