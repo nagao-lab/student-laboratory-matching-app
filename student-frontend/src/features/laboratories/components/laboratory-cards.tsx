@@ -6,27 +6,42 @@ import {
   Card,
   CardContent,
   CardActions,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
+import { ChangeStatusToIconButton } from "@/components/change-status-to-icon-button";
 import { useLaboratories } from "../hooks/laboratories";
-// TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
 
+// TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
 type Props = {
   filterVal: string;
 };
 
+export const LaboratoryCardSkeleton = () => {
+  const convenienceShowNumber = 10;  // 便宜的に表示する研究室カードの数
+  return (
+    <Box>
+      {Array(convenienceShowNumber)
+        .fill(0)
+        .map((_, i) => (
+          <Box
+          sx = {{ minWidth: 275, m: 5 }}
+          key={i}
+          >
+          <Skeleton variant="rounded" height={241}/>
+          </Box>
+        ))}
+    </Box>
+  );
+}
+
 export const LaboratoryCards = ({ filterVal }: Props) => {
   const router = useRouter();
-  const { data, loading, error } = useLaboratories();
+  const { data, loading } = useLaboratories();
 
   if (loading) {
-    return <Box>loading...</Box>;
-  }
-
-  if (error) {
-    return <Box>404</Box>;
+    return < LaboratoryCardSkeleton />
   }
 
   return (

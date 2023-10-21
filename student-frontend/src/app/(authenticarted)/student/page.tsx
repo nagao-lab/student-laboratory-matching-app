@@ -13,16 +13,15 @@ import { Student } from "@/lib/graphql";
 const Page: NextPage = () => {
   const { data, loading } = useStudent();
   const student = data?.student as Student;
-  if (loading) return <Box>loading...</Box>;
   return (
     <StudentProvider>
       <Box>
         <Stack direction="row" spacing={1.0}>
-          <StudentImage student={student} />
+          <StudentImage student={student} loading={loading}/>
           <Stack sx={{ width: 1 }} spacing={1.0}>
-            <StudentDetail student={student} />
-            <StudentComment student={student} />
-            <StudentInterest student={student} />
+            <StudentDetail student={student} loading={loading}/>
+            <StudentComment student={student} loading={loading}/>
+            <StudentInterest student={student} loading={loading}/>
           </Stack>
         </Stack>
       </Box>
