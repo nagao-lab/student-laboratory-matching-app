@@ -1,5 +1,5 @@
-query Laboratories($id: ID!) {
-    getMatchableLaboratories(id: $id) {
+query Students($id: ID!) {
+    getMatchableStudents(id: $id) {
         id
         university {
             name
@@ -14,20 +14,20 @@ query Laboratories($id: ID!) {
     }
 }
 
-query getLikeStatus($studentId: ID! $laboratoryId: ID!) {
+query getLikeStatus($laboratoryId: ID! $studentId: ID!) {
     getLikeStatus(
         input: {
-            studentId: $studentId
             laboratoryId: $laboratoryId
+            studentId: $studentId
         }
     ) 
 }
 
-mutation favoriteLaboratory ($studentId: ID! $laboratoryId: ID!) {
-    favoriteLaboratory(
+mutation favoriteStudent ($laboratoryId: ID! $studentId: ID!) {
+    favoriteStudent(
         input: {
-            studentId: $studentId
             laboratoryId: $laboratoryId
+            studentId: $studentId
         }
     ) 
 }

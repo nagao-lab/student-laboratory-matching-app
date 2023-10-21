@@ -1,6 +1,6 @@
-// TODO 学生ページ用mockデータ : studentの型を定義し,exportする
+// TODO 学生ページ用mockデータ : laboratoryの型を定義し,exportする
 
-export type Student = {
+export type Laboratory = {
   name: string;
   email: string;
   password: string;
@@ -32,7 +32,7 @@ export type Prefecture = {
 
 // TODO 学生ページ用mockデータ : mockデータを定義し,exportする
 
-export const MockStudents: Student[] = [
+export const MockLaboratories: Laboratory[] = [
   {
     name: "学生1",
     email: "email1",

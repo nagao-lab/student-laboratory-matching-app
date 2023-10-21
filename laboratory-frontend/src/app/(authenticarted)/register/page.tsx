@@ -2,14 +2,14 @@
 
 import { Box } from "@mui/material";
 import { NextPage } from "next";
-import { StudentRegisterForm } from "@/features/register";
+import { LaboratoryRegisterForm } from "@/features/register";
 import { RegisterProvider } from "@/features/register/providers/register";
 
 const Page: NextPage = () => {
   return (
     <RegisterProvider>
       <Box>
-        <StudentRegisterForm />
+        <LaboratoryRegisterForm />
       </Box>
     </RegisterProvider>
   );

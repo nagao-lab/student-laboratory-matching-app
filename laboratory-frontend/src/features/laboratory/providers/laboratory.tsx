@@ -4,15 +4,15 @@ import { useSessionContext } from "@/providers/session";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type StudentContext = {
+type LaboratoryContext = {
   loading: boolean;
 };
 
-const StudentContext = createContext<StudentContext>({
+const LaboratoryContext = createContext<LaboratoryContext>({
   loading: true,
 });
 
-export const StudentProvider = ({
+export const LaboratoryProvider = ({
   children,
 }: {
   children: React.ReactNode;
@@ -31,10 +31,10 @@ export const StudentProvider = ({
   }, [userId, router]);
 
   return (
-    <StudentContext.Provider value={{ loading }}>
+    <LaboratoryContext.Provider value={{ loading }}>
       {children}
-    </StudentContext.Provider>
+    </LaboratoryContext.Provider>
   );
 };
 
-export const useStudentContext = () => useContext(StudentContext);
+export const useLaboratoryContext = () => useContext(LaboratoryContext);

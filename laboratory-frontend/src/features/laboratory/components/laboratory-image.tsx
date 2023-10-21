@@ -8,14 +8,14 @@ import {
   Avatar,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { Student } from "@/lib/graphql";
+import { Laboratory } from "@/lib/graphql";
 
 type Props = {
-  student?: Student;
+  laboratory?: Laboratory;
 };
 
-export const StudentImage = ({ student }: Props) => {
-  const img = student?.imageUrl ? student?.imageUrl : "";
+export const LaboratoryImage = ({ laboratory }: Props) => {
+  const img = laboratory?.imageUrl ? laboratory?.imageUrl : "";
   return (
     <Box>
       <Card>
@@ -28,7 +28,7 @@ export const StudentImage = ({ student }: Props) => {
           </Stack>
           <Avatar src={img} sx={{ width: 120, height: 120 }} />
           <Typography align="center" fontSize={25}>
-            {student?.name}
+            {laboratory?.name}
           </Typography>
         </CardContent>
       </Card>

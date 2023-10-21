@@ -1,6 +1,6 @@
 "use client";
 
-import { useRegisterForm } from "../hooks/student-register-form";
+import { useRegisterForm } from "../hooks/laboratory-register-form";
 import {
   Container,
   Typography,
@@ -12,7 +12,7 @@ import {
   TextField,
   Avatar,
 } from "@mui/material";
-import { getOptions } from "../options/student-register-form";
+import { getOptions } from "../options/laboratory-register-form";
 import { DatePicker } from "@mui/x-date-pickers";
 import EditIcon from "@mui/icons-material/Edit";
 import { MuiFileInput } from "mui-file-input";
@@ -21,7 +21,7 @@ import { checkUploadable } from "@/utils/check-uploadable";
 import { uploadedFileToComment } from "@/utils/uploaded-file-to-comment";
 import { useRegisterContext } from "../providers/register";
 
-export const StudentRegisterForm = () => {
+export const LaboratoryRegisterForm = () => {
   const {
     setName,
     setGender,

@@ -45,7 +45,7 @@ export const HeaderForm = () => {
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
-            onClick={() => router.push("/student")}
+            onClick={() => router.push("/laboratory")}
             color="inherit"
           >
             <AccountCircle />

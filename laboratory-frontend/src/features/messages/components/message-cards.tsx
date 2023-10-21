@@ -27,7 +27,7 @@ export const MessageCards = ({ messages }: Props) => {
                 console.log(
                   message.university.name,
                   "の",
-                  message.laboratory.name,
+                  message.student.name,
                   "が押下された"
                 );
 
@@ -38,7 +38,7 @@ export const MessageCards = ({ messages }: Props) => {
                 {message.university.name}
               </Typography>
               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {message.laboratory.name}
+                {message.student.name}
               </Typography>
             </CardContent>
           </CardActionArea>

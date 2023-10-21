@@ -1,15 +1,15 @@
 "use client";
 
-import { useLaboratoryQuery } from "@/lib/graphql";
+import { useStudentQuery } from "@/lib/graphql";
 
 type Props = {
-  laboratoryId: string;
+  studentId: string;
 };
 
-export const useLaboratoryDetail = ({ laboratoryId }: Props) => {
-  const { data, loading, error } = useLaboratoryQuery({
+export const useStudentDetail = ({ studentId }: Props) => {
+  const { data, loading, error } = useStudentQuery({
     variables: {
-      id: laboratoryId,
+      id: studentId,
     },
   });
   return { data, loading, error };

@@ -5,7 +5,7 @@ type Props = {
   setToggle: (val: boolean) => void;
 };
 
-export const LaboratoryForm = ({ setFilterVal }: Props) => {
+export const StudentForm = ({ setFilterVal }: Props) => {
   return (
     <>
       <TextField

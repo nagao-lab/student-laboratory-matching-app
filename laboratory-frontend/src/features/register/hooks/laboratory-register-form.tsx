@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Gender, useUpdateStudentMutation } from "@/lib/graphql";
+import { Gender, useUpdateLaboratoryMutation } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
 import { uploadImage } from "@/lib/s3";
 
 export const useRegisterForm = () => {
   const { userId } = useSessionContext();
-  const [updateStudentMutation] = useUpdateStudentMutation();
+  const [updateLaboratoryMutation] = useUpdateLaboratoryMutation();
 
   const router = useRouter();
   const [name, setName] = useState("");
@@ -69,7 +69,7 @@ export const useRegisterForm = () => {
       });
 
     console.log(url);
-    updateStudentMutation({
+    updateLaboratoryMutation({
       variables: {
         input: {
           id: userId,
@@ -87,15 +87,15 @@ export const useRegisterForm = () => {
       },
     })
       .then((res) => {
-        if (res.data?.updateStudent?.id === undefined) {
-          console.log("updateStudent error");
+        if (res.data?.updateLaboratory?.id === undefined) {
+          console.log("updateLaboratory error");
           return;
         }
         router.push("/");
       })
       .catch((err: Error) => {
         alert("別のEmail Address・Passwordを入力してください");
-        console.log("updateStudent error");
+        console.log("updateLaboratory error");
         console.log(err);
       });
   };

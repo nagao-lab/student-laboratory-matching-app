@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSignupStudentMutation } from "@/lib/graphql";
+import { useSignupLaboratoryMutation } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
 
 export const useSignupForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const [signupStudentMutation] = useSignupStudentMutation();
+  const [signupLaboratoryMutation] = useSignupLaboratoryMutation();
   const { setUserId } = useSessionContext();
 
   const onSubmit = () => {
-    console.log("signupStudent start");
+    console.log("signupLaboratory start");
 
-    signupStudentMutation({
+    signupLaboratoryMutation({
       variables: {
         input: {
           email: email,
@@ -24,16 +24,16 @@ export const useSignupForm = () => {
       },
     })
       .then((res) => {
-        if (res.data?.signupStudent?.id === undefined) {
-          console.log("signupStudent error");
+        if (res.data?.signupLaboratory?.id === undefined) {
+          console.log("signupLaboratory error");
           return;
         }
-        setUserId(res.data?.signupStudent?.id);
+        setUserId(res.data?.signupLaboratory?.id);
         router.push("/register");
       })
       .catch((err) => {
         alert("別のEmail Address・Passwordを入力してください");
-        console.log("signupStudent error");
+        console.log("signupLaboratory error");
         console.log(err);
       });
   };

@@ -1,5 +1,5 @@
-query Student($id: ID!) {
-  student(id: $id) {
+query Laboratory($id: ID!) {
+  laboratory(id: $id) {
     name
     email
     prefecture {

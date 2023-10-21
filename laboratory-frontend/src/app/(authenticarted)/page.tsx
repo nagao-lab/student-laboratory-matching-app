@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  LaboratoriesProvider,
-  LaboratoryCards,
-  LaboratoryForm,
-} from "@/features/laboratories";
+  StudentsProvider,
+  StudentCards,
+  StudentForm,
+} from "@/features/students";
 import { Stack } from "@mui/material";
 import { useState } from "react";
 import { NextPage } from "next";
@@ -14,16 +14,16 @@ const Page: NextPage = () => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <LaboratoriesProvider>
+    <StudentsProvider>
       <Stack>
-        <LaboratoryForm
+        <StudentForm
           setFilterVal={setFilterVal}
           toggle={toggle}
           setToggle={setToggle}
         />
-        <LaboratoryCards filterVal={filterVal} />
+        <StudentCards filterVal={filterVal} />
       </Stack>
-    </LaboratoriesProvider>
+    </StudentsProvider>
   );
 };
 

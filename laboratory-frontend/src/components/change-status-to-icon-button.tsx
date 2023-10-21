@@ -2,14 +2,14 @@
 
 import { Button } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
-import { useFavoriteLaboratory } from "@/features/laboratories/hooks/laboratories";
+import { useFavoriteStudent } from "@/features/students/hooks/students";
 
 type Props = {
-  laboratoryId: string;
+  studentId: string;
 };
 
-export const ChangeStatusToIconButton = ({ laboratoryId }: Props) => {
-  const { clickHandler } = useFavoriteLaboratory(laboratoryId);
+export const ChangeStatusToIconButton = ({ studentId }: Props) => {
+  const { clickHandler } = useFavoriteStudent(studentId);
 
   return (
     <Button

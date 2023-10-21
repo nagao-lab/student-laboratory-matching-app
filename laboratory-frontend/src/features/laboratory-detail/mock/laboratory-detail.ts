@@ -1,5 +1,5 @@
 // TODO 研究室詳細ページ用mockデータ
-export type Laboratory = {
+export type Student = {
     ID: number;
     name: string;
     status: number;
@@ -7,7 +7,7 @@ export type Laboratory = {
     university: University;
     major: Major;
     studentLaboratory: StudentLaboratory;
-    num_students: number;
+    num_laboratories: number;
     comment: string;
     prefecture: Prefecture;
     image_url: string;
@@ -31,7 +31,7 @@ export type Prefecture = {
 
 // TODO 研究室ページ用mockデータ : mockデータを定義し,exportする
 
-export const MockLaboratories: Laboratory[] = [
+export const MockStudents: Student[] = [
     {
         ID: 1,
         name: '研究室1',
@@ -46,7 +46,7 @@ export const MockLaboratories: Laboratory[] = [
         studentLaboratory: {
             status: 'BLANK'
         },
-        num_students: 11,
+        num_laboratories: 11,
         comment: '研究室1のコメント',
         prefecture: {
             name: '都道府県1'
@@ -67,7 +67,7 @@ export const MockLaboratories: Laboratory[] = [
         studentLaboratory: {
             status: 'LIKE_FROM_BOTH'
         },
-        num_students: 22,
+        num_laboratories: 22,
         comment: '研究室2のコメント',
         prefecture: {
             name: '都道府県2'

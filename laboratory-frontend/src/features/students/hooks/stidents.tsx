@@ -1,35 +1,35 @@
 "use client";
 
 import {
-  useLaboratoriesQuery,
-  useFavoriteLaboratoryMutation,
+  useStudentsQuery,
+  useFavoriteStudentMutation,
 } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
 
 //TODO: IDをフェッチしてくる
-export const useLaboratories = () => {
+export const useStudents = () => {
   const { userId } = useSessionContext();
-  const { data, loading, error } = useLaboratoriesQuery({
+  const { data, loading, error } = useStudentsQuery({
     variables: { id: userId },
   });
 
   return { data, loading, error };
 };
 
-//TODO: studentIDをフェッチしてくる
-export const useFavoriteLaboratory = (laboratoryId: string) => {
-  const [favoriteLaboratory] = useFavoriteLaboratoryMutation();
+//TODO: laboratoryIDをフェッチしてくる
+export const useFavoriteStudent = (studentId: string) => {
+  const [favoriteStudent] = useFavoriteStudentMutation();
   const { userId } = useSessionContext();
 
   const clickHandler = () => {
-    favoriteLaboratory({
+    favoriteStudent({
       variables: {
-        studentId: userId,
-        laboratoryId: laboratoryId,
+        laboratoryId: userId,
+        studentId: studentId,
       },
     })
       .then((result) => {
-        if (result.data?.favoriteLaboratory === undefined) {
+        if (result.data?.favoriteStudent === undefined) {
           window.alert("通信に失敗しました。");
           return;
         }
@@ -40,7 +40,7 @@ export const useFavoriteLaboratory = (laboratoryId: string) => {
       });
 
     window.location.reload();
-    console.log(laboratoryId);
+    console.log(studentId);
   };
 
   return { clickHandler };

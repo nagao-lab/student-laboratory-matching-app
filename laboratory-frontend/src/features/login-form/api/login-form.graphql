@@ -1,5 +1,5 @@
-mutation loginStudent($email: String!, $password: String!){
-    loginStudent(email: $email, password: $password){
+mutation loginLaboratory($email: String!, $password: String!){
+    loginLaboratory(email: $email, password: $password){
         id
     }
 }

@@ -1,5 +1,5 @@
-export { MockLaboratories } from "./mock/laboratories";
-export { LaboratoryCards } from "./components/laboratory-cards";
-export { LaboratoryForm } from "./components/laboratory-form";
-export { LaboratoriesProvider } from "./providers/laboratries";
-export { useLaboratoriesContext } from "./providers/laboratries";
+export { MockStudents } from "./mock/students";
+export { StudentCards } from "./components/student-cards";
+export { StudentForm } from "./components/student-form";
+export { StudentsProvider } from "./providers/laboratries";
+export { useStudentsContext } from "./providers/laboratries";

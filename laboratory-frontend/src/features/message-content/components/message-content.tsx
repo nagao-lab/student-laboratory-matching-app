@@ -37,11 +37,11 @@ export const MessageContent = ({ messages, messageId }: Props) => {
                 component="p"
                 style={{ textAlign: "right" }}
               >
-                {message.studentLaboratory.student.name}
+                {message.studentLaboratory.laboratory.name}
               </Typography>
             ) : (
               <Typography variant="body2" component="p">
-                {message.studentLaboratory.laboratory.name}
+                {message.studentLaboratory.student.name}
               </Typography>
             )}
             <Box

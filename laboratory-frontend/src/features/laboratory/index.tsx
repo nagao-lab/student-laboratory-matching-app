@@ -1,2 +1,2 @@
-export { MockStudents } from "./mock/student";
-export { useStudentContext } from "./providers/student";
+export { MockLaboratories } from "./mock/laboratory";
+export { useLaboratoryContext } from "./providers/laboratory";

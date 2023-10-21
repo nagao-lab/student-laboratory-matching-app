@@ -1,2 +1,2 @@
-export { StudentRegisterForm } from "./components/student-register-form";
+export { LaboratoryRegisterForm } from "./components/laboratory-register-form";
 export { useRegisterContext } from "./providers/register";

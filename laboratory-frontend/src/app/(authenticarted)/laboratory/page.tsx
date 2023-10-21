@@ -1,32 +1,32 @@
 "use client";
 
-import { StudentInterest } from "@/features/student/components/student-interest";
-import { StudentComment } from "@/features/student/components/student-comment";
-import { StudentDetail } from "@/features/student/components/student-detail";
-import { StudentImage } from "@/features/student/components/student-image";
+import { LaboratoryInterest } from "@/features/laboratory/components/laboratory-interest";
+import { LaboratoryComment } from "@/features/laboratory/components/laboratory-comment";
+import { LaboratoryDetail } from "@/features/laboratory/components/laboratory-detail";
+import { LaboratoryImage } from "@/features/laboratory/components/laboratory-image";
 import { Box, Stack } from "@mui/material";
 import { NextPage } from "next";
-import { StudentProvider } from "@/features/student/providers/student";
-import { useStudent } from "@/features/student/hooks/student";
-import { Student } from "@/lib/graphql";
+import { LaboratoryProvider } from "@/features/laboratory/providers/laboratory";
+import { useLaboratory } from "@/features/laboratory/hooks/laboratory";
+import { Laboratory } from "@/lib/graphql";
 
 const Page: NextPage = () => {
-  const { data, loading } = useStudent();
-  const student = data?.student as Student;
+  const { data, loading } = useLaboratory();
+  const laboratory = data?.laboratory as Laboratory;
   if (loading) return <Box>loading...</Box>;
   return (
-    <StudentProvider>
+    <LaboratoryProvider>
       <Box>
         <Stack direction="row" spacing={1.0}>
-          <StudentImage student={student} />
+          <LaboratoryImage laboratory={laboratory} />
           <Stack sx={{ width: 1 }} spacing={1.0}>
-            <StudentDetail student={student} />
-            <StudentComment student={student} />
-            <StudentInterest student={student} />
+            <LaboratoryDetail laboratory={laboratory} />
+            <LaboratoryComment laboratory={laboratory} />
+            <LaboratoryInterest laboratory={laboratory} />
           </Stack>
         </Stack>
       </Box>
-    </StudentProvider>
+    </LaboratoryProvider>
   );
 };
 

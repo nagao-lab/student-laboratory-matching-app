@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useLoginStudentMutation } from "@/lib/graphql";
+import { useLoginLaboratoryMutation } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
 
 export const useLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const [loginStudentMutation] = useLoginStudentMutation();
+  const [loginLaboratoryMutation] = useLoginLaboratoryMutation();
   const { setUserId } = useSessionContext();
 
   const onSubmit = () => {
@@ -18,7 +18,7 @@ export const useLoginForm = () => {
       password: password,
     });
 
-    loginStudentMutation({
+    loginLaboratoryMutation({
       context: {
         headers: {
           mode: "cors",
@@ -31,11 +31,11 @@ export const useLoginForm = () => {
       },
     })
       .then((result) => {
-        if (result.data?.loginStudent.id === undefined) {
+        if (result.data?.loginLaboratory.id === undefined) {
           window.alert("ログインに失敗しました。");
           return;
         }
-        setUserId(result.data?.loginStudent.id);
+        setUserId(result.data?.loginLaboratory.id);
         router.push("/");
       })
       .catch((error) => {

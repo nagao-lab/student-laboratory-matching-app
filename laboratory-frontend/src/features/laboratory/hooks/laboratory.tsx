@@ -1,12 +1,12 @@
 "use client";
 
-import { useStudentQuery } from "@/lib/graphql";
+import { useLaboratoryQuery } from "@/lib/graphql";
 import { useSessionContext } from "@/providers/session";
 
 //TODO: IDをフェッチしてくる
-export const useStudent = () => {
+export const useLaboratory = () => {
   const { userId } = useSessionContext();
-  const { data, loading, error } = useStudentQuery({
+  const { data, loading, error } = useLaboratoryQuery({
     variables: { id: userId },
   });
 

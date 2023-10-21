@@ -1,5 +1,5 @@
-query Laboratory($id: ID!) {
-  laboratory(id: $id) {
+query Student($id: ID!) {
+  student(id: $id) {
     id
     university {
       name
@@ -9,11 +9,11 @@ query Laboratory($id: ID!) {
     }
     name
     professor
-    numStudents
+    numLaboratories
     comment
     status
     imageUrl
-    laboratoryUrl
+    studentUrl
     majors {
       name
     }

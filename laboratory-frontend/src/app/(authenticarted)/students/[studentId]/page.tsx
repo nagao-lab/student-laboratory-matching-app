@@ -1,23 +1,23 @@
 import {
-  LaboratoryDetail,
-} from "@/features/laboratory-detail";
-import { LaboratoryDetailProvider } from "@/features/laboratory-detail/providers/laboratory-detail";
+  StudentDetail,
+} from "@/features/student-detail";
+import { StudentDetailProvider } from "@/features/student-detail/providers/student-detail";
 import { Stack } from "@mui/material";
 import { NextPage } from "next";
 
 type Props = {
-  params: { laboratoryId: string };
+  params: { studentId: string };
 };
 
 const Page: NextPage<Props> = ({ params }: Props) => {
   return (
-    <LaboratoryDetailProvider>
+    <StudentDetailProvider>
       <Stack>
-        <LaboratoryDetail
-          laboratoryId={params.laboratoryId}
+        <StudentDetail
+          studentId={params.studentId}
         />
       </Stack>
-    </LaboratoryDetailProvider>
+    </StudentDetailProvider>
   );
 };
 

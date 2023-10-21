@@ -1,10 +1,10 @@
-input NewStudent {
+input NewLaboratory {
   email: String!
   password: String!
 }
 
-mutation signupStudent($input: NewStudent!){
-    signupStudent(input: $input){
+mutation signupLaboratory($input: NewLaboratory!){
+    signupLaboratory(input: $input){
         id
     }
 }
