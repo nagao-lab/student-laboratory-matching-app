@@ -196,8 +196,9 @@ export const StudentRegisterForm = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Autocomplete
-                    options={majors}
                     id="major"
+                    options={majors}
+                    multiple
                     getOptionLabel={(option) => (option ? option.name : "")}
                     renderOption={(props, option) => (
                       <Box component="li" {...props} key={option.name}>
@@ -213,7 +214,7 @@ export const StudentRegisterForm = () => {
                       />
                     )}
                     onChange={(_, selectedOption) =>
-                      setMajorIds([selectedOption?.id!])
+                      setMajorIds(selectedOption?.map((option) => option.id))
                     }
                   />
                 </Grid>
@@ -296,6 +297,7 @@ export const StudentRegisterForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     label="GPA"
+                    type="number"
                     variant="outlined"
                     fullWidth
                     onChange={(e) => setGpa(Number(e.target.value))}

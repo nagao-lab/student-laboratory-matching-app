@@ -30,17 +30,18 @@ export const useRegisterForm = () => {
 
   const handleSubmit = async () => {
     if (
-      !name ||
+      name === "" ||
       gender === null ||
-      !universityId ||
-      !majorIds ||
-      !grade ||
-      !comment ||
-      !interest ||
-      !birthday ||
-      !prefectureId ||
-      !gpa ||
-      !file ||
+      universityId === undefined ||
+      majorIds?.length === 0 ||
+      majorIds === undefined ||
+      grade === undefined ||
+      comment === "" ||
+      interest === "" ||
+      birthday === null ||
+      prefectureId === undefined ||
+      gpa === null ||
+      file === null ||
       status === null
     ) {
       window.alert("すべての項目を入力してください");
