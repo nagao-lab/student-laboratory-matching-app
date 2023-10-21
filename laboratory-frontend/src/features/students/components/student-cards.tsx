@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { ChangeStatusToIconButton } from "../../../components/change-status-to-icon-button";
-import { useStudents } from "../hooks/stidents";
+import { useStudents } from "../hooks/students";
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
 
 type Props = {

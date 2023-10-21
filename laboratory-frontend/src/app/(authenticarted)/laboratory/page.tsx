@@ -1,6 +1,5 @@
 "use client";
 
-import { LaboratoryInterest } from "@/features/laboratory/components/laboratory-interest";
 import { LaboratoryComment } from "@/features/laboratory/components/laboratory-comment";
 import { LaboratoryDetail } from "@/features/laboratory/components/laboratory-detail";
 import { LaboratoryImage } from "@/features/laboratory/components/laboratory-image";
@@ -22,7 +21,6 @@ const Page: NextPage = () => {
           <Stack sx={{ width: 1 }} spacing={1.0}>
             <LaboratoryDetail laboratory={laboratory} />
             <LaboratoryComment laboratory={laboratory} />
-            <LaboratoryInterest laboratory={laboratory} />
           </Stack>
         </Stack>
       </Box>

@@ -13,7 +13,6 @@ import {
   Avatar,
 } from "@mui/material";
 import { getOptions } from "../options/laboratory-register-form";
-import { DatePicker } from "@mui/x-date-pickers";
 import EditIcon from "@mui/icons-material/Edit";
 import { MuiFileInput } from "mui-file-input";
 import React, { useState } from "react";
@@ -24,26 +23,22 @@ import { useRegisterContext } from "../providers/register";
 export const LaboratoryRegisterForm = () => {
   const {
     setName,
-    setGender,
     setUniversityId,
-    setGrade,
     setComment,
-    setInterest,
-    setBirthday,
-    setPrefectureId,
-    setGpa,
     file,
     setFile,
     setStatus,
     setMajorIds,
+    setProfessor,
+    setNumStudents,
+    setLaboratoryUrl,
     handleSubmit,
   } = useRegisterForm();
 
-  const { genderOptions, gradeOptions, statusOptions } = getOptions();
+  const { statusOptions } = getOptions();
 
   const { universities, prefectures, majors, loading } = useRegisterContext();
 
-  const MuiDatePicker = DatePicker<Date>;
   const [newFile, setNewFile] = useState<File | null>(null);
 
   if (loading) {
@@ -70,40 +65,18 @@ export const LaboratoryRegisterForm = () => {
             <EditIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            学生登録
+            研究室登録
           </Typography>
           <Box sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  label="名前"
+                  label="研究室名"
                   variant="outlined"
                   fullWidth
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Autocomplete
-                  options={genderOptions}
-                  id="gender"
-                  renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="性別"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                  onChange={(_, selectedOption) =>
-                    setGender(selectedOption?.value)
-                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -130,52 +103,57 @@ export const LaboratoryRegisterForm = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Autocomplete
-                  options={majors}
-                  id="major"
-                  getOptionLabel={(option) => (option ? option.name : "")}
-                  renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.name}>
-                      {option.name}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="専攻"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                  onChange={(_, selectedOption) =>
-                    setMajorIds([selectedOption?.id!])
-                  }
-                />
+                  <Autocomplete
+                    id="major"
+                    options={majors}
+                    multiple
+                    getOptionLabel={(option) => (option ? option.name : "")}
+                    renderOption={(props, option) => (
+                      <Box component="li" {...props} key={option.name}>
+                        {option.name}
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="専攻"
+                        variant="outlined"
+                        fullWidth
+                      />
+                    )}
+                    onChange={(_, selectedOption) =>
+                      setMajorIds(selectedOption?.map((option) => option.id))
+                    }
+                  />
               </Grid>
-
               <Grid item xs={12}>
-                <Autocomplete
-                  options={gradeOptions}
-                  id="grade"
-                  renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.value}>
-                      {option.label}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="学年"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                  onChange={(_, selectedOption) => {
-                    setGrade(selectedOption?.value);
-                  }}
+                <TextField
+                    label="教授名"
+                    variant="outlined"
+                    fullWidth
+                    onChange={(e) => {
+                      setProfessor(e.target.value);
+                    }}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="学生数"
+                  variant="outlined"
+                  fullWidth
+                  onChange={(e) => setNumStudents(Number(e.target.value))}
                 />
               </Grid>
-
+              <Grid item xs={30}>
+                <TextField
+                  label="研究室URL"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={10}
+                  onChange={(e) => setLaboratoryUrl(e.target.value)}
+                />
+              </Grid>
               <Grid item xs={30}>
                 <TextField
                   label="ひとこと"
@@ -186,57 +164,6 @@ export const LaboratoryRegisterForm = () => {
                   onChange={(e) => setComment(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={30}>
-                <TextField
-                  label="興味"
-                  variant="outlined"
-                  fullWidth
-                  multiline
-                  rows={10}
-                  onChange={(e) => setInterest(e.target.value)}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <MuiDatePicker
-                  label="生年月日"
-                  onChange={(date) => setBirthday(date)}
-                  sx={{ width: "100%" }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Autocomplete
-                  options={prefectures}
-                  id="prefecture"
-                  getOptionLabel={(option) => (option ? option.name : "")}
-                  renderOption={(props, option) => (
-                    <Box component="li" {...props} key={option.name}>
-                      {option.name}
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="都道府県"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                  onChange={(_, selectedOption) =>
-                    setPrefectureId(selectedOption?.id)
-                  }
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  label="GPA"
-                  variant="outlined"
-                  fullWidth
-                  onChange={(e) => setGpa(Number(e.target.value))}
-                />
-              </Grid>
-
               <Grid item xs={12}>
                 <MuiFileInput
                   label="プロフィール画像"

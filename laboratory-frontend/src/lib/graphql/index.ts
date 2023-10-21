@@ -338,62 +338,39 @@ export enum UserType {
   Studnet = 'STUDNET'
 }
 
-export type LaboratoriesQueryVariables = Exact<{
-  id: Scalars['ID']['input'];
-}>;
-
-
-export type LaboratoriesQuery = { getMatchableLaboratories?: Array<{ id: string, name: string, comment: string, status: MatchStatus, imageUrl: string, university: { name: string }, majors: Array<{ name: string }> }> };
-
-export type GetLikeStatusQueryVariables = Exact<{
-  studentId: Scalars['ID']['input'];
-  laboratoryId: Scalars['ID']['input'];
-}>;
-
-
-export type GetLikeStatusQuery = { getLikeStatus: LikeStatus };
-
-export type FavoriteLaboratoryMutationVariables = Exact<{
-  studentId: Scalars['ID']['input'];
-  laboratoryId: Scalars['ID']['input'];
-}>;
-
-
-export type FavoriteLaboratoryMutation = { favoriteLaboratory: LikeStatus };
-
 export type LaboratoryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type LaboratoryQuery = { laboratory: { id: string, name: string, professor: string, numStudents: number, comment: string, status: MatchStatus, imageUrl: string, laboratoryUrl: string, university: { name: string, prefecture: { name: string } }, majors: Array<{ name: string }> } };
+export type LaboratoryQuery = { laboratory: { id: string, name: string, professor: string, numStudents: number, comment: string, status: MatchStatus, imageUrl: string, laboratoryUrl: string, email: string, university: { name: string, prefecture: { name: string } }, majors: Array<{ name: string }> } };
 
-export type LoginStudentMutationVariables = Exact<{
+export type LoginLaboratoryMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 }>;
 
 
-export type LoginStudentMutation = { loginStudent: { id: string } };
+export type LoginLaboratoryMutation = { loginLaboratory: { id: string } };
 
 export type GetOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetOptionsQuery = { getAllUniversities?: Array<{ id: string, name: string }>, getAllPrefectures?: Array<{ id: string, name: string }>, getAllMajors?: Array<{ id: string, name: string }> };
 
-export type UpdateStudentMutationVariables = Exact<{
-  input: NewStudentFields;
+export type UpdateLaboratoryMutationVariables = Exact<{
+  input: NewLaboratoryFields;
 }>;
 
 
-export type UpdateStudentMutation = { updateStudent: { id: string } };
+export type UpdateLaboratoryMutation = { updateLaboratory: { id: string } };
 
-export type SignupStudentMutationVariables = Exact<{
-  input: NewStudent;
+export type SignupLaboratoryMutationVariables = Exact<{
+  input: NewLaboratory;
 }>;
 
 
-export type SignupStudentMutation = { signupStudent: { id: string } };
+export type SignupLaboratoryMutation = { signupLaboratory: { id: string } };
 
 export type StudentQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -402,118 +379,30 @@ export type StudentQueryVariables = Exact<{
 
 export type StudentQuery = { student: { name: string, email: string, imageUrl: string, gender: Gender, birthday?: any, grade: number, gpa: number, comment: string, interest: string, status: MatchStatus, numLikes: number, prefecture: { name: string }, university: { maxGpa: number, name: string }, majors: Array<{ name: string }> } };
 
+export type StudentsQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
 
-export const LaboratoriesDocument = gql`
-    query Laboratories($id: ID!) {
-  getMatchableLaboratories(id: $id) {
-    id
-    university {
-      name
-    }
-    name
-    comment
-    majors {
-      name
-    }
-    status
-    imageUrl
-  }
-}
-    `;
 
-/**
- * __useLaboratoriesQuery__
- *
- * To run a query within a React component, call `useLaboratoriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useLaboratoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLaboratoriesQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useLaboratoriesQuery(baseOptions: Apollo.QueryHookOptions<LaboratoriesQuery, LaboratoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<LaboratoriesQuery, LaboratoriesQueryVariables>(LaboratoriesDocument, options);
-      }
-export function useLaboratoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LaboratoriesQuery, LaboratoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<LaboratoriesQuery, LaboratoriesQueryVariables>(LaboratoriesDocument, options);
-        }
-export type LaboratoriesQueryHookResult = ReturnType<typeof useLaboratoriesQuery>;
-export type LaboratoriesLazyQueryHookResult = ReturnType<typeof useLaboratoriesLazyQuery>;
-export type LaboratoriesQueryResult = Apollo.QueryResult<LaboratoriesQuery, LaboratoriesQueryVariables>;
-export const GetLikeStatusDocument = gql`
-    query getLikeStatus($studentId: ID!, $laboratoryId: ID!) {
-  getLikeStatus(input: {studentId: $studentId, laboratoryId: $laboratoryId})
-}
-    `;
+export type StudentsQuery = { getMatchableStudents?: Array<{ id: string, name: string, comment: string, status: MatchStatus, imageUrl: string, university: { name: string }, majors: Array<{ name: string }> }> };
 
-/**
- * __useGetLikeStatusQuery__
- *
- * To run a query within a React component, call `useGetLikeStatusQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLikeStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLikeStatusQuery({
- *   variables: {
- *      studentId: // value for 'studentId'
- *      laboratoryId: // value for 'laboratoryId'
- *   },
- * });
- */
-export function useGetLikeStatusQuery(baseOptions: Apollo.QueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
-      }
-export function useGetLikeStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
-        }
-export type GetLikeStatusQueryHookResult = ReturnType<typeof useGetLikeStatusQuery>;
-export type GetLikeStatusLazyQueryHookResult = ReturnType<typeof useGetLikeStatusLazyQuery>;
-export type GetLikeStatusQueryResult = Apollo.QueryResult<GetLikeStatusQuery, GetLikeStatusQueryVariables>;
-export const FavoriteLaboratoryDocument = gql`
-    mutation favoriteLaboratory($studentId: ID!, $laboratoryId: ID!) {
-  favoriteLaboratory(input: {studentId: $studentId, laboratoryId: $laboratoryId})
-}
-    `;
-export type FavoriteLaboratoryMutationFn = Apollo.MutationFunction<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
+export type GetLikeStatusQueryVariables = Exact<{
+  laboratoryId: Scalars['ID']['input'];
+  studentId: Scalars['ID']['input'];
+}>;
 
-/**
- * __useFavoriteLaboratoryMutation__
- *
- * To run a mutation, you first call `useFavoriteLaboratoryMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFavoriteLaboratoryMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [favoriteLaboratoryMutation, { data, loading, error }] = useFavoriteLaboratoryMutation({
- *   variables: {
- *      studentId: // value for 'studentId'
- *      laboratoryId: // value for 'laboratoryId'
- *   },
- * });
- */
-export function useFavoriteLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>(FavoriteLaboratoryDocument, options);
-      }
-export type FavoriteLaboratoryMutationHookResult = ReturnType<typeof useFavoriteLaboratoryMutation>;
-export type FavoriteLaboratoryMutationResult = Apollo.MutationResult<FavoriteLaboratoryMutation>;
-export type FavoriteLaboratoryMutationOptions = Apollo.BaseMutationOptions<FavoriteLaboratoryMutation, FavoriteLaboratoryMutationVariables>;
+
+export type GetLikeStatusQuery = { getLikeStatus: LikeStatus };
+
+export type FavoriteStudentMutationVariables = Exact<{
+  laboratoryId: Scalars['ID']['input'];
+  studentId: Scalars['ID']['input'];
+}>;
+
+
+export type FavoriteStudentMutation = { favoriteStudent: LikeStatus };
+
+
 export const LaboratoryDocument = gql`
     query Laboratory($id: ID!) {
   laboratory(id: $id) {
@@ -534,6 +423,7 @@ export const LaboratoryDocument = gql`
     majors {
       name
     }
+    email
   }
 }
     `;
@@ -565,40 +455,40 @@ export function useLaboratoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type LaboratoryQueryHookResult = ReturnType<typeof useLaboratoryQuery>;
 export type LaboratoryLazyQueryHookResult = ReturnType<typeof useLaboratoryLazyQuery>;
 export type LaboratoryQueryResult = Apollo.QueryResult<LaboratoryQuery, LaboratoryQueryVariables>;
-export const LoginStudentDocument = gql`
-    mutation loginStudent($email: String!, $password: String!) {
-  loginStudent(email: $email, password: $password) {
+export const LoginLaboratoryDocument = gql`
+    mutation loginLaboratory($email: String!, $password: String!) {
+  loginLaboratory(email: $email, password: $password) {
     id
   }
 }
     `;
-export type LoginStudentMutationFn = Apollo.MutationFunction<LoginStudentMutation, LoginStudentMutationVariables>;
+export type LoginLaboratoryMutationFn = Apollo.MutationFunction<LoginLaboratoryMutation, LoginLaboratoryMutationVariables>;
 
 /**
- * __useLoginStudentMutation__
+ * __useLoginLaboratoryMutation__
  *
- * To run a mutation, you first call `useLoginStudentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLoginStudentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useLoginLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginLaboratoryMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [loginStudentMutation, { data, loading, error }] = useLoginStudentMutation({
+ * const [loginLaboratoryMutation, { data, loading, error }] = useLoginLaboratoryMutation({
  *   variables: {
  *      email: // value for 'email'
  *      password: // value for 'password'
  *   },
  * });
  */
-export function useLoginStudentMutation(baseOptions?: Apollo.MutationHookOptions<LoginStudentMutation, LoginStudentMutationVariables>) {
+export function useLoginLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<LoginLaboratoryMutation, LoginLaboratoryMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginStudentMutation, LoginStudentMutationVariables>(LoginStudentDocument, options);
+        return Apollo.useMutation<LoginLaboratoryMutation, LoginLaboratoryMutationVariables>(LoginLaboratoryDocument, options);
       }
-export type LoginStudentMutationHookResult = ReturnType<typeof useLoginStudentMutation>;
-export type LoginStudentMutationResult = Apollo.MutationResult<LoginStudentMutation>;
-export type LoginStudentMutationOptions = Apollo.BaseMutationOptions<LoginStudentMutation, LoginStudentMutationVariables>;
+export type LoginLaboratoryMutationHookResult = ReturnType<typeof useLoginLaboratoryMutation>;
+export type LoginLaboratoryMutationResult = Apollo.MutationResult<LoginLaboratoryMutation>;
+export type LoginLaboratoryMutationOptions = Apollo.BaseMutationOptions<LoginLaboratoryMutation, LoginLaboratoryMutationVariables>;
 export const GetOptionsDocument = gql`
     query GetOptions {
   getAllUniversities {
@@ -642,72 +532,72 @@ export function useGetOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetOptionsQueryHookResult = ReturnType<typeof useGetOptionsQuery>;
 export type GetOptionsLazyQueryHookResult = ReturnType<typeof useGetOptionsLazyQuery>;
 export type GetOptionsQueryResult = Apollo.QueryResult<GetOptionsQuery, GetOptionsQueryVariables>;
-export const UpdateStudentDocument = gql`
-    mutation updateStudent($input: NewStudentFields!) {
-  updateStudent(input: $input) {
+export const UpdateLaboratoryDocument = gql`
+    mutation updateLaboratory($input: NewLaboratoryFields!) {
+  updateLaboratory(input: $input) {
     id
   }
 }
     `;
-export type UpdateStudentMutationFn = Apollo.MutationFunction<UpdateStudentMutation, UpdateStudentMutationVariables>;
+export type UpdateLaboratoryMutationFn = Apollo.MutationFunction<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>;
 
 /**
- * __useUpdateStudentMutation__
+ * __useUpdateLaboratoryMutation__
  *
- * To run a mutation, you first call `useUpdateStudentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateStudentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLaboratoryMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateStudentMutation, { data, loading, error }] = useUpdateStudentMutation({
+ * const [updateLaboratoryMutation, { data, loading, error }] = useUpdateLaboratoryMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useUpdateStudentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStudentMutation, UpdateStudentMutationVariables>) {
+export function useUpdateLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateStudentMutation, UpdateStudentMutationVariables>(UpdateStudentDocument, options);
+        return Apollo.useMutation<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>(UpdateLaboratoryDocument, options);
       }
-export type UpdateStudentMutationHookResult = ReturnType<typeof useUpdateStudentMutation>;
-export type UpdateStudentMutationResult = Apollo.MutationResult<UpdateStudentMutation>;
-export type UpdateStudentMutationOptions = Apollo.BaseMutationOptions<UpdateStudentMutation, UpdateStudentMutationVariables>;
-export const SignupStudentDocument = gql`
-    mutation signupStudent($input: NewStudent!) {
-  signupStudent(input: $input) {
+export type UpdateLaboratoryMutationHookResult = ReturnType<typeof useUpdateLaboratoryMutation>;
+export type UpdateLaboratoryMutationResult = Apollo.MutationResult<UpdateLaboratoryMutation>;
+export type UpdateLaboratoryMutationOptions = Apollo.BaseMutationOptions<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>;
+export const SignupLaboratoryDocument = gql`
+    mutation signupLaboratory($input: NewLaboratory!) {
+  signupLaboratory(input: $input) {
     id
   }
 }
     `;
-export type SignupStudentMutationFn = Apollo.MutationFunction<SignupStudentMutation, SignupStudentMutationVariables>;
+export type SignupLaboratoryMutationFn = Apollo.MutationFunction<SignupLaboratoryMutation, SignupLaboratoryMutationVariables>;
 
 /**
- * __useSignupStudentMutation__
+ * __useSignupLaboratoryMutation__
  *
- * To run a mutation, you first call `useSignupStudentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignupStudentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useSignupLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignupLaboratoryMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [signupStudentMutation, { data, loading, error }] = useSignupStudentMutation({
+ * const [signupLaboratoryMutation, { data, loading, error }] = useSignupLaboratoryMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useSignupStudentMutation(baseOptions?: Apollo.MutationHookOptions<SignupStudentMutation, SignupStudentMutationVariables>) {
+export function useSignupLaboratoryMutation(baseOptions?: Apollo.MutationHookOptions<SignupLaboratoryMutation, SignupLaboratoryMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SignupStudentMutation, SignupStudentMutationVariables>(SignupStudentDocument, options);
+        return Apollo.useMutation<SignupLaboratoryMutation, SignupLaboratoryMutationVariables>(SignupLaboratoryDocument, options);
       }
-export type SignupStudentMutationHookResult = ReturnType<typeof useSignupStudentMutation>;
-export type SignupStudentMutationResult = Apollo.MutationResult<SignupStudentMutation>;
-export type SignupStudentMutationOptions = Apollo.BaseMutationOptions<SignupStudentMutation, SignupStudentMutationVariables>;
+export type SignupLaboratoryMutationHookResult = ReturnType<typeof useSignupLaboratoryMutation>;
+export type SignupLaboratoryMutationResult = Apollo.MutationResult<SignupLaboratoryMutation>;
+export type SignupLaboratoryMutationOptions = Apollo.BaseMutationOptions<SignupLaboratoryMutation, SignupLaboratoryMutationVariables>;
 export const StudentDocument = gql`
     query Student($id: ID!) {
   student(id: $id) {
@@ -763,3 +653,114 @@ export function useStudentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<St
 export type StudentQueryHookResult = ReturnType<typeof useStudentQuery>;
 export type StudentLazyQueryHookResult = ReturnType<typeof useStudentLazyQuery>;
 export type StudentQueryResult = Apollo.QueryResult<StudentQuery, StudentQueryVariables>;
+export const StudentsDocument = gql`
+    query Students($id: ID!) {
+  getMatchableStudents(id: $id) {
+    id
+    university {
+      name
+    }
+    name
+    comment
+    majors {
+      name
+    }
+    status
+    imageUrl
+  }
+}
+    `;
+
+/**
+ * __useStudentsQuery__
+ *
+ * To run a query within a React component, call `useStudentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useStudentsQuery(baseOptions: Apollo.QueryHookOptions<StudentsQuery, StudentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<StudentsQuery, StudentsQueryVariables>(StudentsDocument, options);
+      }
+export function useStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StudentsQuery, StudentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<StudentsQuery, StudentsQueryVariables>(StudentsDocument, options);
+        }
+export type StudentsQueryHookResult = ReturnType<typeof useStudentsQuery>;
+export type StudentsLazyQueryHookResult = ReturnType<typeof useStudentsLazyQuery>;
+export type StudentsQueryResult = Apollo.QueryResult<StudentsQuery, StudentsQueryVariables>;
+export const GetLikeStatusDocument = gql`
+    query getLikeStatus($laboratoryId: ID!, $studentId: ID!) {
+  getLikeStatus(input: {laboratoryId: $laboratoryId, studentId: $studentId})
+}
+    `;
+
+/**
+ * __useGetLikeStatusQuery__
+ *
+ * To run a query within a React component, call `useGetLikeStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLikeStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLikeStatusQuery({
+ *   variables: {
+ *      laboratoryId: // value for 'laboratoryId'
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useGetLikeStatusQuery(baseOptions: Apollo.QueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
+      }
+export function useGetLikeStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLikeStatusQuery, GetLikeStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLikeStatusQuery, GetLikeStatusQueryVariables>(GetLikeStatusDocument, options);
+        }
+export type GetLikeStatusQueryHookResult = ReturnType<typeof useGetLikeStatusQuery>;
+export type GetLikeStatusLazyQueryHookResult = ReturnType<typeof useGetLikeStatusLazyQuery>;
+export type GetLikeStatusQueryResult = Apollo.QueryResult<GetLikeStatusQuery, GetLikeStatusQueryVariables>;
+export const FavoriteStudentDocument = gql`
+    mutation favoriteStudent($laboratoryId: ID!, $studentId: ID!) {
+  favoriteStudent(input: {laboratoryId: $laboratoryId, studentId: $studentId})
+}
+    `;
+export type FavoriteStudentMutationFn = Apollo.MutationFunction<FavoriteStudentMutation, FavoriteStudentMutationVariables>;
+
+/**
+ * __useFavoriteStudentMutation__
+ *
+ * To run a mutation, you first call `useFavoriteStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavoriteStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [favoriteStudentMutation, { data, loading, error }] = useFavoriteStudentMutation({
+ *   variables: {
+ *      laboratoryId: // value for 'laboratoryId'
+ *      studentId: // value for 'studentId'
+ *   },
+ * });
+ */
+export function useFavoriteStudentMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteStudentMutation, FavoriteStudentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FavoriteStudentMutation, FavoriteStudentMutationVariables>(FavoriteStudentDocument, options);
+      }
+export type FavoriteStudentMutationHookResult = ReturnType<typeof useFavoriteStudentMutation>;
+export type FavoriteStudentMutationResult = Apollo.MutationResult<FavoriteStudentMutation>;
+export type FavoriteStudentMutationOptions = Apollo.BaseMutationOptions<FavoriteStudentMutation, FavoriteStudentMutationVariables>;

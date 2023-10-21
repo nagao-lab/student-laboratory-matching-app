@@ -1,25 +1,22 @@
 query Laboratory($id: ID!) {
   laboratory(id: $id) {
-    name
-    email
-    prefecture {
-      name
-    }
-    imageUrl
-    gender
-    birthday
-    grade
-    gpa
-    comment
-    interest
-    status
+    id
     university {
-      maxGpa
       name
+      prefecture {
+        name
+      }
     }
+    name
+    professor
+    numStudents
+    comment
+    status
+    imageUrl
+    laboratoryUrl
     majors {
       name
     }
-    numLikes
+    email
   }
 }

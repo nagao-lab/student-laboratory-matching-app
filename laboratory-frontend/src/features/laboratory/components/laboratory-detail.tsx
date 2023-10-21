@@ -8,20 +8,17 @@ import {
   Divider,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { Gender, Laboratory } from "@/lib/graphql";
+import { MatchStatus, Laboratory } from "@/lib/graphql";
 
 type Props = {
   laboratory?: Laboratory;
 };
 
 export const LaboratoryDetail = ({ laboratory }: Props) => {
-  const gender =
-    laboratory?.gender === Gender.Male
-      ? "男性"
-      : laboratory?.gender === Gender.Female
-      ? "女性"
-      : "その他";
-  var nowStatus = laboratory?.status ? "研究室探し中" : "研究室を探していない";
+  const nowStatus = 
+  laboratory?.status === MatchStatus.Active 
+    ? "学生探し中" 
+    : "学生を探していない";
 
   return (
     <Box>
@@ -38,38 +35,35 @@ export const LaboratoryDetail = ({ laboratory }: Props) => {
             </Stack>
             <Divider />
             <Stack>
-              <Typography fontWeight="light">性別</Typography>
-              <Typography variant="h6">{gender}</Typography>
-            </Stack>
-            <Stack>
               <Typography fontWeight="light">大学</Typography>
               <Typography variant="h6">{laboratory?.university.name}</Typography>
             </Stack>
             <Stack>
-              <Typography fontWeight="light">学年</Typography>
-              <Typography variant="h6">{laboratory?.grade}年生</Typography>
+              <Typography fontWeight="light">所在</Typography>
+              <Typography variant="h6">{laboratory?.university.prefecture.name}</Typography>
             </Stack>
             <Stack>
               <Typography fontWeight="light">専攻分野</Typography>
-              <Typography variant="h6">{laboratory?.majors[0].name}</Typography>
+              <Typography variant="h6">{laboratory?.majors.map((major) => major.name+" ")}</Typography>
             </Stack>
+            <Stack>
+              <Typography fontWeight="light">教授名</Typography>
+              <Typography variant="h6">{laboratory?.professor}</Typography>
+            </Stack>
+            <Stack>
+              <Typography fontWeight="light">学生数</Typography>
+              <Typography variant="h6">{laboratory?.numStudents}</Typography>
+            </Stack>
+            
             <Stack>
               <Typography fontWeight="light">ステータス</Typography>
               <Typography variant="h6">{nowStatus}</Typography>
             </Stack>
             <Stack>
-              <Typography fontWeight="light">GPA</Typography>
+              <Typography fontWeight="light">研究室URL</Typography>
               <Typography variant="h6">
-                {laboratory?.gpa} /{laboratory?.university.maxGpa}
+                {laboratory?.laboratoryUrl}
               </Typography>
-            </Stack>
-            <Stack>
-              <Typography fontWeight="light">居住地</Typography>
-              <Typography variant="h6">{laboratory?.prefecture.name}</Typography>
-            </Stack>
-            <Stack>
-              <Typography fontWeight="light">生年月日</Typography>
-              <Typography variant="h6">{laboratory?.birthday}</Typography>
             </Stack>
             <Stack>
               <Typography fontWeight="light">メールアドレス</Typography>

@@ -1,10 +1,4 @@
-import { Gender } from "@/lib/graphql";
-
-const genderOptions = [
-  { label: "男性", value: Gender.Male },
-  { label: "女性", value: Gender.Female },
-  { label: "その他", value: Gender.Other },
-];
+import { MatchStatus } from "@/lib/graphql";
 
 // TODO : 本当はAPIから取得する
 const universityOptions = [
@@ -33,13 +27,12 @@ const prefectureOptions = [
 ];
 
 const statusOptions = [
-  { label: "研究室を探している", value: 0 },
-  { label: "研究室を探していない", value: 1 },
+  { label: "学生を探している", value: MatchStatus.Active },
+  { label: "学生を探していない", value: MatchStatus.Inactive },
 ];
 
 export const getOptions = () => {
   return {
-    genderOptions,
     universityOptions,
     majorOptions,
     gradeOptions,

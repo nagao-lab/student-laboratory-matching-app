@@ -16,21 +16,18 @@ query GetOptions {
 }
 
 input NewLaboratoryFields {
-  id: ID!
-  name: String
-  email: String
-  password: String
-  imageUrl: String
-  gender: Gender
-  birthday: Time # Specify RFC3339 format string (e.g. "2001-01-01T00:00:00Z")
-  universityId: ID
-  grade: Int
-  gpa: Float
-  prefectureId: ID
-  comment: String
-  interest: String
-  status: MatchStatus
-  majorIds: [ID]
+	id: ID!
+	universityId: ID
+	name: String
+	professor: String
+	numStudents: Int
+	comment: String
+	status: MatchStatus
+	imageUrl: String
+	laboratoryUrl: String
+	email: String
+	password: String
+	majorIds: [ID]
 }
 
 mutation updateLaboratory($input: NewLaboratoryFields!) {

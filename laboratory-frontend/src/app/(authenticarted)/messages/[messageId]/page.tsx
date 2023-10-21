@@ -1,35 +1,52 @@
-import { Box } from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
 import { NextPage } from "next";
-import {
-  MessageContent,
-  MessageFooter,
-  MockMessageContent,
-} from "@/features/message-content";
-import { MessageContentProvider } from "@/features/message-content/providers/message-content";
+import { MessageDetail } from "@/features/message-content/components/message-content";
+import { MockMessageContent } from "@/features/message-content/mock/message-content";
 
-type Props = {
-  params: { messageId: string };
-};
-
-const Page: NextPage<Props> = ({ params }: Props) => {
+const Page: NextPage = () => {
   return (
-    <MessageContentProvider>
-      <Box
+  <Box style={{
+    display: "flex",
+    flexDirection: "column",
+    // maxHeight: `${globalThis.window?.innerHeight - (64 + 56)}`
+    maxHeight: "calc(100vh - 64px - 56px)"
+  }}>
+    <div style={{overflowX: "hidden", overflowY: "auto"}}>
+      <MessageDetail messages={MockMessageContent}/>
+    </div>
+    
+    <footer style={{
+      display: "grid",
+      gridTemplateRows: "1fr 20px",
+      gridTemplateColumns: "20px 1fr 70px",
+      position: "fixed",
+      bottom: 0,
+      zIndex: 1,
+      width: "100%",
+      backgroundColor: "white"
+    }}>
+      <TextField
+        id="standard-multiline-flexible"
+        // label="Multiline"
+        placeholder="メッセージを入力"
+        multiline
+        // maxRows={4}
+        variant="standard"
         style={{
-          display: "flex",
-          flexDirection: "column",
-          maxHeight: "calc(100vh - 64px - 56px)",
+          // gridRow: 1,
+          gridColumn: 2
         }}
-      >
-        <Box style={{ overflowX: "hidden", overflowY: "auto" }}>
-          <MessageContent
-            messages={MockMessageContent}
-            messageId={params.messageId}
-          />
-        </Box>
-        <MessageFooter />
-      </Box>
-    </MessageContentProvider>
+      />
+      <Button style={{
+          // gridRow: 1,
+          gridColumn: 3
+        }}>
+        <SendIcon />
+      </Button>
+    </footer>
+    
+  </Box>
   );
 };
 
