@@ -60,6 +60,7 @@ export const useRegisterForm = () => {
       variables: {
         input: {
           id: userId,
+          name: name,
           imageUrl: url,
           gender: gender,
           birthday: birthday,
