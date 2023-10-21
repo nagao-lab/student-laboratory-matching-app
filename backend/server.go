@@ -32,7 +32,7 @@ func main() {
 
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins: []string{"https://student-laboratory-matching-app.vercel.app", os.Getenv("FE_URL")},
+		AllowedOrigins: []string{"http://localhost:*", os.Getenv("FE_URL")},
 		AllowedHeaders: []string{"*"},
 		AllowedMethods: []string{
 			http.MethodHead,
