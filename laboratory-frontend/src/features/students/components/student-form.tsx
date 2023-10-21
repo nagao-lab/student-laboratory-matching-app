@@ -1,4 +1,16 @@
-import { TextField } from "@mui/material";
+import { Box, Skeleton, TextField } from "@mui/material";
+import { useStudents } from "../hooks/students";
+
+export const LaboratoryFormSkeleton = () => {
+  return (
+    <Box
+      sx={{ margin: 1.25, minWidth: 250}}
+    >
+    <Skeleton variant="rounded" height={56}/>
+    </Box>
+  )
+}
+
 type Props = {
   setFilterVal: (val: string) => void;
   toggle: boolean;
@@ -6,6 +18,11 @@ type Props = {
 };
 
 export const StudentForm = ({ setFilterVal }: Props) => {
+  const { loading } = useStudents();
+  if (loading) {
+    return <LaboratoryFormSkeleton />
+  }
+
   return (
     <>
       <TextField

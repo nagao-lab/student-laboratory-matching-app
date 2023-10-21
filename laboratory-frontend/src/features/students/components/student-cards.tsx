@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardActions,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -13,20 +14,34 @@ import { ChangeStatusToIconButton } from "../../../components/change-status-to-i
 import { useStudents } from "../hooks/students";
 // TODO 研究室一覧ページ : コンポーネントのPropsの型を定義する
 
+export const StudentCardSkeleton = () => {
+  const convenienceShowNumber = 10;  // 便宜的に表示する研究室カードの数
+  return (
+    <Box>
+      {Array(convenienceShowNumber)
+        .fill(0)
+        .map((_, i) => (
+          <Box
+          sx = {{ minWidth: 275, m: 5 }}
+          key={i}
+          >
+          <Skeleton variant="rounded" height={241}/>
+          </Box>
+        ))}
+    </Box>
+  );
+}
+
 type Props = {
   filterVal: string;
 };
 
 export const StudentCards = ({ filterVal }: Props) => {
   const router = useRouter();
-  const { data, loading, error } = useStudents();
+  const { data, loading } = useStudents();
 
   if (loading) {
-    return <Box>loading...</Box>;
-  }
-
-  if (error) {
-    return <Box>404</Box>;
+    return < StudentCardSkeleton />
   }
 
   return (
