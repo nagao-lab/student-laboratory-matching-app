@@ -33,14 +33,12 @@ export const useFavoriteLaboratory = (laboratoryId: string) => {
           window.alert("通信に失敗しました。");
           return;
         }
-        console.log(result);
       })
       .catch((error) => {
-        console.log("error:", error);
+        throw error;
       });
 
     window.location.reload();
-    console.log(laboratoryId);
   };
 
   return { clickHandler };

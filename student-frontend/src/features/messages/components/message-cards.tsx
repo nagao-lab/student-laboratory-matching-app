@@ -24,13 +24,6 @@ export const MessageCards = ({ messages }: Props) => {
           <CardActionArea>
             <CardContent
               onClick={() => {
-                console.log(
-                  message.university.name,
-                  "の",
-                  message.laboratory.name,
-                  "が押下された"
-                );
-
                 router.push(`/messages/${message.studentLaboratory.id}`);
               }}
             >

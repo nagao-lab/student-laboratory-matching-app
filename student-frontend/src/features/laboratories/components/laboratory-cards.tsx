@@ -67,7 +67,6 @@ export const LaboratoryCards = ({ filterVal }: Props) => {
               <Button
                 size="small"
                 onClick={() => {
-                  console.log(laboratory.status);
                   router.push(`/laboratories/${laboratory.id}`);
                 }}
               >

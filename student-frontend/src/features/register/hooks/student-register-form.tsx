@@ -33,6 +33,7 @@ export const useRegisterForm = () => {
       !name ||
       gender === null ||
       !universityId ||
+      !majorIds ||
       !grade ||
       !comment ||
       !interest ||
@@ -43,20 +44,6 @@ export const useRegisterForm = () => {
       status === null
     ) {
       window.alert("すべての項目を入力してください");
-      console.log(
-        name,
-        gender,
-        universityId,
-        grade,
-        comment,
-        interest,
-        birthday,
-        prefectureId,
-        gpa,
-        file,
-        status,
-        majorIds
-      );
       return;
     }
 
@@ -68,7 +55,6 @@ export const useRegisterForm = () => {
         return "";
       });
 
-    console.log(url);
     updateStudentMutation({
       variables: {
         input: {
@@ -88,15 +74,13 @@ export const useRegisterForm = () => {
     })
       .then((res) => {
         if (res.data?.updateStudent?.id === undefined) {
-          console.log("updateStudent error");
           return;
         }
         router.push("/");
       })
       .catch((err: Error) => {
         alert("別のEmail Address・Passwordを入力してください");
-        console.log("updateStudent error");
-        console.log(err);
+        throw err;
       });
   };
 

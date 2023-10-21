@@ -13,8 +13,6 @@ export const useSignupForm = () => {
   const { setUserId } = useSessionContext();
 
   const onSubmit = () => {
-    console.log("signupStudent start");
-
     signupStudentMutation({
       variables: {
         input: {
@@ -25,7 +23,6 @@ export const useSignupForm = () => {
     })
       .then((res) => {
         if (res.data?.signupStudent?.id === undefined) {
-          console.log("signupStudent error");
           return;
         }
         setUserId(res.data?.signupStudent?.id);
@@ -33,8 +30,7 @@ export const useSignupForm = () => {
       })
       .catch((err) => {
         alert("別のEmail Address・Passwordを入力してください");
-        console.log("signupStudent error");
-        console.log(err);
+        throw err;
       });
   };
 

@@ -266,6 +266,7 @@ export const StudentRegisterForm = () => {
                   <MuiDatePicker
                     label="生年月日"
                     onChange={(date) => setBirthday(date)}
+                    sx={{ width: "100%" }}
                   />
                 </Grid>
                 <Grid item xs={12}>

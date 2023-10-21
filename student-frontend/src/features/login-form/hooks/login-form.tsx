@@ -13,11 +13,6 @@ export const useLoginForm = () => {
   const { setUserId } = useSessionContext();
 
   const onSubmit = () => {
-    console.log({
-      email: email,
-      password: password,
-    });
-
     loginStudentMutation({
       context: {
         headers: {
@@ -40,7 +35,7 @@ export const useLoginForm = () => {
       })
       .catch((error) => {
         window.alert("ログインに失敗しました。");
-        console.log(error);
+        throw error;
       });
   };
 
