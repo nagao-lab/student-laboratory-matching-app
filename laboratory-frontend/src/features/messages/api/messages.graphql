@@ -1,0 +1,13 @@
+query Messages($id: ID! $filter: LikeStatus) {
+    getStudentLaboratoriesByLaboratoryId(id: $id, filter: $filter){
+        id
+        student{
+            id
+            name
+            university{
+                name
+            }
+            imageUrl
+        }
+    }
+}

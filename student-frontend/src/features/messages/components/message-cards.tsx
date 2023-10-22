@@ -1,15 +1,17 @@
 "use client";
 
 import {
+  Avatar,
   Box,
   Card,
   CardContent,
   CardActionArea,
+  Grid,
   Skeleton,
   Typography,
 } from "@mui/material";
-import { Message } from "../mock/messages";
 import { useRouter } from "next/navigation";
+import { useMessages } from "../hooks/messages";
 
 const MessageCardSkeleton = () => {
   const convenienceShowNumber = 10;  // 便宜的に表示するメッセージカードの数
@@ -22,44 +24,62 @@ const MessageCardSkeleton = () => {
           sx = {{ minWidth: 275, m: 5 }}
           key={i}
           >
-            <Skeleton variant="rounded" height={100}/>
+            <Skeleton variant="rounded" height={152}/>
           </Box>
         ))}
     </Box>
   );
 }
 
-type Props = {
-  messages: Message[];
-};
 
-export const MessageCards = ({ messages }: Props) => {
+
+export const MessageCards = () => {
   const router = useRouter();
 
-  const loading = false;
+  const { data, loading } = useMessages();
   if (loading){
     return <MessageCardSkeleton/>
   }
 
+  const messages = data?.getStudentLaboratoriesByStudentId?.map((studentLaboratory) => {
+    return {
+      id: studentLaboratory.id,
+      laboratory: studentLaboratory.laboratory
+      };
+    }
+  );
+    
+
   return (
     <Box>
-      {messages.map((message, i) => (
+      {messages?.map((message, i) => (
         <Card key={i} sx={{ minWidth: 275, m: 5 }}>
-          <CardActionArea>
-            <CardContent
-              onClick={() => {
-                router.push(`/messages/${message.studentLaboratory.id}`);
-              }}
-            >
-              <Typography variant="h5" component="div">
-                {message.university.name}
-              </Typography>
-              <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                {message.laboratory.name}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+        <CardActionArea>
+          <CardContent
+            onClick={() => {
+              router.push(`/messages/${message.id}`);
+            }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={2}>
+                <Avatar
+                  alt={message.laboratory.name}
+                  src={message.laboratory.imageUrl}
+                  sx={{ width: 120, height: 120 }}
+                />  
+              </Grid>
+              <Grid item xs={12} md={10}>
+                <Typography sx={{ marginTop: 1 }} variant="h3" component="div">
+                  {message.laboratory.name}
+                </Typography>
+                <Typography sx={{ marginTop: 1 }} variant="h5" component="div">
+                  {message.laboratory.university.name}
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </CardActionArea>
+      </Card>
       ))}
     </Box>
   );
