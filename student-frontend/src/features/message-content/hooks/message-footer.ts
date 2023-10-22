@@ -1,25 +1,26 @@
 "use client"
 
-import { useCreateMessageMutation } from "@/lib/graphql";
+import { UserType, useCreateMessageMutation } from "@/lib/graphql";
 import { useState } from "react";
-import { UserType } from "@/lib/graphql";
 
 export const useMessageFooter = () => {
     const [ createMessageMutation ] = useCreateMessageMutation();
     const [message, setMessage] = useState("");
 
-
-    const onSubmit = (messageID: string) => {
+    const onSubmit = (messageRoomID: string) => {
         createMessageMutation({
             variables: {
                 input: {
-                    messageRoomId: messageID,
+                    messageRoomId: messageRoomID,
                     from: UserType.Studnet, // TODO: スペルミスなおす
                     content: message
                 }
             }
         })
+
         setMessage("")
     }
+
     return {message, setMessage, onSubmit};
 }
+
