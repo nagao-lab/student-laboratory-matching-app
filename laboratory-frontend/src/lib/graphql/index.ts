@@ -353,6 +353,14 @@ export type LoginLaboratoryMutationVariables = Exact<{
 
 export type LoginLaboratoryMutation = { loginLaboratory: { id: string } };
 
+export type MessagesQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+  filter?: InputMaybe<LikeStatus>;
+}>;
+
+
+export type MessagesQuery = { getStudentLaboratoriesByLaboratoryId?: Array<{ id: string, student: { id: string, name: string, imageUrl: string, university: { name: string } } }> };
+
 export type GetOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -489,6 +497,50 @@ export function useLoginLaboratoryMutation(baseOptions?: Apollo.MutationHookOpti
 export type LoginLaboratoryMutationHookResult = ReturnType<typeof useLoginLaboratoryMutation>;
 export type LoginLaboratoryMutationResult = Apollo.MutationResult<LoginLaboratoryMutation>;
 export type LoginLaboratoryMutationOptions = Apollo.BaseMutationOptions<LoginLaboratoryMutation, LoginLaboratoryMutationVariables>;
+export const MessagesDocument = gql`
+    query Messages($id: ID!, $filter: LikeStatus) {
+  getStudentLaboratoriesByLaboratoryId(id: $id, filter: $filter) {
+    id
+    student {
+      id
+      name
+      university {
+        name
+      }
+      imageUrl
+    }
+  }
+}
+    `;
+
+/**
+ * __useMessagesQuery__
+ *
+ * To run a query within a React component, call `useMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessagesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useMessagesQuery(baseOptions: Apollo.QueryHookOptions<MessagesQuery, MessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MessagesQuery, MessagesQueryVariables>(MessagesDocument, options);
+      }
+export function useMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MessagesQuery, MessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MessagesQuery, MessagesQueryVariables>(MessagesDocument, options);
+        }
+export type MessagesQueryHookResult = ReturnType<typeof useMessagesQuery>;
+export type MessagesLazyQueryHookResult = ReturnType<typeof useMessagesLazyQuery>;
+export type MessagesQueryResult = Apollo.QueryResult<MessagesQuery, MessagesQueryVariables>;
 export const GetOptionsDocument = gql`
     query GetOptions {
   getAllUniversities {
