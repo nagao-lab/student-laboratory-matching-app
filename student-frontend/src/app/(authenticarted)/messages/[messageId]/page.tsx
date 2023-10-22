@@ -6,11 +6,9 @@ import {
   MockMessageContent,
 } from "@/features/message-content";
 import { MessageContentProvider } from "@/features/message-content/providers/message-content";
-
 type Props = {
   params: { messageId: string };
 };
-
 const Page: NextPage<Props> = ({ params }: Props) => {
   return (
     <MessageContentProvider>
@@ -27,10 +25,9 @@ const Page: NextPage<Props> = ({ params }: Props) => {
             messageId={params.messageId}
           />
         </Box>
-        <MessageFooter />
+        <MessageFooter messageID={params.messageId}/>
       </Box>
     </MessageContentProvider>
   );
 };
-
 export default Page;
