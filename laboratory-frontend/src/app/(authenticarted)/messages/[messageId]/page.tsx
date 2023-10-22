@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import {
   MessageContent,
   MessageFooter,
-  MockMessageContent,
 } from "@/features/message-content";
 import { MessageContentProvider } from "@/features/message-content/providers/message-content";
 type Props = {
@@ -21,11 +20,10 @@ const Page: NextPage<Props> = ({ params }: Props) => {
       >
         <Box style={{ overflowX: "hidden", overflowY: "auto" }}>
           <MessageContent
-            messages={MockMessageContent}
-            messageId={params.messageId}
+            messageRoomId={params.messageId}
           />
         </Box>
-        <MessageFooter messageID={params.messageId}/>
+        <MessageFooter messageRoomID={params.messageId}/>
       </Box>
     </MessageContentProvider>
   );
