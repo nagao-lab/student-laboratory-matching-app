@@ -1,13 +1,14 @@
 "use client"
+
 import { TextField, Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import { useMessageFooter } from "../hooks/message-footer";
 
 type Props = {
-  messageID: string;
+  messageRoomID: string;
 }
 
-export const MessageFooter = ({messageID}: Props) => {
+export const MessageFooter = ({messageRoomID}: Props) => {
   const { message, setMessage, onSubmit } = useMessageFooter()
 
     return (<footer style={{
@@ -39,13 +40,13 @@ export const MessageFooter = ({messageID}: Props) => {
             gridColumn: 3
           }}
           onClick={(e) => {
-            const id = e.currentTarget.dataset.messageid
+            const id = e.currentTarget.dataset.messageroomid
             if(id == undefined){
               return
             }
             onSubmit(id)
           }}
-          data-messageid={messageID}>
+          data-messageroomid={messageRoomID}>
           <SendIcon />
         </Button>
       </footer>)
