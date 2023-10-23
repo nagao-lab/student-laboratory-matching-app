@@ -32,7 +32,7 @@ func main() {
 
 	router := chi.NewRouter()
 	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins: []string{"http://localhost:*", os.Getenv("FE_URL")},
+		AllowedOrigins: []string{"http://localhost:*", os.Getenv("FE_STU_URL"), os.Getenv("FE_LAB_URL")},
 		AllowedHeaders: []string{"*"},
 		AllowedMethods: []string{
 			http.MethodHead,
